@@ -370,6 +370,24 @@ L8.prototype.setLED = function(x, y, color, fn) {
     );
 };
 
+/**
+ * Set the complete matrix of LEDs with one command
+ *
+ * This method should be used if you want display an "image" of sorts
+ *
+ * The provided matrix needs to be a 64 elements long array of color objects.
+ *
+ * Each of the color objects needs to provide an `r`, `g` and `b` property.
+ *
+ * The color values need to be within the limits [0,15]. Where 0 represents the
+ * lightest and 15 the hightest value.
+ *
+ * The matrix is provided line by line. Starting in the upper left corner, while
+ * ending in the lower right.
+ *
+ * @param {Array} matrix
+ * @param fn
+ */
 L8.prototype.setMatrix = function(matrix, fn) {
     if (matrix.length != 64) {
         throw new RangeError("Given matrix has the wrong length. Expected 64, got " + matrix.length);
