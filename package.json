@@ -1,7 +1,7 @@
 {
   "name": "l8smartlight",
   "private": false,
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A nodejs library in order to facillitate communication with an L8 Smartlight",
   "main": "index.js",
   "keywords": [
