@@ -55,7 +55,7 @@ var L8 = function() {
     });
 
     /**
-     * Queueish object for storing all received data, before it is processed.
+     * Buffer for storing all received data, before it is processed.
      *
      *  @type {Object}
      * @private
