@@ -3,7 +3,11 @@ var L8 = require("../index").L8;
 var SERIAL_PORT = "/dev/tty.usbmodem1413411";
 
 var l8 = new L8();
-l8.open(SERIAL_PORT, null, function() {
+l8.open(SERIAL_PORT, null, function(error, response) {
+    if (error) {
+        throw error;
+    }
+
     l8.registerReceiver(function(response) {
         console.log("Received: ", response.payload.toString("hex"));
     });
@@ -28,8 +32,12 @@ l8.open(SERIAL_PORT, null, function() {
     l8.clearMatrix(function(error, response) {
         console.log(response);
         l8.setSuperLED({r: 4, g: 1, b: 10}, function (error, response) {
-            console.log(response)
+            console.log(response);
             next();
         });
+        l8.setOrientation("auto", function (error, response) {
+            console.log(response);
+        });
+        next();
     });
 });
