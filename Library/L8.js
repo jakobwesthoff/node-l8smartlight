@@ -295,22 +295,28 @@ L8.prototype.onResponse_ = function(data) {
 /**
  * Send a raw buffer bytestream to the connected L8
  *
- * If the expectResponse property is set to true the callback will be hold back
+ * If the expectedResponse property is set to true the callback will be hold back
  * until a corresponding CMD_OK response from the L8 has been received. This response
  * will be given to the callback then.
  *
  * If the command does not answer with a callback `false` may be given
  *
  * If the command does answer with another then the usual CMD_OK response it's
- * command code needs to be specified.
+ * command code and optional parameters need to be specified as object. The object
+ * has the following structure:
+ *
+ * `{command: Number, parameters: Buffer?}`
+ *
+ * The parameters are optional. If no `parameters` are specified any paramter will be
+ * accepted as soon as the command is matched.
  *
  * Most commands will want to wait for the response.
  *
  * @param {Buffer} buffer
- * @param {Boolean|Number} expectResponse
+ * @param {Boolean|{command: Number, parameters: Buffer?}} expectedResponse
  * @param fn
  */
-L8.prototype.sendFrame = function(buffer, expectResponse, fn) {
+L8.prototype.sendFrame = function(buffer, expectedResponse, fn) {
     if (!this.isConnected) {
         throw new Error("L8 is not connected. Can't send data to it.");
     }
@@ -337,31 +343,38 @@ L8.prototype.sendFrame = function(buffer, expectResponse, fn) {
 
             // If a response is expected we need to introduce another indirection.
             // Otherwise we might return immediately
-            if (expectResponse === false) {
+            if (expectedResponse === false) {
                 // No response expected. We are ready to return
                 fn(error, writeCount + drainCount);
-            } else {
-                receiverId = this.registerReceiverOnce(function(frame) {
-                    /* Skip processing if it is not the awaited response */
-                    if (expectResponse === true) {
-                        if (frame.command !== SLCP.CMD.OK || frame.parameters[0] !== buffer[3]) {
-                            // It is not the OK response for the issued command. Skip it.
-                            return;
-                        }
-                    } else {
-                        // We are expecting another return command
-                        if (frame.command !== expectResponse) {
-                            // Not the command/response we waited for
-                            // Skip it.
-                            return;
-                        }
-                    }
-                    this.removeReceiver(receiverId);
-                    fn(error, frame);
-                }.bind(this));
+                return;
             }
-        }.bind(this));
-    }.bind(this));
+
+            receiverId = this.registerReceiver(function(frame) {
+                /* Skip processing if it is not the awaited response */
+                if (expectedResponse === true) {
+                    if (frame.command !== SLCP.CMD.OK || frame.parameters[0] !== buffer[3]) {
+                        // It is not the OK response for the issued command. Skip it.
+                        return;
+                    }
+                } else {
+                    // We are expecting another return command
+                    if (frame.command !== expectedResponse.command) {
+                        // Not the command/response we waited for
+                        // Skip it.
+                        return;
+                    }
+
+                    if (expectedResponse.parameters !== undefined && frame.parametersBuffer.toString("hex") !== expectedResponse.parameters.toString("hex")) {
+                        // Not the parameters we expected.
+                        // Skip it
+                        return;
+                    }
+                }
+                this.removeReceiver(receiverId);
+                fn(error, frame);
+            }.bind(this)); /* registerReceiver */
+        }.bind(this)); /* drain */
+    }.bind(this)); /* write */
 };
 
 /**
@@ -768,7 +781,7 @@ L8.prototype.setOrientation = function(orientation, fn) {
         parametersBuffer[0] = 1;
         this.sendFrame(
             this.buildFrame(SLCP.CMD.L8_SET_AUTOROTATE, parametersBuffer),
-            SLCP.CMD.OK, fn
+            {command: SLCP.CMD.OK, paramerts: new Buffer("6a", "hex")}, fn
         );
     } else {
         // Disable autoration and set orientation manually.
