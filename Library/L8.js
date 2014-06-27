@@ -281,7 +281,7 @@ L8.prototype.sendFrame = function(buffer, expectResponse, fn) {
                 // No response expected. We are ready to return
                 fn(error, writeCount + drainCount);
             } else {
-                this.registerReceiverOnce(function(error, frame) {
+                this.registerReceiverOnce(function(frame) {
                     fn(error, frame);
                 }.bind(this));
             }
@@ -373,12 +373,12 @@ L8.prototype.ping = function(fn) {
  * The color needs to be represented as object with `r`, `g` and `b` properties.
  *
  * The color values need to be within the limits [0,15]. Where 0 represents the lightest
- * and 15 the hightest value.
+ * and 15 the highest value.
  *
  * @param {Object} color
  * @returns {Buffer}
  */
-L8.prototype.encodeSingleColor = function(color) {
+L8.prototype.encodeBGRSingleColor = function(color) {
     if (color.r === undefined || color.r < 0 || color.r > 15
      || color.g === undefined || color.g < 0 || color.g > 15
      || color.b === undefined || color.b < 0 || color.b > 15) {
@@ -394,17 +394,45 @@ L8.prototype.encodeSingleColor = function(color) {
 };
 
 /**
+ * Encode a color object to the RGB bytesequence accepted by the L8 as a single color (3-byte)
+ *
+ * This color is for example used by the text scroller application^^
+ *
+ * The color needs to be represented as object with `r`, `g` and `b` properties.
+ *
+ * The color values need to be within the limits [0,15]. Where 0 represents the lightest
+ * and 15 the highest value.
+ *
+ * @param {Object} color
+ * @returns {Buffer}
+ */
+L8.prototype.encodeRGBSingleColor = function(color) {
+    if (color.r === undefined || color.r < 0 || color.r > 15
+        || color.g === undefined || color.g < 0 || color.g > 15
+        || color.b === undefined || color.b < 0 || color.b > 15) {
+        throw new RangeError("Invalid color definition provided: " + JSON.stringify(color));
+    }
+
+    var colorBuffer = new Buffer(3);
+    colorBuffer[0] = color.r;
+    colorBuffer[1] = color.g;
+    colorBuffer[2] = color.b;
+
+    return colorBuffer;
+};
+
+/**
  * Encode a color object to the BGR bytesequence accepted by the L8 as a matrix color (2-byte)
  *
  * The color needs to be represented as object with `r`, `g` and `b` properties.
  *
  * The color values need to be within the limits [0,15]. Where 0 represents the lightest
- * and 15 the hightest value.
+ * and 15 the highest value.
  *
  * @param {Object} color
  * @returns {Buffer}
  */
-L8.prototype.encodeMatrixColor = function(color) {
+L8.prototype.encodeBGRMatrixColor = function(color) {
     if (color.r === undefined || color.r < 0 || color.r > 15
         || color.g === undefined || color.g < 0 || color.g > 15
         || color.b === undefined || color.b < 0 || color.b > 15) {
@@ -424,7 +452,7 @@ L8.prototype.encodeMatrixColor = function(color) {
  * The color needs to be represented as object with `r`, `g` and `b` properties.
  *
  * The color values need to be within the limits [0,15]. Where 0 represents the lightest
- * and 15 the hightest value.
+ * and 15 the highest value.
  *
  * @param {Number} x
  * @param {Number} y
@@ -442,13 +470,27 @@ L8.prototype.setLED = function(x, y, color, fn) {
 
     var parametersBuffer = Buffer.concat([
         coordinateBuffer,
-        this.encodeSingleColor(color)
+        this.encodeBGRSingleColor(color)
     ], 2 + 4);
 
     this.sendFrame(
         this.buildFrame(SLCP.CMD.L8_LED_SET, parametersBuffer),
         true, fn
     );
+};
+
+/**
+ * Convenience function to switch of a single LED in the matrix.
+ *
+ * The same behaviour is archivable by setting all color components of the LED
+ * to 0.
+ *
+ * @param {Number} x
+ * @param {Number} y
+ * @param {Function} fn
+ */
+L8.prototype.clearLED = function(x, y, fn) {
+    this.setLED(x, y, {r: 0, g: 0, b: 0}, fn);
 };
 
 /**
@@ -461,7 +503,7 @@ L8.prototype.setLED = function(x, y, color, fn) {
  * Each of the color objects needs to provide an `r`, `g` and `b` property.
  *
  * The color values need to be within the limits [0,15]. Where 0 represents the
- * lightest and 15 the hightest value.
+ * lightest and 15 the highest value.
  *
  * The matrix is provided line by line. Starting in the upper left corner, while
  * ending in the lower right.
@@ -475,7 +517,7 @@ L8.prototype.setMatrix = function(matrix, fn) {
     }
 
     var parametersBuffer = Buffer.concat(
-        matrix.map(this.encodeMatrixColor.bind(this)),
+        matrix.map(this.encodeBGRMatrixColor.bind(this)),
         8 /*LINES*/ * 8 /*COLUMNS*/ * 2 /*COLOR_LENGTH*/
     );
 
@@ -504,6 +546,118 @@ L8.prototype.clearMatrix = function(fn) {
         this.buildFrame(SLCP.CMD.L8_MATRIX_OFF, "00"),
         true, fn
     );
+};
+
+/**
+ * Set the SuperLED on the back of the L8 to the given color.
+ *
+ * The color needs to be represented as object with `r`, `g` and `b` properties.
+ *
+ * The color values need to be within the limits [0,15]. Where 0 represents the lightest
+ * and 15 the highest value.
+ *
+ * @param {Object} color
+ * @param {Function} fn
+ */
+L8.prototype.setSuperLED = function(color, fn) {
+    this.sendFrame(
+        this.buildFrame(SLCP.CMD.L8_SUPERLED_SET, this.encodeBGRSingleColor(color)),
+        true, fn
+    );
+};
+
+/**
+ * Convenience function to switch off the SuperLED.
+ *
+ * The same effect may be created by setting all color components of the LED to 0
+ *
+ * @param {Function} fn
+ */
+L8.prototype.clearSuperLED = function(fn) {
+    this.setSuperLED({r:0, g: 0, b: 0}, fn);
+};
+
+/**
+ * Stop the currently running L8 application on the device.
+ *
+ * The L8 has certain predefined "Apps", which can be executed. This method
+ * stops the currently running application.
+ *
+ * @param {Function} fn
+ */
+L8.prototype.stopApplication = function(fn) {
+    this.sendFrame(
+        this.buildFrame(SLCP.CMD.L8_APP_STOP, null),
+        true, fn
+    );
+};
+
+/**
+ * Start the internal L8 application to scroll text across the device
+ *
+ * Once the scrolling has been started it needs to be stopped explicitly using
+ * `stopApplication` or the convenience method `clearScrollingText`. Simply setting
+ * other colors to the LED matrix is not enough to cancel the scrolling text.
+ *
+ * The `text` is supposed an ascii encoded string
+ *
+ * Color is specified as object with the usual `r`, `g`, `b` properties ranging
+ * from 0-15.
+ *
+ * `speed` defines the scrolling speed. It is supposed to be one of "slow", "medium"
+ * or "fast".
+ *
+ * `loop` is a boolean value specifiying if the animation is supposed to be looped,
+ * after it completed once. If it is set to `false` the scrolling application is
+ * exited after the first run through the text.
+ *
+ * @param {String} text
+ * @param {Object} color
+ * @param {String} speed
+ * @param {Boolean} loop
+ * @param {Function} fn
+ */
+L8.prototype.setScrollingText = function(text, color, speed, loop, fn) {
+    var parametersBuffer = new Buffer(1 /*LOOP*/ + 1 /*SPEED*/ + 3 /*COLOR*/ + text.length);
+
+    parametersBuffer[0] = (loop === true) ? 1 : 0;
+
+    switch(speed) {
+        case "slow":
+            parametersBuffer[1] = 3;
+        break;
+        case "medium":
+            parametersBuffer[1] = 2;
+        break;
+        case "fast":
+            parametersBuffer[1] = 0;
+        break;
+        default:
+            throw RangeError("Invalid speed for scrolling text provided. Expected one of slow, medium or fast, got " + speed);
+    }
+
+    var colorBuffer = this.encodeRGBSingleColor(color);
+    colorBuffer.copy(parametersBuffer, 2);
+
+    var textBuffer = new Buffer(text, "ascii");
+    textBuffer.copy(parametersBuffer, 5);
+
+    this.sendFrame(
+        this.buildFrame(SLCP.CMD.L8_SET_TEXT, parametersBuffer),
+        false, fn
+    );
+};
+
+/**
+ * Convenience method to stop scrolling text from being displayed.
+ *
+ * The same behaviour is archivable by calling `stopApplication` as the text
+ * scroller is an internal L8 application.
+ *
+ * @param {Function} fn
+ */
+L8.prototype.clearScrollingText = function(fn) {
+    this.stopApplication(fn);
 };
 
 exports.L8 = L8;
