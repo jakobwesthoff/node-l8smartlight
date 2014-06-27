@@ -14,6 +14,7 @@
   "author": "Jakob Westhoff <jakob@westhoffswelt.de>",
   "license": "MIT",
   "dependencies": {
+    "crc": "^2.1.1",
     "serialport": "^1.4.0"
   }
 }
