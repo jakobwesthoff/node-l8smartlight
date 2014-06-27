@@ -37,6 +37,22 @@ var L8 = function() {
             configurable: false
         }
     });
+
+    /**
+     * List of functions, which are informed upon sent data
+     *
+     * @type {Dictionary}
+     * @private
+     */
+    this.monitors_ = Object.create(null, {
+        nextId: {
+            value: 0,
+            writable: true,
+            readable: true,
+            enumerable: false,
+            configurable: false
+        }
+    });
 };
 
 L8.MAGIC_BYTES = new Buffer("AA55", "hex");
@@ -120,6 +136,32 @@ L8.prototype.removeReceiver = function(receiverId) {
 };
 
 /**
+ * Register a new monitor called every time data is sent out
+ *
+ * The call returns a unique id which may be used to deregister the monitor at
+ * any time.
+ *
+ * @param {Function} monitor
+ * @returns {number}
+ */
+L8.prototype.registerMonitor = function(monitor) {
+    var monitorId = this.monitors_.nextId++;
+    this.monitors_[monitorId] = monitor;
+    return monitorId;
+};
+
+/**
+ * Remove a registered monitor based on the id provided during registration.
+ *
+ * @param {Number} montorId
+ */
+L8.prototype.removeMonitor = function(monitorId) {
+    if (this.monitors_[monitorId] !== undefined) {
+        delete this.monitors_[monitorId];
+    }
+};
+
+/**
  * Callback executed each time data has been received from the L8.
  *
  * @param data
@@ -150,6 +192,13 @@ L8.prototype.sendFrame = function(buffer, fn) {
             return;
         }
         this.serialport_.drain(function(error, drainCount) {
+            // Inform all montors
+            var monitorId;
+            for (monitorId in this.monitors_) {
+                this.monitors_[monitorId](buffer);
+            }
+
+            // Finish by executing user callback
             fn(error, drainCount + writeCount);
         }.bind(this));
     }.bind(this));
@@ -236,7 +285,7 @@ L8.prototype.ping = function(fn) {
 };
 
 /**
- * Encode a color object to the BGR bytesequence accepted by the L8
+ * Encode a color object to the BGR bytesequence accepted by the L8 as a single color (3-byte)
  *
  * The color needs to be represented as object with `r`, `g` and `b` properties.
  *
@@ -246,18 +295,42 @@ L8.prototype.ping = function(fn) {
  * @param {Object} color
  * @returns {Buffer}
  */
-L8.prototype.encodeColor = function(color) {
+L8.prototype.encodeSingleColor = function(color) {
     if (color.r === undefined || color.r < 0 || color.r > 15
      || color.g === undefined || color.g < 0 || color.g > 15
      || color.b === undefined || color.b < 0 || color.b > 15) {
         throw new RangeError("Invalid color definiiton provided: " + JSON.stringify(color));
     }
 
-    var colorBuffer = new Buffer(4);
-    colorBuffer[0] = 0;
-    colorBuffer[1] = color.b;
-    colorBuffer[2] = color.g;
-    colorBuffer[3] = color.r;
+    var colorBuffer = new Buffer(3);
+    colorBuffer[0] = color.b;
+    colorBuffer[1] = color.g;
+    colorBuffer[2] = color.r;
+
+    return colorBuffer;
+};
+
+/**
+ * Encode a color object to the BGR bytesequence accepted by the L8 as a matrix color (2-byte)
+ *
+ * The color needs to be represented as object with `r`, `g` and `b` properties.
+ *
+ * The color values need to be within the limits [0,15]. Where 0 represents the lightest
+ * and 15 the hightest value.
+ *
+ * @param {Object} color
+ * @returns {Buffer}
+ */
+L8.prototype.encodeMatrixColor = function(color) {
+    if (color.r === undefined || color.r < 0 || color.r > 15
+        || color.g === undefined || color.g < 0 || color.g > 15
+        || color.b === undefined || color.b < 0 || color.b > 15) {
+        throw new RangeError("Invalid color definiiton provided: " + JSON.stringify(color));
+    }
+
+    var colorBuffer = new Buffer(2);
+    colorBuffer[0] = color.b;
+    colorBuffer[1] = color.g << 4 | color.r;
 
     return colorBuffer;
 };
@@ -286,11 +359,29 @@ L8.prototype.setLED = function(x, y, color, fn) {
 
     var parametersBuffer = Buffer.concat([
         coordinateBuffer,
-        this.encodeColor(color)
+        this.encodeSingleColor(color)
     ], 2 + 4);
 
     this.sendFrame(
         this.buildFrame(SLCP.CMD.L8_LED_SET, parametersBuffer),
+        function(error) {
+            fn(error, !error);
+        }.bind(this)
+    );
+};
+
+L8.prototype.setMatrix = function(matrix, fn) {
+    if (matrix.length != 64) {
+        throw new RangeError("Given matrix has the wrong length. Expected 64, got " + matrix.length);
+    }
+
+    var parametersBuffer = Buffer.concat(
+        matrix.map(this.encodeMatrixColor.bind(this)),
+        8 /*LINES*/ * 8 /*COLUMNS*/ * 2 /*COLOR_LENGTH*/
+    );
+
+    this.sendFrame(
+        this.buildFrame(SLCP.CMD.L8_MATRIX_SET, parametersBuffer),
         function(error) {
             fn(error, !error);
         }.bind(this)
