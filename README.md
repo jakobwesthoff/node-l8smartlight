@@ -1,5 +1,7 @@
 # node-l8smartlight
 
+[![node-l8smartlight on npm](http://img.shields.io/npm/v/l8smartlight.svg)](https://www.npmjs.org/package/l8smartlight)
+
 A nodejs library to talk to the [L8 Smartlight](http://www.l8smartlight.com/).
 
 As all of the currently available SDK versions (especially the JavaScript one)
