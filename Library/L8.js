@@ -53,6 +53,17 @@ var L8 = function() {
             configurable: false
         }
     });
+
+    /**
+     * Queueish object for storing all received data, before it is processed.
+     *
+     *  @type {Object}
+     * @private
+     */
+    this.receiveBuffer_ = {
+        buffer: new Buffer(4096),
+        length: 0
+    };
 };
 
 /**
@@ -83,7 +94,7 @@ L8.prototype.open = function(port, baudrate, fn) {
         baudrate = 115200;
     }
 
-    this.responseQueue_ = [];
+    this.receiveBuffer_.length = 0;
 
     this.serialport_ = new SerialPort(port, {
         baudrate: baudrate,
@@ -186,40 +197,73 @@ L8.prototype.removeMonitor = function(monitorId) {
     }
 };
 
-L8.prototype.parseFrame_ = function(data) {
-    /* For now we assume answers are always received in one chunk. All my tests
-       show this should be the case. If it is not the receiving and parsing behaviour
-       needs to be adapted */
-    // Validate for magic bytes present
-    if (data[0] !== L8.MAGIC_BYTES[0] || data[1] !== L8.MAGIC_BYTES[1]) {
-        throw new EvalError("Invalid L8 response. Magic bytes not found: " + data.toString("hex"));
+/**
+ * Try to parse as many frames out of the given receiveBuffer, as possible.
+ *
+ * The response is either an array containing a frame definition or `false` if the frame wasn't complete yet.
+ *
+ * @param {{buffer: Buffer, length: Number}} receiveBuffer
+ * @returns {{command: Number, parameters: Buffer, checksum: String, payloadLength: Number, raw: Buffer}}
+ * @private
+ */
+L8.prototype.parseFrames_ = function(receiveBuffer) {
+    var frames = [];
+    while(receiveBuffer.length > 0) {
+        if (receiveBuffer.length < 4) {
+            // The minimum message is 4 byte. Therefore we need to wait for more data
+            break;
+        }
+
+        var data = receiveBuffer.buffer;
+
+        // Validate for magic bytes present
+        if (data[0] !== L8.MAGIC_BYTES[0] || data[1] !== L8.MAGIC_BYTES[1]) {
+            throw new EvalError("Invalid L8 response. Magic bytes not found: " + data.toString("hex"));
+        }
+
+        var payloadLength = data[2];
+
+        if (receiveBuffer.length < 2 /*MAGIC*/ + 1 /*LENGTH*/ + payloadLength + 1 /*CHECKSUM*/) {
+            // Not yet complete
+            break;
+        }
+
+        // We need this buffer later on, after the receive buffer has already changed its state
+        // Therefore it is copied
+        var payloadBuffer = new Buffer(payloadLength);
+        data.copy(payloadBuffer, 0, 2 /*MAGIC*/ + 1 /*LENGTH*/, 3 + payloadLength);
+
+        var checksumPosition = 2 /*MAGIC*/ + 1 /*LENGTH*/ + payloadLength;
+        var receivedChecksum = data.slice(checksumPosition, checksumPosition + 1).toString("hex");
+
+        var calculatedChecksum = CRC.crc8(payloadBuffer);
+
+        if (calculatedChecksum !== receivedChecksum) {
+            throw new EvalError("Response checksum did not match. Expected " + receivedChecksum + " got " + calculatedChecksum);
+        }
+
+        // Yeah! We got a valid response let's decode it ;)
+        var command = payloadBuffer[0];
+        var parametersSlice = payloadBuffer.slice(1, payloadBuffer.length);
+
+        frames.push({
+            command: command,
+            parameters: parametersSlice,
+            checksum: receivedChecksum,
+            payloadLength: payloadLength,
+            payload: payloadBuffer
+        });
+
+        // Remove the decoded frame from the receiveBuffer
+        data.copy(data, 0, 2 + /*MAGIC*/ + 1 /*LENGTH*/ + payloadLength + 1 /*CHECKSUM*/);
+        receiveBuffer.length -= 2 + /*MAGIC*/ + 1 /*LENGTH*/ + payloadLength + 1 /*CHECKSUM*/;
     }
 
-    var payloadLength = data[2];
-    var payloadSlice = data.slice(3, data.length - 1);
-    var receivedChecksum = data.slice(data.length - 1, data.length).toString("hex");
-
-    if (payloadSlice.length !== payloadLength) {
-        throw new EvalError("Payload has wrong length. Expected " + payloadLength + " got " + payloadSlice.length);
+    if (frames.length === 0) {
+        return false;
+    } else {
+        return frames;
     }
-
-    var calculatedChecksum = CRC.crc8(payloadSlice);
-
-    if (calculatedChecksum !== receivedChecksum) {
-        throw new EvalError("Response checksum did not match. Expected " + receivedChecksum + " got " + calculatedChecksum);
-    }
-
-    // Yeah! We got a valid response let's decode it ;)
-    var command = payloadSlice[0];
-    var parametersSlice = payloadSlice.slice(1, payloadSlice.length);
-
-    return {
-        command: command,
-        parameters: parametersSlice,
-        checksum: receivedChecksum,
-        payloadLength: payloadLength,
-        raw: data
-    };
 };
 
 /**
@@ -229,13 +273,23 @@ L8.prototype.parseFrame_ = function(data) {
  * @private
  */
 L8.prototype.onResponse_ = function(data) {
-    var response = this.parseFrame_(data);
+    var responses;
+
+    data.copy(this.receiveBuffer_.buffer, this.receiveBuffer_.length);
+    this.receiveBuffer_.length += data.length;
+
+    if ((responses = this.parseFrames_(this.receiveBuffer_)) === false) {
+        // The response has been incomplete. Therefore we wait until it is complete
+        return;
+    }
 
     // Redirect all incoming data to all methods, which wanted to be informed about it
-    var receiverId;
-    for (receiverId in this.receivers_) {
-        this.receivers_[receiverId](response);
-    }
+    responses.forEach(function(response) {
+        var receiverId;
+        for (receiverId in this.receivers_) {
+            this.receivers_[receiverId](response);
+        }
+    }.bind(this));
 };
 
 /**
@@ -270,9 +324,8 @@ L8.prototype.sendFrame = function(buffer, expectResponse, fn) {
 
             // Inform all monitors
             var monitorId;
-            var query = this.parseFrame_(buffer);
             for (monitorId in this.monitors_) {
-                this.monitors_[monitorId](query);
+                this.monitors_[monitorId](buffer);
             }
 
             // If a response is expected we need to introduce another indirection.
