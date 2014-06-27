@@ -611,6 +611,9 @@ L8.prototype.stopApplication = function(fn) {
  * after it completed once. If it is set to `false` the scrolling application is
  * exited after the first run through the text.
  *
+ * This command is not acquitted by an L8 response. Instead the sent bytes are given to
+ * the callback
+ *
  * @param {String} text
  * @param {Object} color
  * @param {String} speed
@@ -658,6 +661,70 @@ L8.prototype.setScrollingText = function(text, color, speed, loop, fn) {
  */
 L8.prototype.clearScrollingText = function(fn) {
     this.stopApplication(fn);
+};
+
+/**
+ * Manually set the orientation of the L8
+ *
+ * The orientation setting determines in which way the pixel matrix is drawn.
+ *
+ * Valid orientations are:
+ *  - up
+ *  - down
+ *  - left
+ *  - right
+ *  - auto
+ *
+ *  The orientation denotes, which side of the L8 is facing upwards. While the side
+ *  with the power on switch is considered the Top side, while the one with the usb
+ *  port is the Bottom side.
+ *
+ * This command is not acquitted by an L8 response all cases. Instead the sent
+ * bytes are given to the callback in this situations.
+ *
+ * @param {String} orientation
+ * @param {Function} fn
+ */
+L8.prototype.setOrientation = function(orientation, fn) {
+    var parametersBuffer = new Buffer(1);
+
+    if (orientation === "auto") {
+        // Enable autoration an exit.
+        parametersBuffer[0] = 1;
+        this.sendFrame(
+            this.buildFrame(SLCP.CMD.L8_SET_AUTOROTATE, parametersBuffer),
+            true, fn
+        );
+    } else {
+        // Disable autoration and set orientation manually.
+        parametersBuffer[0] = 0;
+        this.sendFrame(
+            this.buildFrame(SLCP.CMD.L8_SET_AUTOROTATE, parametersBuffer),
+            true, function(error, response) {
+                switch(orientation) {
+                    case "up":
+                        parametersBuffer[0] = 1;
+                        break;
+                    case "down":
+                        parametersBuffer[0] = 2;
+                        break;
+                    case "left":
+                        parametersBuffer[0] = 5;
+                        break;
+                    case "right":
+                        parametersBuffer[0] = 6;
+                        break;
+                    default:
+                        throw new RangeError("Unexpected orientation: " + orientation);
+                }
+
+                this.sendFrame(
+                    this.buildFrame(SLCP.CMD.L8_SET_ORIENTATION, parametersBuffer),
+                    false, fn
+                );
+            }.bind(this)
+        );
+    }
 };
 
 exports.L8 = L8;
