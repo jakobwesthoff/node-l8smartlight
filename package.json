@@ -1,5 +1,5 @@
 {
-  "name": "l8",
+  "name": "l8smartlight",
   "private": false,
   "version": "0.1.0",
   "description": "A nodejs library in order to facillitate communication with an L8 Smartlight",
