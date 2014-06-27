@@ -1,4 +1,4 @@
-# node-l8
+# node-l8smartlight
 
 A nodejs library to talk to the [L8 Smartlight](http://www.l8smartlight.com/).
 
@@ -37,8 +37,8 @@ Send a `ping` to the L8
 #### `L8#setLED(x, y, color, fn)`
 Set a specific LED to the given color.
 
-The color is specified as object with `r`, `g` and `b` properties, which house
-values von 0-15.
+The color is specified as object with `r`, `g` and `b` properties, which each house
+values between 0-15.
 
 #### `L8#clearLED(x, y, fn)`
 Switch of a specific LED.
@@ -47,8 +47,8 @@ Switch of a specific LED.
 Set the whole LED matrix at once to the given colors.
 The colors are specified as a 64 elements array of colors.
 
-Each color is specified as object with `r`, `g` and `b` properties, which house
-values von 0-15.
+Each color is specified as object with `r`, `g` and `b` properties, which each house
+values between 0-15.
 
 #### `L8#clearMatrix(fn)`
 Switch of the whole LED matrix.
@@ -56,8 +56,8 @@ Switch of the whole LED matrix.
 #### `L8#setSuperLED(color, fn)`
 Set the color of the SuperLED on the back.
 
-The color is specified as object with `r`, `g` and `b` properties, which house
-values von 0-15.
+The color is specified as object with `r`, `g` and `b` properties, which each house
+values from 0-15.
 
 #### `L8#clearSuperLED(fn)`
 Switch of the SuperLED
