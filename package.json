@@ -1,0 +1,19 @@
+{
+  "name": "l8",
+  "private": true,
+  "version": "0.0.1",
+  "description": "A nodejs library in order to facillitate communication with an L8 Smartlight",
+  "main": "index.js",
+  "keywords": [
+    "l8",
+    "smartlight",
+    "serialport",
+    "bluetooth",
+    "communication"
+  ],
+  "author": "Jakob Westhoff <jakob@westhoffswelt.de>",
+  "license": "MIT",
+  "dependencies": {
+    "serialport": "^1.4.0"
+  }
+}
