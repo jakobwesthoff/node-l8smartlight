@@ -55,6 +55,12 @@ var L8 = function() {
     });
 };
 
+/**
+ * Magic byte sequence used to identify any SLCP command or response
+ *
+ * @type {Buffer}
+ * @const
+ */
 L8.MAGIC_BYTES = new Buffer("AA55", "hex");
 
 /**
@@ -76,6 +82,8 @@ L8.prototype.open = function(port, baudrate, fn) {
     if (baudrate === null || baudrate === undefined) {
         baudrate = 115200;
     }
+
+    this.responseQueue_ = [];
 
     this.serialport_ = new SerialPort(port, {
         baudrate: baudrate,
@@ -125,6 +133,23 @@ L8.prototype.registerReceiver = function(receiver) {
 };
 
 /**
+ * Register a receiver to be called upon the next received data.
+ *
+ * The receiver will only be called once and deregistered after that automatically.
+ *
+ * @param {Function} receiver
+ * @return {Number} receiverId
+ */
+L8.prototype.registerReceiverOnce = function(receiver) {
+    var receiverId = this.registerReceiver(function(response) {
+        this.removeReceiver(receiverId);
+        receiver(response);
+    }.bind(this));
+
+    return receiverId;
+};
+
+/**
  * Remove a registered receiver based on the id provided during registration.
  *
  * @param {Number} receiverId
@@ -161,6 +186,42 @@ L8.prototype.removeMonitor = function(monitorId) {
     }
 };
 
+L8.prototype.parseFrame_ = function(data) {
+    /* For now we assume answers are always received in one chunk. All my tests
+       show this should be the case. If it is not the receiving and parsing behaviour
+       needs to be adapted */
+    // Validate for magic bytes present
+    if (data[0] !== L8.MAGIC_BYTES[0] || data[1] !== L8.MAGIC_BYTES[1]) {
+        throw new EvalError("Invalid L8 response. Magic bytes not found: " + data.toString("hex"));
+    }
+
+    var payloadLength = data[2];
+    var payloadSlice = data.slice(3, data.length - 1);
+    var receivedChecksum = data.slice(data.length - 1, data.length).toString("hex");
+
+    if (payloadSlice.length !== payloadLength) {
+        throw new EvalError("Payload has wrong length. Expected " + payloadLength + " got " + payloadSlice.length);
+    }
+
+    var calculatedChecksum = CRC.crc8(payloadSlice);
+
+    if (calculatedChecksum !== receivedChecksum) {
+        throw new EvalError("Response checksum did not match. Expected " + receivedChecksum + " got " + calculatedChecksum);
+    }
+
+    // Yeah! We got a valid response let's decode it ;)
+    var command = payloadSlice[0];
+    var parametersSlice = payloadSlice.slice(1, payloadSlice.length);
+
+    return {
+        command: command,
+        parameters: parametersSlice,
+        checksum: receivedChecksum,
+        payloadLength: payloadLength,
+        raw: data
+    };
+};
+
 /**
  * Callback executed each time data has been received from the L8.
  *
@@ -168,20 +229,29 @@ L8.prototype.removeMonitor = function(monitorId) {
  * @private
  */
 L8.prototype.onResponse_ = function(data) {
+    var response = this.parseFrame_(data);
+
     // Redirect all incoming data to all methods, which wanted to be informed about it
     var receiverId;
     for (receiverId in this.receivers_) {
-        this.receivers_[receiverId](data);
+        this.receivers_[receiverId](response);
     }
 };
 
 /**
  * Send a raw buffer bytestream to the connected L8
  *
+ * If the expectResponse property is set to true the callback will be hold back
+ * until a response from the L8 has been received. This response will be given to
+ * the callback then.
+ *
+ * Most commands will want to wait for the response.
+ *
  * @param {Buffer} buffer
+ * @param {Boolean} expectResponse
  * @param fn
  */
-L8.prototype.sendFrame = function(buffer, fn) {
+L8.prototype.sendFrame = function(buffer, expectResponse, fn) {
     if (!this.isConnected) {
         throw new Error("L8 is not connected. Can't send data to it.");
     }
@@ -191,15 +261,30 @@ L8.prototype.sendFrame = function(buffer, fn) {
             fn(error, writeCount);
             return;
         }
+
         this.serialport_.drain(function(error, drainCount) {
-            // Inform all montors
-            var monitorId;
-            for (monitorId in this.monitors_) {
-                this.monitors_[monitorId](buffer);
+            if (error) {
+                fn(error, writeCount + drainCount);
+                return;
             }
 
-            // Finish by executing user callback
-            fn(error, drainCount + writeCount);
+            // Inform all monitors
+            var monitorId;
+            var query = this.parseFrame_(buffer);
+            for (monitorId in this.monitors_) {
+                this.monitors_[monitorId](query);
+            }
+
+            // If a response is expected we need to introduce another indirection.
+            // Otherwise we might return immediately
+            if (!expectResponse) {
+                // No response expected. We are ready to return
+                fn(error, writeCount + drainCount);
+            } else {
+                this.registerReceiverOnce(function(error, frame) {
+                    fn(error, frame);
+                }.bind(this));
+            }
         }.bind(this));
     }.bind(this));
 };
@@ -278,9 +363,7 @@ L8.prototype.buildFrame = function(command, parametersBuffer) {
 L8.prototype.ping = function(fn) {
     this.sendFrame(
         this.buildFrame(SLCP.CMD.PING, null),
-        function(error, count) {
-            fn(error, !error);
-        }.bind(this)
+        true, fn
     );
 };
 
@@ -299,7 +382,7 @@ L8.prototype.encodeSingleColor = function(color) {
     if (color.r === undefined || color.r < 0 || color.r > 15
      || color.g === undefined || color.g < 0 || color.g > 15
      || color.b === undefined || color.b < 0 || color.b > 15) {
-        throw new RangeError("Invalid color definiiton provided: " + JSON.stringify(color));
+        throw new RangeError("Invalid color definition provided: " + JSON.stringify(color));
     }
 
     var colorBuffer = new Buffer(3);
@@ -364,9 +447,7 @@ L8.prototype.setLED = function(x, y, color, fn) {
 
     this.sendFrame(
         this.buildFrame(SLCP.CMD.L8_LED_SET, parametersBuffer),
-        function(error) {
-            fn(error, !error);
-        }.bind(this)
+        true, fn
     );
 };
 
@@ -400,9 +481,28 @@ L8.prototype.setMatrix = function(matrix, fn) {
 
     this.sendFrame(
         this.buildFrame(SLCP.CMD.L8_MATRIX_SET, parametersBuffer),
-        function(error) {
-            fn(error, !error);
-        }.bind(this)
+        true, fn
+    );
+};
+
+/**
+ * Clear the matrix by switching all its LEDs
+ *
+ * It is not necessary to execute this command between different `setMatrix` calls
+ * Only use it if you explicitly want to turn the matrix off.
+ *
+ * This command does not affect the Super LED, which needs to be controlled
+ * separately.
+ *
+ * @param fn
+ */
+L8.prototype.clearMatrix = function(fn) {
+    /* According to the documentation of the protocol the CMD_L8_MATRIX_OFF has no
+       parameters. Unfortunately this doesn't seem to be true. A zero byte is needed
+       as parameter in order for the command to be accepted */
+    this.sendFrame(
+        this.buildFrame(SLCP.CMD.L8_MATRIX_OFF, "00"),
+        true, fn
     );
 };
 
