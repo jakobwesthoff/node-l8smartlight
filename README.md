@@ -6,6 +6,7 @@ A nodejs library to talk to the [L8 Smartlight](http://www.l8smartlight.com/).
 
 As all of the currently available SDK versions (especially the JavaScript one)
 did not work for me. I decided to quickly hack my own implementation based on
+exports.SLCP = require("./Library/SLCP");
 [node-serialport](https://github.com/voodootikigod/node-serialport).
 
 
@@ -117,6 +118,14 @@ This function is only needed in conjunction with the raw `buildFrame` and
 Encode a color in BGR 2-byte format ready to be transmitted to the L8.
 This function is only needed in conjunction with the raw `buildFrame` and
 `sendFrame` methods.
+
+## Working with Promises
+
+Every method, that needs to be called with a callback (`fn`) function, can utilize
+Promises as well. Simply omit the callback function, while calling. In this case
+a [Promise/A+](http://promises-aplus.github.io/promises-spec/) compatible promise
+will be returned by the method, which will be resolved once the operation finished,
+or rejected should an error occur.
 
 ## Further documentation
 
