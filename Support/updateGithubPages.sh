@@ -14,6 +14,7 @@ find ./ \
     -mindepth 1 -maxdepth 1 \
     -not -name "Documentation" \
     -and -not -name ".git" \
+    -and -not -name ".gitignore" \
     -and -not -name ".idea" \
     -and -not -name "node_modules" \
     -exec rm -rf {} \;
