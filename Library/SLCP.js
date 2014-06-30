@@ -1,3 +1,13 @@
+/**
+ * @module SLCP
+ */
+
+/**
+ * All different kinds of command codes and responses defined by the SLCP
+ * specification.
+ *
+ * @type {Object.<String, Number>}
+ */
 var CMD = {
     ERR: 0xFF,
     OK: 0x00,
