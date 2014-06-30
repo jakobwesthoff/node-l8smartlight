@@ -240,9 +240,6 @@ L8.prototype.sendFrame = function(buffer, expectedResponse, fn) {
         }
 
         this.serialport_.drain(function(error, drainCount) {
-            var monitorId;
-            var receiverId;
-
             if (error) {
                 fn(error, writeCount + drainCount);
                 return;
