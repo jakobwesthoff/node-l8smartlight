@@ -4,6 +4,7 @@ var EventEmitter = require("events").EventEmitter;
 var SerialPort = require("serialport").SerialPort;
 var CRC = require("crc");
 var SLCP = require("./SLCP");
+var AccelerometerStream = require("./AcceleratorStream").AccelerometerStream;
 
 /**
  * Main API entry point providing all the public API in order to Control
@@ -354,17 +355,62 @@ L8.prototype.buildFrame = function(command, parametersBuffer) {
 };
 
 /**
+ * Create a stream of accelerometer data. The sampling rate defines the frequency in which the L8 is asked
+ *
+ * @param {int} samplingRate milliseconds
+ * @returns {AccelerometerStream}
+ */
+L8.prototype.getAccelerationStream = function(samplingRate) {
+    return new AccelerometerStream({}, this, samplingRate);
+};
+
+/**
  * Trigger query of the accelerometer
  *
  * Register a receiver to get the results.
  * The decoding should be handled by your receiver.
  *
  * @param {Function} fn
+ * @returns {{x:Number, y:Number, z:Number, lying:String, orientation:String, tap:Boolean, shake:Boolean}}
  */
-L8.prototype.queryAccelerationSensor = function(fn) {
+L8.prototype.getAcceleration = function(fn) {
     this.sendFrame(
         this.buildFrame(SLCP.CMD.L8_ACC_QUERY),
-        true, fn
+        {command: SLCP.CMD.L8_ACC_RESPONSE},
+        (function(error, data) {
+            var orientation, parameter;
+            if (error) {
+                fn(error, false);
+            } else {
+                parameters = data.parameters;
+                switch (parameters[4]) {
+                    case 1:
+                        orientation = 'up';
+                        break;
+                    case 2:
+                        orientation = 'down';
+                        break;
+                    case 5:
+                        orientation = 'left';
+                        break;
+                    case 6:
+                        orientation = 'right';
+                        break;
+                    default:
+                        throw new RangeError("Invalid speed for scrolling text provided. Expected one of slow, medium or fast, got " + speed);
+                }
+                fn(error, {
+                        'x': parameters[0],
+                        'y': parameters[1],
+                        'z': parameters[2],
+                        'lying': parameters[3] === 02 ? 'up' : 'upside_down',
+                        'orientation': orientation,
+                        'tap': (parameters[5] === 01),
+                        'shake': !(parameters[6] === 00)
+                    }
+                );
+            }
+        })
     );
 };
 
