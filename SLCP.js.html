@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>L8Smartlight</title>
+    
+    <meta name="description" content="A nodejs library in order to facillitate communication with an L8 Smartlight" />
+    
+    
+    
+    <meta property="og:title" content=""/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:image" content=""/>
+    
+    <meta property="og:url" content=""/>
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <script src="scripts/jquery.min.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/jaguar.css">
+    
+    
+    <script>
+    var config = {"monospaceLinks":true,"cleverLinks":true,"default":{"outputSourceFiles":true},"applicationName":"node-l8smartlight","disqus":"","googleAnalytics":"","openGraph":{"title":"","type":"website","image":"","site_name":"","url":""},"meta":{"title":"L8Smartlight","description":"A nodejs library in order to facillitate communication with an L8 Smartlight","keyword":""}};
+    </script>
+    
+
+    
+</head>
+<body>
+<div id="wrap" class="clearfix">
+    
+<div class="navigation">
+    <h3 class="applicationName"><a href="index.html">node-l8smartlight</a></h3>
+
+    <div class="search">
+        <input id="search" type="text" class="form-control input-sm" placeholder="Search Documentations">
+    </div>
+    <ul class="list">
+    
+        <li class="item" data-name="L8">
+            <span class="title">
+                <a href="L8.html">L8</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            <span class="subtitle">Members</span>
+            
+                <li data-name="L8#isConnected"><a href="L8.html#isConnected">isConnected</a></li>
+            
+                <li data-name="L8#receiveBuffer_"><a href="L8.html#receiveBuffer_">receiveBuffer_</a></li>
+            
+                <li data-name="L8#serialport_"><a href="L8.html#serialport_">serialport_</a></li>
+            
+                <li data-name="L8.MAGIC_BYTES"><a href="L8.html#MAGIC_BYTES">MAGIC_BYTES</a></li>
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="L8#buildFrame"><a href="L8.html#buildFrame">buildFrame</a></li>
+            
+                <li data-name="L8#clearLED"><a href="L8.html#clearLED">clearLED</a></li>
+            
+                <li data-name="L8#clearMatrix"><a href="L8.html#clearMatrix">clearMatrix</a></li>
+            
+                <li data-name="L8#clearScrollingText"><a href="L8.html#clearScrollingText">clearScrollingText</a></li>
+            
+                <li data-name="L8#clearSuperLED"><a href="L8.html#clearSuperLED">clearSuperLED</a></li>
+            
+                <li data-name="L8#close"><a href="L8.html#close">close</a></li>
+            
+                <li data-name="L8#encodeBGRMatrixColor"><a href="L8.html#encodeBGRMatrixColor">encodeBGRMatrixColor</a></li>
+            
+                <li data-name="L8#encodeBGRSingleColor"><a href="L8.html#encodeBGRSingleColor">encodeBGRSingleColor</a></li>
+            
+                <li data-name="L8#encodeRGBSingleColor"><a href="L8.html#encodeRGBSingleColor">encodeRGBSingleColor</a></li>
+            
+                <li data-name="L8#onResponse_"><a href="L8.html#onResponse_">onResponse_</a></li>
+            
+                <li data-name="L8#open"><a href="L8.html#open">open</a></li>
+            
+                <li data-name="L8#parseFrames_"><a href="L8.html#parseFrames_">parseFrames_</a></li>
+            
+                <li data-name="L8#ping"><a href="L8.html#ping">ping</a></li>
+            
+                <li data-name="L8#sendFrame"><a href="L8.html#sendFrame">sendFrame</a></li>
+            
+                <li data-name="L8#setLED"><a href="L8.html#setLED">setLED</a></li>
+            
+                <li data-name="L8#setMatrix"><a href="L8.html#setMatrix">setMatrix</a></li>
+            
+                <li data-name="L8#setOrientation"><a href="L8.html#setOrientation">setOrientation</a></li>
+            
+                <li data-name="L8#setScrollingText"><a href="L8.html#setScrollingText">setScrollingText</a></li>
+            
+                <li data-name="L8#setSuperLED"><a href="L8.html#setSuperLED">setSuperLED</a></li>
+            
+                <li data-name="L8#stopApplication"><a href="L8.html#stopApplication">stopApplication</a></li>
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            <span class="subtitle">Events</span>
+            
+                <li data-name="L8#event:frameReceived"><a href="L8.html#event:frameReceived">frameReceived</a></li>
+            
+                <li data-name="L8#event:frameSent"><a href="L8.html#event:frameSent">frameSent</a></li>
+            
+            </ul>
+        </li>
+    
+        <li class="item" data-name="MatrixBuilder">
+            <span class="title">
+                <a href="MatrixBuilder.html">MatrixBuilder</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            <span class="subtitle">Members</span>
+            
+                <li data-name="MatrixBuilder#initialMatrix_"><a href="MatrixBuilder.html#initialMatrix_">initialMatrix_</a></li>
+            
+                <li data-name="MatrixBuilder#operations_"><a href="MatrixBuilder.html#operations_">operations_</a></li>
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="MatrixBuilder.map"><a href="MatrixBuilder.html#map">map</a></li>
+            
+                <li data-name="MatrixBuilder#column"><a href="MatrixBuilder.html#column">column</a></li>
+            
+                <li data-name="MatrixBuilder#createArrayWithSize"><a href="MatrixBuilder.html#createArrayWithSize">createArrayWithSize</a></li>
+            
+                <li data-name="MatrixBuilder#operation"><a href="MatrixBuilder.html#operation">operation</a></li>
+            
+                <li data-name="MatrixBuilder#rectangle"><a href="MatrixBuilder.html#rectangle">rectangle</a></li>
+            
+                <li data-name="MatrixBuilder#row"><a href="MatrixBuilder.html#row">row</a></li>
+            
+                <li data-name="MatrixBuilder#toMatrix"><a href="MatrixBuilder.html#toMatrix">toMatrix</a></li>
+            
+                <li data-name="MatrixBuilder#validateColors_"><a href="MatrixBuilder.html#validateColors_">validateColors_</a></li>
+            
+                <li data-name="MatrixBuilder#validateCoordinates_"><a href="MatrixBuilder.html#validateCoordinates_">validateCoordinates_</a></li>
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
+    </ul>
+</div>
+    <div class="main">
+        <h1 class="page-title" data-filename="SLCP.js.html">Source: SLCP.js</h1>
+        
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source"><code>/**
+ * @module SLCP
+ */
+
+/**
+ * All different kinds of command codes and responses defined by the SLCP
+ * specification.
+ *
+ * @type {Object.&lt;String, Number>}
+ */
+var CMD = {
+    ERR: 0xFF,
+    OK: 0x00,
+    PING: 0x01,
+    PONG: 0x02,
+    RESET: 0x06,
+    FLASH_WRITE: 0x41,
+    FLASH_READ: 0x42,
+    L8_LED_SET: 0x43,
+    L8_MATRIX_SET: 0x44,
+    L8_MATRIX_OFF: 0x45,
+    L8_VOLTAGE_QUERY: 0x46,
+    L8_VOLTAGE_RESPONSE: 0x47,
+    L8_TEMP_QUERY: 0x48,
+    L8_TEMP_RESPONSE: 0x49,
+    L8_BOOTLOADER: 0x4A,
+    L8_SUPERLED_SET: 0x4B,
+    L8_ACC_QUERY: 0x4C,
+    L8_ACC_RESPONSE: 0x4D,
+
+    L8_UID_QUERY: 0x4E,
+    L8_UID_RESPONSE: 0x4F,
+
+    L8_AMBIENT_QUERY: 0x50,
+    L8_AMBIENT_RESPONSE: 0x51,
+
+    L8_PROX_QUERY: 0x52,
+    L8_PROX_RESPONSE: 0x53,
+
+    L8_TOTALMEM_QUERY: 0x54,
+    L8_TOTALMEM_RESPONSE: 0x55,
+    L8_FREEMEM_QUERY: 0x56,
+    L8_FREEMEM_RESPONSE: 0x57,
+
+    L8_MODE_SET: 0x58,
+    L8_MODE_QUERY: 0x59,
+    L8_MODE_RESPONSE: 0x5A,
+
+    L8_VERSIONS_QUERY: 0x60,
+    L8_VERSIONS_RESPONSE: 0x61,
+
+    L8_BUTTON_QUERY: 0x62,
+    L8_BUTTON_RESPONSE: 0x63,
+
+    L8_MIC_QUERY: 0x64,
+    L8_MIC_RESPONSE: 0x65,
+
+    L8_VBUS_QUERY: 0x66,
+    L8_VBUS_RESPONSE: 0x67,
+
+    L8_MCUTEMP_QUERY: 0x68,
+    L8_MCUTEMP_RESPONSE: 0x69,
+
+    L8_STORE_L8Y: 0x6A,
+    L8_STORE_L8Y_RESPONSE: 0x6B,
+    L8_READ_L8Y: 0x6C,
+    L8_READ_L8Y_RESPONSE: 0x6D,
+    L8_SET_STORED_L8Y: 0x6E,
+    L8_DELETE_L8Y: 0x6F,
+
+    L8_STORE_FRAME: 0x70,
+    L8_STORE_FRAME_RESPONSE: 0x71,
+    L8_READ_FRAME: 0x72,
+    L8_READ_FRAME_RESPONSE: 0x73,
+    L8_DELETE_FRAME: 0x74,
+
+    L8_BATCHG_QUERY: 0x75,
+    L8_BATCHG_RESPONSE: 0x76,
+
+    L8_STORE_ANIM: 0x77,
+    L8_STORE_ANIM_RESPONSE: 0x78,
+    L8_READ_ANIM: 0x79,
+    L8_READ_ANIM_RESPONSE: 0x7A,
+    L8_DELETE_ANIM: 0x7B,
+    L8_PLAY_ANIM: 0x7C,
+    L8_STOP_ANIM: 0x7D,
+
+    L8_DELETE_USER_MEMORY: 0x7E,
+    L8_DISP_CHAR: 0x7F,
+
+    L8_SET_ORIENTATION: 0x80,
+
+    L8_APP_RUN: 0x81,
+    L8_APP_STOP: 0x82,
+
+    L8_SET_TEXT: 0x83,
+
+    L8_TRACE_MSG: 0x84,
+    L8_INIT_STATUS_QUERY: 0x85,
+
+    L8_SET_AUTOROTATE: 0x86,
+
+    L8_TIME_SET: 0x87,
+    L8_TIME_QUERY: 0x88,
+    L8_TIME_RESPONSE: 0x89,
+
+    L8_ORIENTATION_QUERY: 0x8A,
+    L8_ORIENTATION_RESPONSE: 0x8B,
+
+    L8_NUML8IES_QUERY: 0x8C,
+    L8_NUML8IES_RESPONSE: 0x8D,
+    L8_NUMANIMS_QUERY: 0x8E,
+    L8_NUMANIMS_RESPONSE: 0x8F,
+    L8_NUMFRAMES_QUERY: 0x90,
+    L8_NUMFRAMES_RESPONSE: 0x91,
+
+    L8_NOTIFAPP_STORE: 0x92,
+    L8_NOTIFAPP_QUERY: 0x93,
+    L8_NOTIFAPP_RESPONSE: 0x94,
+    L8_NOTIFAPPS_NUM_QUERY: 0x95,
+    L8_NOTIFAPPS_NUM_RESPONSE: 0x96,
+    L8_NOTIFAPP_ENABLE: 0x97,
+    L8_NOTIFAPP_DELETE: 0x98,
+    L8_SET_NOTIFICATION: 0x99,
+    L8_SET_LOW_BRIGHTNESS: 0x9A,
+
+    L8_FRAMEGRAB_QUERY: 0x9B,
+    L8_FRAMEGRAB_RESPONSE: 0x9C,
+
+    L8_POWEROFF: 0x9D,
+    L8_STATUSLEDS_ENABLE: 0x9E,
+
+    L8_NOISE_THRESHOLDS_SET: 0x9F,
+    L8_PROX_THRESHOLDS_SET: 0xA0,
+    L8_AMB_THRESHOLDS_SET: 0xA1,
+
+    L8_SENSORS_THRESHOLDS_QUERY: 0xA2,
+    L8_SENSORS_THRESHOLDS_RESPONSE: 0xA3,
+
+    L8_NOTIFAPPS_ENABLE_ALL: 0xA4,
+    L8_NOTIFAPPS_SILENCE: 0xA5,
+    L8_NOTIFAPPS_SILENCE_QUERY: 0xA6,
+    L8_NOTIFAPPS_SILENCE_RESPONSE: 0xA7
+};
+
+exports.CMD = CMD;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+
+        
+
+        <footer>
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.2</a> on Mon Jun 30 2014 22:11:51 GMT+0200 (MESZ)
+        </footer>
+    </div>
+</div>
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+<script src="scripts/main.js"></script>
+</body>
+</html>

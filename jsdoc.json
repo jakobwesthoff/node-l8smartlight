@@ -1,0 +1,33 @@
+{
+	"tags": {
+		"allowUnknownTags" : true
+	},
+	"plugins": ["plugins/markdown"],
+	"templates": {
+		"cleverLinks": true,
+		"monospaceLinks": true,
+		"default": {
+			"outputSourceFiles" : true
+		},
+		"applicationName": "node-l8smartlight",
+		"disqus": "",
+		"googleAnalytics": "",
+		"openGraph": {
+			"title": "",
+			"type": "website",
+			"image": "",
+			"site_name": "",
+			"url": ""
+		},
+		"meta": {
+			"title": "L8Smartlight",
+			"description": "A nodejs library in order to facillitate communication with an L8 Smartlight",
+			"keyword": ""
+		}
+	},
+	"markdown": {
+		"parser": "gfm",
+		"hardwrap": true,
+		"tags": ["examples"]
+	}
+}

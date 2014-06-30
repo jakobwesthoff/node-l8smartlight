@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>L8Smartlight</title>
+    
+    <meta name="description" content="A nodejs library in order to facillitate communication with an L8 Smartlight" />
+    
+    
+    
+    <meta property="og:title" content=""/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:image" content=""/>
+    
+    <meta property="og:url" content=""/>
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <script src="scripts/jquery.min.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/jaguar.css">
+    
+    
+    <script>
+    var config = {"monospaceLinks":true,"cleverLinks":true,"default":{"outputSourceFiles":true},"applicationName":"node-l8smartlight","disqus":"","googleAnalytics":"","openGraph":{"title":"","type":"website","image":"","site_name":"","url":""},"meta":{"title":"L8Smartlight","description":"A nodejs library in order to facillitate communication with an L8 Smartlight","keyword":""}};
+    </script>
+    
+
+    
+</head>
+<body>
+<div id="wrap" class="clearfix">
+    
+<div class="navigation">
+    <h3 class="applicationName"><a href="index.html">node-l8smartlight</a></h3>
+
+    <div class="search">
+        <input id="search" type="text" class="form-control input-sm" placeholder="Search Documentations">
+    </div>
+    <ul class="list">
+    
+        <li class="item" data-name="L8">
+            <span class="title">
+                <a href="L8.html">L8</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            <span class="subtitle">Members</span>
+            
+                <li data-name="L8#isConnected"><a href="L8.html#isConnected">isConnected</a></li>
+            
+                <li data-name="L8#receiveBuffer_"><a href="L8.html#receiveBuffer_">receiveBuffer_</a></li>
+            
+                <li data-name="L8#serialport_"><a href="L8.html#serialport_">serialport_</a></li>
+            
+                <li data-name="L8.MAGIC_BYTES"><a href="L8.html#MAGIC_BYTES">MAGIC_BYTES</a></li>
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="L8#buildFrame"><a href="L8.html#buildFrame">buildFrame</a></li>
+            
+                <li data-name="L8#clearLED"><a href="L8.html#clearLED">clearLED</a></li>
+            
+                <li data-name="L8#clearMatrix"><a href="L8.html#clearMatrix">clearMatrix</a></li>
+            
+                <li data-name="L8#clearScrollingText"><a href="L8.html#clearScrollingText">clearScrollingText</a></li>
+            
+                <li data-name="L8#clearSuperLED"><a href="L8.html#clearSuperLED">clearSuperLED</a></li>
+            
+                <li data-name="L8#close"><a href="L8.html#close">close</a></li>
+            
+                <li data-name="L8#encodeBGRMatrixColor"><a href="L8.html#encodeBGRMatrixColor">encodeBGRMatrixColor</a></li>
+            
+                <li data-name="L8#encodeBGRSingleColor"><a href="L8.html#encodeBGRSingleColor">encodeBGRSingleColor</a></li>
+            
+                <li data-name="L8#encodeRGBSingleColor"><a href="L8.html#encodeRGBSingleColor">encodeRGBSingleColor</a></li>
+            
+                <li data-name="L8#onResponse_"><a href="L8.html#onResponse_">onResponse_</a></li>
+            
+                <li data-name="L8#open"><a href="L8.html#open">open</a></li>
+            
+                <li data-name="L8#parseFrames_"><a href="L8.html#parseFrames_">parseFrames_</a></li>
+            
+                <li data-name="L8#ping"><a href="L8.html#ping">ping</a></li>
+            
+                <li data-name="L8#sendFrame"><a href="L8.html#sendFrame">sendFrame</a></li>
+            
+                <li data-name="L8#setLED"><a href="L8.html#setLED">setLED</a></li>
+            
+                <li data-name="L8#setMatrix"><a href="L8.html#setMatrix">setMatrix</a></li>
+            
+                <li data-name="L8#setOrientation"><a href="L8.html#setOrientation">setOrientation</a></li>
+            
+                <li data-name="L8#setScrollingText"><a href="L8.html#setScrollingText">setScrollingText</a></li>
+            
+                <li data-name="L8#setSuperLED"><a href="L8.html#setSuperLED">setSuperLED</a></li>
+            
+                <li data-name="L8#stopApplication"><a href="L8.html#stopApplication">stopApplication</a></li>
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            <span class="subtitle">Events</span>
+            
+                <li data-name="L8#event:frameReceived"><a href="L8.html#event:frameReceived">frameReceived</a></li>
+            
+                <li data-name="L8#event:frameSent"><a href="L8.html#event:frameSent">frameSent</a></li>
+            
+            </ul>
+        </li>
+    
+        <li class="item" data-name="MatrixBuilder">
+            <span class="title">
+                <a href="MatrixBuilder.html">MatrixBuilder</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            <span class="subtitle">Members</span>
+            
+                <li data-name="MatrixBuilder#initialMatrix_"><a href="MatrixBuilder.html#initialMatrix_">initialMatrix_</a></li>
+            
+                <li data-name="MatrixBuilder#operations_"><a href="MatrixBuilder.html#operations_">operations_</a></li>
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="MatrixBuilder.map"><a href="MatrixBuilder.html#map">map</a></li>
+            
+                <li data-name="MatrixBuilder#column"><a href="MatrixBuilder.html#column">column</a></li>
+            
+                <li data-name="MatrixBuilder#createArrayWithSize"><a href="MatrixBuilder.html#createArrayWithSize">createArrayWithSize</a></li>
+            
+                <li data-name="MatrixBuilder#operation"><a href="MatrixBuilder.html#operation">operation</a></li>
+            
+                <li data-name="MatrixBuilder#rectangle"><a href="MatrixBuilder.html#rectangle">rectangle</a></li>
+            
+                <li data-name="MatrixBuilder#row"><a href="MatrixBuilder.html#row">row</a></li>
+            
+                <li data-name="MatrixBuilder#toMatrix"><a href="MatrixBuilder.html#toMatrix">toMatrix</a></li>
+            
+                <li data-name="MatrixBuilder#validateColors_"><a href="MatrixBuilder.html#validateColors_">validateColors_</a></li>
+            
+                <li data-name="MatrixBuilder#validateCoordinates_"><a href="MatrixBuilder.html#validateCoordinates_">validateCoordinates_</a></li>
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
+    </ul>
+</div>
+    <div class="main">
+        <h1 class="page-title" data-filename="MatrixBuilder.js.html">Source: MatrixBuilder.js</h1>
+        
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source"><code>/**
+ * The MatrixBuilder eases the creation of LED matrix definitions for your L8
+ * Smartlight.
+ *
+ * It provides a couple of convenience functions to create and manipulate matrix
+ * arrays.
+ *
+ * The constructor either takes a baseColor for the whole matrix, or a complete
+ * matrix as a starting point for manipulations.
+ *
+ * The `baseColorOrMatrix` argument is optional. If none is supplied an LED
+ * off-state is chosen as default for every LED in the matrix.
+ *
+ * @example ```
+ *  var l8 = new L8();
+ *  //... Initialize L8...
+ *
+ *  var builder = new MatrixBuilder();
+ *  var matrix = builder.rectangle(
+ *      {r: 0, g: 0, b: 15},
+ *      2, 2,
+ *      5, 5,
+ *      false
+ *  )
+ *  .row({r: 15, g: 0, b: 0}, 3)
+ *  .row({r: 15, g: 0, b: 0}, 4)
+ *  .column({r: 15, g: 0, b: 0}, 3}),
+ *  .column({r: 15, g: 0, b: 0}, 4)
+ *  .toMatrix();
+ *
+ *  l8.setMatrix(matrix);
+ * ```
+ *
+ * The given examples draws a blue border with a red crosshair on the L8
+ *
+ * @param {{r:Number, g:Number, b:Number}|Array} [baseColorOrMatrix]
+ * @constructor
+ */
+var MatrixBuilder = function(baseColorOrMatrix) {
+    /**
+     * List of all transformation operations to be applied to the initial
+     * matrix upon calls to `toMatrix`.
+     *
+     * @type {Array}
+     * @private
+     */
+    this.operations_ = [];
+
+    /**
+     * The initial matrix all operations will be applied against.
+     *
+     * @type {Array}
+     * @private
+     */
+    this.initialMatrix_ = null;
+
+
+    if (baseColorOrMatrix === undefined) {
+        // By default all LEDs are off
+        baseColorOrMatrix = {r: 0, g: 0, b: 0};
+    }
+
+    if (baseColorOrMatrix.constructor !== [].constructor) {
+        // Assuming it is a base color
+        this.validateColors_([baseColorOrMatrix]);
+        this.initialMatrix_ = this.createArrayWithSize(8*8).map(function() {
+            return baseColorOrMatrix;
+        });
+    } else {
+        // A matrix has been provided. We copy it as we don't want to unintentionally change
+        // it during the building process.
+        this.initialMatrix_ = this.createArrayWithSize(8*8).map(function(value, index) {
+            return baseColorOrMatrix[index];
+        });
+    }
+};
+
+/**
+ * Execute a `map` like operation on a matrix taking into account its special nature.
+ *
+ * The operation is mostly equivalent to a normal `array.map` call. However special
+ * considerations about the matrix will be taken into account, like lines and columns.
+ *
+ * The callback is executed with the following arguments:
+ *
+ * - color
+ * - column (x-coordinate)
+ * - row (y-coordinate)
+ * - index
+ *
+ * The matrix will be modified in place
+ *
+ * The following example will remove the *red* component of any pixel inside the
+ * given matrix.
+ *
+ * @example ```
+ *  var matrix = // some matrix
+ *  MatrixBuilder.map(matrix, function(originalColor, row, column, index) {
+ *      return {r: 0, g: originalColor.g, b: originalColor.b};
+ *  });
+ *
+ *  l8.setMatrix(matrix, ...);
+ * ```
+ *
+ * @param {Array} matrix
+ * @param {Function} fn
+ * @static
+ */
+MatrixBuilder.map = function(matrix, fn) {
+    matrix.forEach(function(value, index) {
+        matrix[index] = fn(value, index % 8, Math.floor(index / 8), index);
+    })
+};
+
+
+/**
+ * Validate coordinates are valid numbers between 0-7
+ *
+ * If one of the coordinates is invalid an exception will be thrown.
+ *
+ * @param {Number[]} coordinates
+ * @private
+ */
+MatrixBuilder.prototype.validateCoordinates_ = function(coordinates) {
+    coordinates.forEach(function(coordinate) {
+        if (typeof coordinate !== "number" || coordinate &lt; 0 || coordinate > 7) {
+            throw new RangeError("Valid LED coordinate (0-7) expected, got " + coordinate);
+        }
+    });
+};
+
+/**
+ * Validate colors are valid r, g, b objects
+ *
+ * If one of the colors is invalid an exception will be thrown.
+ *
+ * @param {Object[]} colors
+ * @param {Number} colors.r
+ * @param {Number} colors.g
+ * @param {Number} colors.b
+ *
+ * @private
+ */
+MatrixBuilder.prototype.validateColors_ = function(colors) {
+    colors.forEach(function(color) {
+        if (color.r === undefined || color.g === undefined || color.b === undefined) {
+            throw new RangeError("Color object with r,g and b properties expected, got: " + JSON.stringify(baseColorOrMatrix));
+        }
+    });
+};
+
+/**
+ * Create an Array with a given size and values at every index position.
+ *
+ * This array may easily be used to execute map/reduce operations to fill/create
+ * a new array structure.
+ *
+ * @param {Number} size
+ * @returns {Array}
+ */
+MatrixBuilder.prototype.createArrayWithSize = function(size) {
+    return Array.apply(null, new Array(size));
+};
+
+/**
+ * Add a transformation operation to the MatrixBuilder
+ *
+ * Operations are functions, which will be called in order of registration upon
+ * the matrix. They are supposed to transform or manipulate it in any way relevant
+ * to the creation process.
+ *
+ * Operations are provided with an optional parameters object, which may be
+ * supplied during the call to `toMatrix`, which allows to introduce variables
+ * into the building pipeline.
+ *
+ * @param fn
+ * @returns {MatrixBuilder}
+ */
+MatrixBuilder.prototype.operation = function(fn) {
+    this.operations_.push(fn);
+    return this;
+};
+
+/**
+ * Draw pixels inside a certain row of the grid.
+ *
+ * Optionally a start and end column may be provided. If none are given the start
+ * and end of the line are assumed.
+ *
+ * @param {{r: Number, g: Number, b: Number}} color
+ * @param {Number} y
+ * @param {Number} x0
+ * @param {Number} x1
+ * @returns {MatrixBuilder}
+ */
+MatrixBuilder.prototype.row = function(color, y, x0, x1) {
+    x0 = x0 || 0;
+    x1 = x1 || 7;
+
+    this.validateColors_([color]);
+    this.validateCoordinates_([y, x0, x1]);
+
+    return this.operation(function(matrix, variables){
+        MatrixBuilder.map(matrix, function(originalColor, column, row) {
+            return (row === y && column >= x0 && column &lt;= x1) ? color : originalColor;
+        });
+    });
+};
+
+/**
+ * Draw pixels inside a certain column of the grid.
+ *
+ * Optionally a start and end row may be provided. If none are given the start
+ * and end of the column are assumed.
+ *
+ * @param {{r: Number, g: Number, b: Number}} color
+ * @param {Number} x
+ * @param {Number} y0
+ * @param {Number} y1
+ * @returns {MatrixBuilder}
+ */
+MatrixBuilder.prototype.column = function(color, x, y0, y1) {
+    y0 = y0 || 0;
+    y1 = y1 || 7;
+
+    this.validateColors_([color]);
+    this.validateCoordinates_([x, y0, y1]);
+
+    return this.operation(function(matrix, variables){
+        MatrixBuilder.map(matrix, function(originalColor, column, row) {
+            return (column === x && row >= y0 && row &lt;= y1) ? color : originalColor;
+        });
+    });
+};
+
+/**
+ * Draw a rectangle to the pixel grid
+ *
+ * The grid is defined by specifying its upper left and lower right coordinates.
+ *
+ * Optionally it may be specified if the grid should be filled or not. By
+ * default the grid will be filled.
+ *
+ * @param {{r: Number, g: Number, b: Number}} color
+ * @param {Number} x0
+ * @param {Number} y0
+ * @param {Number} x1
+ * @param {Number} y1
+ * @param {Boolean} [filled]
+ *
+ * @returns {MatrixBuilder}
+ */
+MatrixBuilder.prototype.rectangle = function(color, x0, x1, y0, y1, filled) {
+    if (filled === undefined) {filled = true;}
+
+    this.validateColors_([color]);
+    this.validateCoordinates_([x0, x1, y0, y1]);
+
+    if (filled === true) {
+        return this.operation(function(matrix, variables){
+            MatrixBuilder.map(matrix, function(originalColor, column, row) {
+                return (column >= x0 && column &lt;= x1 && row >= y0 && row &lt;= y1) ? color : originalColor;
+            });
+        });
+    } else {
+        return this.operation(function(matrix, variables){
+            MatrixBuilder.map(matrix, function(originalColor, column, row) {
+                return (
+                    (column >= x0 && column &lt;= x1 && (row === y0 || row === y1))
+                    || (row >= y0 && row &lt;= y1 && (column === x0 || column === x1))
+                        ? color : originalColor
+                );
+            });
+        });
+    }
+};
+
+/**
+ * Generate the matrix using all defined operations as well as the variables
+ *
+ * The given variables will be provided to each operation.
+ * Operations will be executed in the defined order.
+ *
+ * @param {Object} [variables]
+ * @returns {Array}
+ */
+MatrixBuilder.prototype.toMatrix = function(variables) {
+    variables = variables || {};
+
+    // Start with a copy of the original matrix
+    var currentMatrix = this.createArrayWithSize(8*8).map(function(value, index) {
+        return this.initialMatrix_[index];
+    }.bind(this));
+
+    this.operations_.forEach(function(operation) {
+        operation(currentMatrix, variables);
+    });
+
+    return currentMatrix;
+};
+
+exports.MatrixBuilder = MatrixBuilder;</code></pre>
+        </article>
+    </section>
+
+
+
+
+
+        
+
+        <footer>
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.2</a> on Mon Jun 30 2014 22:11:51 GMT+0200 (MESZ)
+        </footer>
+    </div>
+</div>
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+<script src="scripts/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,2004 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>L8Smartlight</title>
+    
+    <meta name="description" content="A nodejs library in order to facillitate communication with an L8 Smartlight" />
+    
+    
+    
+    <meta property="og:title" content=""/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:image" content=""/>
+    
+    <meta property="og:url" content=""/>
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <script src="scripts/jquery.min.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/jaguar.css">
+    
+    
+    <script>
+    var config = {"monospaceLinks":true,"cleverLinks":true,"default":{"outputSourceFiles":true},"applicationName":"node-l8smartlight","disqus":"","googleAnalytics":"","openGraph":{"title":"","type":"website","image":"","site_name":"","url":""},"meta":{"title":"L8Smartlight","description":"A nodejs library in order to facillitate communication with an L8 Smartlight","keyword":""}};
+    </script>
+    
+
+    
+</head>
+<body>
+<div id="wrap" class="clearfix">
+    
+<div class="navigation">
+    <h3 class="applicationName"><a href="index.html">node-l8smartlight</a></h3>
+
+    <div class="search">
+        <input id="search" type="text" class="form-control input-sm" placeholder="Search Documentations">
+    </div>
+    <ul class="list">
+    
+        <li class="item" data-name="L8">
+            <span class="title">
+                <a href="L8.html">L8</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            <span class="subtitle">Members</span>
+            
+                <li data-name="L8#isConnected"><a href="L8.html#isConnected">isConnected</a></li>
+            
+                <li data-name="L8#receiveBuffer_"><a href="L8.html#receiveBuffer_">receiveBuffer_</a></li>
+            
+                <li data-name="L8#serialport_"><a href="L8.html#serialport_">serialport_</a></li>
+            
+                <li data-name="L8.MAGIC_BYTES"><a href="L8.html#MAGIC_BYTES">MAGIC_BYTES</a></li>
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="L8#buildFrame"><a href="L8.html#buildFrame">buildFrame</a></li>
+            
+                <li data-name="L8#clearLED"><a href="L8.html#clearLED">clearLED</a></li>
+            
+                <li data-name="L8#clearMatrix"><a href="L8.html#clearMatrix">clearMatrix</a></li>
+            
+                <li data-name="L8#clearScrollingText"><a href="L8.html#clearScrollingText">clearScrollingText</a></li>
+            
+                <li data-name="L8#clearSuperLED"><a href="L8.html#clearSuperLED">clearSuperLED</a></li>
+            
+                <li data-name="L8#close"><a href="L8.html#close">close</a></li>
+            
+                <li data-name="L8#encodeBGRMatrixColor"><a href="L8.html#encodeBGRMatrixColor">encodeBGRMatrixColor</a></li>
+            
+                <li data-name="L8#encodeBGRSingleColor"><a href="L8.html#encodeBGRSingleColor">encodeBGRSingleColor</a></li>
+            
+                <li data-name="L8#encodeRGBSingleColor"><a href="L8.html#encodeRGBSingleColor">encodeRGBSingleColor</a></li>
+            
+                <li data-name="L8#onResponse_"><a href="L8.html#onResponse_">onResponse_</a></li>
+            
+                <li data-name="L8#open"><a href="L8.html#open">open</a></li>
+            
+                <li data-name="L8#parseFrames_"><a href="L8.html#parseFrames_">parseFrames_</a></li>
+            
+                <li data-name="L8#ping"><a href="L8.html#ping">ping</a></li>
+            
+                <li data-name="L8#sendFrame"><a href="L8.html#sendFrame">sendFrame</a></li>
+            
+                <li data-name="L8#setLED"><a href="L8.html#setLED">setLED</a></li>
+            
+                <li data-name="L8#setMatrix"><a href="L8.html#setMatrix">setMatrix</a></li>
+            
+                <li data-name="L8#setOrientation"><a href="L8.html#setOrientation">setOrientation</a></li>
+            
+                <li data-name="L8#setScrollingText"><a href="L8.html#setScrollingText">setScrollingText</a></li>
+            
+                <li data-name="L8#setSuperLED"><a href="L8.html#setSuperLED">setSuperLED</a></li>
+            
+                <li data-name="L8#stopApplication"><a href="L8.html#stopApplication">stopApplication</a></li>
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            <span class="subtitle">Events</span>
+            
+                <li data-name="L8#event:frameReceived"><a href="L8.html#event:frameReceived">frameReceived</a></li>
+            
+                <li data-name="L8#event:frameSent"><a href="L8.html#event:frameSent">frameSent</a></li>
+            
+            </ul>
+        </li>
+    
+        <li class="item" data-name="MatrixBuilder">
+            <span class="title">
+                <a href="MatrixBuilder.html">MatrixBuilder</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            <span class="subtitle">Members</span>
+            
+                <li data-name="MatrixBuilder#initialMatrix_"><a href="MatrixBuilder.html#initialMatrix_">initialMatrix_</a></li>
+            
+                <li data-name="MatrixBuilder#operations_"><a href="MatrixBuilder.html#operations_">operations_</a></li>
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="MatrixBuilder.map"><a href="MatrixBuilder.html#map">map</a></li>
+            
+                <li data-name="MatrixBuilder#column"><a href="MatrixBuilder.html#column">column</a></li>
+            
+                <li data-name="MatrixBuilder#createArrayWithSize"><a href="MatrixBuilder.html#createArrayWithSize">createArrayWithSize</a></li>
+            
+                <li data-name="MatrixBuilder#operation"><a href="MatrixBuilder.html#operation">operation</a></li>
+            
+                <li data-name="MatrixBuilder#rectangle"><a href="MatrixBuilder.html#rectangle">rectangle</a></li>
+            
+                <li data-name="MatrixBuilder#row"><a href="MatrixBuilder.html#row">row</a></li>
+            
+                <li data-name="MatrixBuilder#toMatrix"><a href="MatrixBuilder.html#toMatrix">toMatrix</a></li>
+            
+                <li data-name="MatrixBuilder#validateColors_"><a href="MatrixBuilder.html#validateColors_">validateColors_</a></li>
+            
+                <li data-name="MatrixBuilder#validateCoordinates_"><a href="MatrixBuilder.html#validateCoordinates_">validateCoordinates_</a></li>
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
+    </ul>
+</div>
+    <div class="main">
+        <h1 class="page-title" data-filename="MatrixBuilder.html">Class: MatrixBuilder</h1>
+        
+
+
+
+<section>
+    
+<header>
+    <h2>
+    MatrixBuilder
+    </h2>
+    
+</header>  
+
+<article>
+    <div class="container-overview">
+    
+    
+    
+        
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="MatrixBuilder">
+            
+            new MatrixBuilder<span class="signature">(<span class="optional">baseColorOrMatrix</span>)</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="MatrixBuilder.js.html">MatrixBuilder.js</a>, <a href="MatrixBuilder.js.html#line39">line 39</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>The MatrixBuilder eases the creation of LED matrix definitions for your L8
+Smartlight.</p>
+<p>It provides a couple of convenience functions to create and manipulate matrix
+arrays.</p>
+<p>The constructor either takes a baseColor for the whole matrix, or a complete
+matrix as a starting point for manipulations.</p>
+<p>The <code>baseColorOrMatrix</code> argument is optional. If none is supplied an LED
+off-state is chosen as default for every LED in the matrix.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>baseColorOrMatrix</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+|
+
+<span class="param-type">Array</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+                        
+                    
+                
+                </td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+        <h5>Example</h5>
+        
+
+    
+    <pre class="prettyprint"><code> var l8 = new L8();
+ //... Initialize L8...
+
+ var builder = new MatrixBuilder();
+ var matrix = builder.rectangle(
+     {r: 0, g: 0, b: 15},
+     2, 2,
+     5, 5,
+     false
+ )
+ .row({r: 15, g: 0, b: 0}, 3)
+ .row({r: 15, g: 0, b: 0}, 4)
+ .column({r: 15, g: 0, b: 0}, 3}),
+ .column({r: 15, g: 0, b: 0}, 4)
+ .toMatrix();
+
+ l8.setMatrix(matrix);</code></pre>
+<p>The given examples draws a blue border with a red crosshair on the L8</p>
+    
+
+    
+</dd>
+
+    
+    </div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+        <h3 class="subsection-title">Members</h3>
+        
+        <dl>
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="initialMatrix_"><span class="type-signature ">private</span>initialMatrix_<span class="type-signature type array">Array</span> </h4>
+    </div>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>The initial matrix all operations will be applied against.</p>
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="operations_"><span class="type-signature ">private</span>operations_<span class="type-signature type array">Array</span> </h4>
+    </div>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>List of all transformation operations to be applied to the initial
+matrix upon calls to <code>toMatrix</code>.</p>
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        </dl>
+    
+    
+    
+        <h3 class="subsection-title">Methods</h3>
+        
+        <dl>
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="map">
+            
+            <span class="type-signature static">static</span>MatrixBuilder.map<span class="signature">(matrix, fn)</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="MatrixBuilder.js.html">MatrixBuilder.js</a>, <a href="MatrixBuilder.js.html#line109">line 109</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Execute a <code>map</code> like operation on a matrix taking into account its special nature.</p>
+<p>The operation is mostly equivalent to a normal <code>array.map</code> call. However special
+considerations about the matrix will be taken into account, like lines and columns.</p>
+<p>The callback is executed with the following arguments:</p>
+<ul>
+<li>color</li>
+<li>column (x-coordinate)</li>
+<li>row (y-coordinate)</li>
+<li>index</li>
+</ul>
+<p>The matrix will be modified in place</p>
+<p>The following example will remove the <em>red</em> component of any pixel inside the
+given matrix.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>matrix</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                </td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>fn</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                </td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+        <h5>Example</h5>
+        
+
+    
+    <pre class="prettyprint"><code> var matrix = // some matrix
+ MatrixBuilder.map(matrix, function(originalColor, row, column, index) {
+     return {r: 0, g: originalColor.g, b: originalColor.b};
+ });
+
+ l8.setMatrix(matrix, ...);</code></pre>
+    
+
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="column">
+            
+            column<span class="signature">(color, x, y0, y1)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="MatrixBuilder.html">MatrixBuilder</a>}</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="MatrixBuilder.js.html">MatrixBuilder.js</a>, <a href="MatrixBuilder.js.html#line222">line 222</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Draw pixels inside a certain column of the grid.</p>
+<p>Optionally a start and end row may be provided. If none are given the start
+and end of the column are assumed.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>color</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                </td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>x</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                </td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>y0</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                </td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>y1</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                </td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+
+
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="createArrayWithSize">
+            
+            createArrayWithSize<span class="signature">(size)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Array}</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="MatrixBuilder.js.html">MatrixBuilder.js</a>, <a href="MatrixBuilder.js.html#line161">line 161</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Create an Array with a given size and values at every index position.</p>
+<p>This array may easily be used to execute map/reduce operations to fill/create
+a new array structure.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>size</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                </td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+
+
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="operation">
+            
+            operation<span class="signature">(fn)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="MatrixBuilder.html">MatrixBuilder</a>}</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="MatrixBuilder.js.html">MatrixBuilder.js</a>, <a href="MatrixBuilder.js.html#line179">line 179</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Add a transformation operation to the MatrixBuilder</p>
+<p>Operations are functions, which will be called in order of registration upon
+the matrix. They are supposed to transform or manipulate it in any way relevant
+to the creation process.</p>
+<p>Operations are provided with an optional parameters object, which may be
+supplied during the call to <code>toMatrix</code>, which allows to introduce variables
+into the building pipeline.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>fn</code></td>
+            
+            
+            <td class="type">
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                </td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+
+
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="rectangle">
+            
+            rectangle<span class="signature">(color, x0, y0, x1, y1, <span class="optional">filled</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="MatrixBuilder.html">MatrixBuilder</a>}</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="MatrixBuilder.js.html">MatrixBuilder.js</a>, <a href="MatrixBuilder.js.html#line253">line 253</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Draw a rectangle to the pixel grid</p>
+<p>The grid is defined by specifying its upper left and lower right coordinates.</p>
+<p>Optionally it may be specified if the grid should be filled or not. By
+default the grid will be filled.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>color</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                    
+                    
+                        
+                    
+                
+                </td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>x0</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                    
+                    
+                        
+                    
+                
+                </td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>y0</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                    
+                    
+                        
+                    
+                
+                </td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>x1</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                    
+                    
+                        
+                    
+                
+                </td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>y1</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                    
+                    
+                        
+                    
+                
+                </td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>filled</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Boolean</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+                        
+                    
+                
+                </td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+
+
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="row">
+            
+            row<span class="signature">(color, y, x0, x1)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="MatrixBuilder.html">MatrixBuilder</a>}</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="MatrixBuilder.js.html">MatrixBuilder.js</a>, <a href="MatrixBuilder.js.html#line196">line 196</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Draw pixels inside a certain row of the grid.</p>
+<p>Optionally a start and end column may be provided. If none are given the start
+and end of the line are assumed.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>color</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                </td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>y</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                </td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>x0</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                </td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>x1</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                </td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+
+
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="toMatrix">
+            
+            toMatrix<span class="signature">(<span class="optional">variables</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Array}</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="MatrixBuilder.js.html">MatrixBuilder.js</a>, <a href="MatrixBuilder.js.html#line287">line 287</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Generate the matrix using all defined operations as well as the variables</p>
+<p>The given variables will be provided to each operation.
+Operations will be executed in the defined order.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>variables</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+                        
+                    
+                
+                </td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+
+
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="validateColors_">
+            
+            <span class="type-signature ">private</span>validateColors_<span class="signature">(colors)</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="MatrixBuilder.js.html">MatrixBuilder.js</a>, <a href="MatrixBuilder.js.html#line144">line 144</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Validate colors are valid r, g, b objects</p>
+<p>If one of the colors is invalid an exception will be thrown.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>colors</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Object[]</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                
+                
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>r</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                </td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>g</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                </td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>b</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                </td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+            </td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="validateCoordinates_">
+            
+            <span class="type-signature ">private</span>validateCoordinates_<span class="signature">(coordinates)</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="MatrixBuilder.js.html">MatrixBuilder.js</a>, <a href="MatrixBuilder.js.html#line124">line 124</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Validate coordinates are valid numbers between 0-7</p>
+<p>If one of the coordinates is invalid an exception will be thrown.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>coordinates</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Number[]</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                </td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        </dl>
+    
+    
+    
+    
+    
+</article>
+
+</section>  
+
+
+
+
+
+        
+
+        <footer>
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.2</a> on Mon Jun 30 2014 22:11:51 GMT+0200 (MESZ)
+        </footer>
+    </div>
+</div>
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+<script src="scripts/main.js"></script>
+</body>
+</html>

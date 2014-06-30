@@ -1,0 +1,3544 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>L8Smartlight</title>
+    
+    <meta name="description" content="A nodejs library in order to facillitate communication with an L8 Smartlight" />
+    
+    
+    
+    <meta property="og:title" content=""/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:image" content=""/>
+    
+    <meta property="og:url" content=""/>
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <script src="scripts/jquery.min.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/jaguar.css">
+    
+    
+    <script>
+    var config = {"monospaceLinks":true,"cleverLinks":true,"default":{"outputSourceFiles":true},"applicationName":"node-l8smartlight","disqus":"","googleAnalytics":"","openGraph":{"title":"","type":"website","image":"","site_name":"","url":""},"meta":{"title":"L8Smartlight","description":"A nodejs library in order to facillitate communication with an L8 Smartlight","keyword":""}};
+    </script>
+    
+
+    
+</head>
+<body>
+<div id="wrap" class="clearfix">
+    
+<div class="navigation">
+    <h3 class="applicationName"><a href="index.html">node-l8smartlight</a></h3>
+
+    <div class="search">
+        <input id="search" type="text" class="form-control input-sm" placeholder="Search Documentations">
+    </div>
+    <ul class="list">
+    
+        <li class="item" data-name="L8">
+            <span class="title">
+                <a href="L8.html">L8</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            <span class="subtitle">Members</span>
+            
+                <li data-name="L8#isConnected"><a href="L8.html#isConnected">isConnected</a></li>
+            
+                <li data-name="L8#receiveBuffer_"><a href="L8.html#receiveBuffer_">receiveBuffer_</a></li>
+            
+                <li data-name="L8#serialport_"><a href="L8.html#serialport_">serialport_</a></li>
+            
+                <li data-name="L8.MAGIC_BYTES"><a href="L8.html#MAGIC_BYTES">MAGIC_BYTES</a></li>
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="L8#buildFrame"><a href="L8.html#buildFrame">buildFrame</a></li>
+            
+                <li data-name="L8#clearLED"><a href="L8.html#clearLED">clearLED</a></li>
+            
+                <li data-name="L8#clearMatrix"><a href="L8.html#clearMatrix">clearMatrix</a></li>
+            
+                <li data-name="L8#clearScrollingText"><a href="L8.html#clearScrollingText">clearScrollingText</a></li>
+            
+                <li data-name="L8#clearSuperLED"><a href="L8.html#clearSuperLED">clearSuperLED</a></li>
+            
+                <li data-name="L8#close"><a href="L8.html#close">close</a></li>
+            
+                <li data-name="L8#encodeBGRMatrixColor"><a href="L8.html#encodeBGRMatrixColor">encodeBGRMatrixColor</a></li>
+            
+                <li data-name="L8#encodeBGRSingleColor"><a href="L8.html#encodeBGRSingleColor">encodeBGRSingleColor</a></li>
+            
+                <li data-name="L8#encodeRGBSingleColor"><a href="L8.html#encodeRGBSingleColor">encodeRGBSingleColor</a></li>
+            
+                <li data-name="L8#onResponse_"><a href="L8.html#onResponse_">onResponse_</a></li>
+            
+                <li data-name="L8#open"><a href="L8.html#open">open</a></li>
+            
+                <li data-name="L8#parseFrames_"><a href="L8.html#parseFrames_">parseFrames_</a></li>
+            
+                <li data-name="L8#ping"><a href="L8.html#ping">ping</a></li>
+            
+                <li data-name="L8#sendFrame"><a href="L8.html#sendFrame">sendFrame</a></li>
+            
+                <li data-name="L8#setLED"><a href="L8.html#setLED">setLED</a></li>
+            
+                <li data-name="L8#setMatrix"><a href="L8.html#setMatrix">setMatrix</a></li>
+            
+                <li data-name="L8#setOrientation"><a href="L8.html#setOrientation">setOrientation</a></li>
+            
+                <li data-name="L8#setScrollingText"><a href="L8.html#setScrollingText">setScrollingText</a></li>
+            
+                <li data-name="L8#setSuperLED"><a href="L8.html#setSuperLED">setSuperLED</a></li>
+            
+                <li data-name="L8#stopApplication"><a href="L8.html#stopApplication">stopApplication</a></li>
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            <span class="subtitle">Events</span>
+            
+                <li data-name="L8#event:frameReceived"><a href="L8.html#event:frameReceived">frameReceived</a></li>
+            
+                <li data-name="L8#event:frameSent"><a href="L8.html#event:frameSent">frameSent</a></li>
+            
+            </ul>
+        </li>
+    
+        <li class="item" data-name="MatrixBuilder">
+            <span class="title">
+                <a href="MatrixBuilder.html">MatrixBuilder</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            <span class="subtitle">Members</span>
+            
+                <li data-name="MatrixBuilder#initialMatrix_"><a href="MatrixBuilder.html#initialMatrix_">initialMatrix_</a></li>
+            
+                <li data-name="MatrixBuilder#operations_"><a href="MatrixBuilder.html#operations_">operations_</a></li>
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="MatrixBuilder.map"><a href="MatrixBuilder.html#map">map</a></li>
+            
+                <li data-name="MatrixBuilder#column"><a href="MatrixBuilder.html#column">column</a></li>
+            
+                <li data-name="MatrixBuilder#createArrayWithSize"><a href="MatrixBuilder.html#createArrayWithSize">createArrayWithSize</a></li>
+            
+                <li data-name="MatrixBuilder#operation"><a href="MatrixBuilder.html#operation">operation</a></li>
+            
+                <li data-name="MatrixBuilder#rectangle"><a href="MatrixBuilder.html#rectangle">rectangle</a></li>
+            
+                <li data-name="MatrixBuilder#row"><a href="MatrixBuilder.html#row">row</a></li>
+            
+                <li data-name="MatrixBuilder#toMatrix"><a href="MatrixBuilder.html#toMatrix">toMatrix</a></li>
+            
+                <li data-name="MatrixBuilder#validateColors_"><a href="MatrixBuilder.html#validateColors_">validateColors_</a></li>
+            
+                <li data-name="MatrixBuilder#validateCoordinates_"><a href="MatrixBuilder.html#validateCoordinates_">validateCoordinates_</a></li>
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
+    </ul>
+</div>
+    <div class="main">
+        <h1 class="page-title" data-filename="L8.html">Class: L8</h1>
+        
+
+
+
+<section>
+    
+<header>
+    <h2>
+    L8
+    </h2>
+    
+</header>  
+
+<article>
+    <div class="container-overview">
+    
+    
+    
+        
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="L8">
+            
+            new L8<span class="signature">()</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="L8.js.html">L8.js</a>, <a href="L8.js.html#line50">line 50</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Main API entry point providing all the public API in order to Control
+an L8 Smartlight</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+    <h5>Fires:</h5>
+    <ul>
+        <li><a href="L8.html#event:frameSent">L8#event:frameSent</a></li>
+    
+        <li><a href="L8.html#event:frameReceived">L8#event:frameReceived</a></li>
+    </ul>
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+        <h5>Examples</h5>
+        
+
+    
+    <pre class="prettyprint"><code> var L8 = require(&quot;l8smartlight&quot;).L8;
+
+ var l8 = new L8();
+ l8.open(&quot;/dev/YOUR_L8_SERIALPORT_DEVICE&quot;, null, function(error) {
+     if (error) {
+         throw new Error(&quot;Error occurred: &quot; + error);
+     }
+     l8.setScrollingText(&quot;Hello World!&quot;, {r: 15, g: 0, b: 0}, &quot;fast&quot;, false, function() {
+         console.log(&quot;Now scrolling text ;)&quot;);
+     });
+ });</code></pre>
+<p>Alternatively you may use the automatically generated Promise API. All methods,
+which require a callback allow you to omit the callback and retrieve a Promise
+instead.</p>
+    
+
+
+    
+    <pre class="prettyprint"><code> var L8 = require(&quot;l8smartlight&quot;).L8;
+
+ var l8 = new L8();
+ l8.open(&quot;/dev/YOUR_L8_SERIALPORT_DEVICE&quot;, null).then(function() {
+     return l8.clearMatrix();
+ }).then(function(response) {
+     return l8.setScrollingText(&quot;Hello World!&quot;, {r: 15, g: 0, b: 0}, &quot;fast&quot;, false);
+ }).then(function() {
+     console.log(&quot;Now scrolling text ;)&quot;);
+ }).catch(function(error) {
+     console.error(error.stack);
+ });</code></pre>
+    
+
+    
+</dd>
+
+    
+    </div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+        <h3 class="subsection-title">Members</h3>
+        
+        <dl>
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="isConnected">isConnected<span class="type-signature type boolean">boolean</span> </h4>
+    </div>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>Indicator whether a connection is established or not.</p>
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="receiveBuffer_"><span class="type-signature ">private</span>receiveBuffer_<span class="type-signature type object">Object</span> </h4>
+    </div>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>Buffer for storing all received data, before it is processed.</p>
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="serialport_"><span class="type-signature ">private</span>serialport_<span class="type-signature type serialport">SerialPort</span> </h4>
+    </div>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>SerialPort connection used for communication</p>
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="MAGIC_BYTES"><span class="type-signature static">static,constant</span>L8.MAGIC_BYTES<span class="type-signature type buffer">Buffer</span> </h4>
+    </div>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>Magic byte sequence used to identify any SLCP command or response</p>
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        </dl>
+    
+    
+    
+        <h3 class="subsection-title">Methods</h3>
+        
+        <dl>
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="buildFrame">
+            
+            buildFrame<span class="signature">(command, <span class="optional">parametersBuffer</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Buffer}</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="L8.js.html">L8.js</a>, <a href="L8.js.html#line361">line 361</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Build a frame in order to be sent to the L8</p>
+<p>An L8 frame has the following structure:</p>
+<pre><code>MAGIC_BYTES|PayloadLength|Payload|PayloadCRC8</code></pre>
+<p>The Payload consists of a command as well as optional arguments</p>
+<p>The command is an integer, as documented here:
+<a href="http://www.l8smartlight.com/dev/slcp/1.0/">http://www.l8smartlight.com/dev/slcp/1.0/</a></p>
+<p>The <a href="module-SLCP.html"><code>module:SLCP</code></a> does encode all the specified commands into
+a human readable object structure. You may want to take a look at it, if you
+intend to use this method for sending raw commands.</p>
+<p>The parameters are documented there as well. If a command does not have a
+parameter (eg. <code>CMD_PING</code>). The <code>parametersBuffer</code> argument to this function may
+be omitted.</p>
+<p>The parameters may be provided as a hex string or a Buffer object for convenience.</p>
+<p>The return value of this method is a ready to be sent Buffer, which can be
+given to <a href="L8.html#sendFrame"><code>L8#sendFrame</code></a> for transmission.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>command</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                    
+                    
+                        
+                    
+                
+                </td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>parametersBuffer</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Buffer</span>
+|
+
+<span class="param-type">String</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+                        
+                    
+                
+                </td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+
+
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="clearLED">
+            
+            clearLED<span class="signature">(x, y, fn)</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="L8.js.html">L8.js</a>, <a href="L8.js.html#line536">line 536</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Convenience function to switch of a single LED in the matrix.</p>
+<p>The same behaviour is archivable by setting all color components of the LED
+to 0.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>x</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                </td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>y</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                </td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>fn</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                </td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="clearMatrix">
+            
+            clearMatrix<span class="signature">(fn)</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="L8.js.html">L8.js</a>, <a href="L8.js.html#line585">line 585</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Clear the matrix by switching off all its LEDs</p>
+<p>It is not necessary to execute this command between different <code>setMatrix</code> calls
+Only use it if you explicitly want to turn the matrix off.</p>
+<p>This command does not affect the Super LED, which needs to be controlled
+separately.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>fn</code></td>
+            
+            
+            <td class="type">
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                </td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="clearScrollingText">
+            
+            clearScrollingText<span class="signature">(fn)</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="L8.js.html">L8.js</a>, <a href="L8.js.html#line707">line 707</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Convenience method to stop scrolling text from being displayed.</p>
+<p>The same behaviour is achievable by calling <a href="L8.html#stopApplication"><code>L8#stopApplication</code></a> as the text
+scroller is an internal L8 application.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>fn</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                </td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="clearSuperLED">
+            
+            clearSuperLED<span class="signature">(fn)</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="L8.js.html">L8.js</a>, <a href="L8.js.html#line620">line 620</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Convenience function to switch off the SuperLED.</p>
+<p>The same effect may be created by setting all color components of the LED to 0</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>fn</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                </td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="close">
+            
+            close<span class="signature">(fn)</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="L8.js.html">L8.js</a>, <a href="L8.js.html#line129">line 129</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Close an established connection to the L8</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>fn</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                </td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="encodeBGRMatrixColor">
+            
+            encodeBGRMatrixColor<span class="signature">(color)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Buffer}</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="L8.js.html">L8.js</a>, <a href="L8.js.html#line479">line 479</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Encode a color object to the BGR bytesequence accepted by the L8 as a matrix color (2-byte)</p>
+<p>The color needs to be represented as object with <code>r</code>, <code>g</code> and <code>b</code> properties.</p>
+<p>The color values need to be within the limits [0,15]. Where 0 represents the lightest
+and 15 the highest value.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>color</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                </td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+
+
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="encodeBGRSingleColor">
+            
+            encodeBGRSingleColor<span class="signature">(color)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Buffer}</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="L8.js.html">L8.js</a>, <a href="L8.js.html#line425">line 425</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Encode a color object to the BGR bytesequence accepted by the L8 as a single color (3-byte)</p>
+<p>The color needs to be represented as object with <code>r</code>, <code>g</code> and <code>b</code> properties.</p>
+<p>The color values need to be within the limits [0,15]. Where 0 represents the lightest
+and 15 the highest value.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>color</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                </td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+
+
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="encodeRGBSingleColor">
+            
+            encodeRGBSingleColor<span class="signature">(color)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Buffer}</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="L8.js.html">L8.js</a>, <a href="L8.js.html#line453">line 453</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Encode a color object to the RGB bytesequence accepted by the L8 as a single color (3-byte)</p>
+<p>This color is for example used by the text scroller application</p>
+<p>The color needs to be represented as object with <code>r</code>, <code>g</code> and <code>b</code> properties.</p>
+<p>The color values need to be within the limits [0,15]. Where 0 represents the lightest
+and 15 the highest value.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>color</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                </td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+
+
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="onResponse_">
+            
+            <span class="type-signature ">private</span>onResponse_<span class="signature">(data)</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="L8.js.html">L8.js</a>, <a href="L8.js.html#line216">line 216</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Callback executed each time data has been received from the L8.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>data</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Buffer</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                </td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="open">
+            
+            open<span class="signature">(port, baudrate, fn)</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="L8.js.html">L8.js</a>, <a href="L8.js.html#line101">line 101</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Open a connection to the given port using an optionally provided baudrate</p>
+<p>If no baudrate is specified a default speed of <code>115200</code> will be used.</p>
+<p>After the port has been successfully opened the given callback will be fired</p>
+<p>The operation is asynchronous. Further communication with the L8 is only feasible
+after the <code>open</code> callback has been fired.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>port</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                    
+                    
+                        
+                    
+                
+                </td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>baudrate</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                    
+                    
+                        <span class="nullable">nullable</span>
+                    
+                        
+                    
+                
+                </td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>fn</code></td>
+            
+            
+            <td class="type">
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                    
+                    
+                        
+                    
+                
+                </td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="parseFrames_">
+            
+            <span class="type-signature ">private</span>parseFrames_<span class="signature">(receiveBuffer)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Object}</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="L8.js.html">L8.js</a>, <a href="L8.js.html#line150">line 150</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Try to parse as many frames out of the given receiveBuffer, as possible.</p>
+<p>The response is either an array containing a frame definition or <code>false</code> if the frame wasn't complete yet.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>receiveBuffer</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                </td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+
+
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="ping">
+            
+            ping<span class="signature">(fn)</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="L8.js.html">L8.js</a>, <a href="L8.js.html#line407">line 407</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Ping the L8 in order to check if it is there.</p>
+<p>The response is currently not handled automatically. If you want to check if
+a pong reply has been sent back using the <a href="L8.html#event:frameReceived"><code>L8#event:frameReceived</code></a> event.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>fn</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                </td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="sendFrame">
+            
+            sendFrame<span class="signature">(buffer, expectedResponse, fn)</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="L8.js.html">L8.js</a>, <a href="L8.js.html#line264">line 264</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Send a raw buffer bytestream to the connected L8</p>
+<p>If the expectedResponse property is set to true the callback will be hold back
+until a corresponding CMD_OK response from the L8 has been received. This response
+will be given to the callback then.</p>
+<p>If the command does not answer with a callback <code>false</code> may be given</p>
+<p>If the command does answer with another then the usual CMD_OK response it's
+command code and optional parameters need to be specified as object. The object
+has the following structure:</p>
+<p><code>{command: Number, parameters: Buffer?}</code></p>
+<p>The parameters are optional. If no <code>parameters</code> are specified any paramter will be
+accepted as soon as the command is matched.</p>
+<p>Most commands will want to wait for the response.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>buffer</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Buffer</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                </td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>expectedResponse</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Boolean</span>
+|
+
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                </td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>fn</code></td>
+            
+            
+            <td class="type">
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                </td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="setLED">
+            
+            setLED<span class="signature">(x, y, color, fn)</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="L8.js.html">L8.js</a>, <a href="L8.js.html#line506">line 506</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Set a specific LED inside the 8x8 L8 grid to a given color</p>
+<p>The color needs to be represented as object with <code>r</code>, <code>g</code> and <code>b</code> properties.</p>
+<p>The color values need to be within the limits [0,15]. Where 0 represents the lightest
+and 15 the highest value.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>x</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                </td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>y</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                </td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>color</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                </td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>fn</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                </td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="setMatrix">
+            
+            setMatrix<span class="signature">(matrix, fn)</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="L8.js.html">L8.js</a>, <a href="L8.js.html#line558">line 558</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Set the complete matrix of LEDs with one command</p>
+<p>This method should be used if you want display an &quot;image&quot; of sorts</p>
+<p>The provided matrix needs to be a 64 elements long array of color objects.</p>
+<p>Each of the color objects needs to provide an <code>r</code>, <code>g</code> and <code>b</code> property.</p>
+<p>The color values need to be within the limits [0,15]. Where 0 represents the
+lightest and 15 the highest value.</p>
+<p>The matrix is provided line by line. Starting in the upper left corner, while
+ending in the lower right.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>matrix</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                </td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>fn</code></td>
+            
+            
+            <td class="type">
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                </td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="setOrientation">
+            
+            setOrientation<span class="signature">(orientation, fn)</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="L8.js.html">L8.js</a>, <a href="L8.js.html#line734">line 734</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Manually set the orientation of the L8</p>
+<p>The orientation setting determines in which way the pixel matrix is drawn.</p>
+<p>Valid orientations are:</p>
+<ul>
+<li>up</li>
+<li>down</li>
+<li>left</li>
+<li>right</li>
+<li>auto</li>
+</ul>
+<p>The orientation denotes, which side of the L8 is facing upwards. While the side
+with the power on switch is considered the Top side, while the one with the usb
+port is the Bottom side.</p>
+<p>This command is not acquitted by an L8 response all cases. Instead the sent
+bytes are given to the callback in this situations.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>orientation</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                </td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>fn</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                </td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="setScrollingText">
+            
+            setScrollingText<span class="signature">(text, color, speed, loop, fn)</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="L8.js.html">L8.js</a>, <a href="L8.js.html#line668">line 668</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Start the internal L8 application to scroll text across the device</p>
+<p>Once the scrolling has been started it needs to be stopped explicitly using
+<a href="L8.html#stopApplication"><code>L8#stopApplication</code></a> or the convenience method <a href="L8.html#clearScrollingText"><code>L8#clearScrollingText</code></a>
+Simply setting other colors to the LED matrix is not enough to cancel the
+scrolling text.</p>
+<p>The <code>text</code> is supposed to be an ascii encoded string</p>
+<p>Color is specified as object with the usual <code>r</code>, <code>g</code>, <code>b</code> properties ranging
+from 0-15.</p>
+<p><code>speed</code> defines the scrolling speed. It is supposed to be one of &quot;slow&quot;, &quot;medium&quot;
+or &quot;fast&quot;.</p>
+<p><code>loop</code> is a boolean value specifying if the animation is supposed to be looped,
+after it completed once. If it is set to <code>false</code> the scrolling application is
+exited after the first run through the text.</p>
+<p>This command is not acquitted by an L8 response. Instead the sent bytes are given to
+the callback</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>text</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                </td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>color</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                </td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>speed</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                </td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>loop</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Boolean</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                </td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>fn</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                </td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="setSuperLED">
+            
+            setSuperLED<span class="signature">(color, fn)</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="L8.js.html">L8.js</a>, <a href="L8.js.html#line606">line 606</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Set the SuperLED on the back of the L8 to the given color.</p>
+<p>The color needs to be represented as object with <code>r</code>, <code>g</code> and <code>b</code> properties.</p>
+<p>The color values need to be within the limits [0,15]. Where 0 represents the lightest
+and 15 the highest value.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>color</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                </td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>fn</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                </td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="stopApplication">
+            
+            stopApplication<span class="signature">(fn)</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="L8.js.html">L8.js</a>, <a href="L8.js.html#line632">line 632</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Stop the currently running L8 application on the device.</p>
+<p>The L8 has certain predefined &quot;Apps&quot;, which can be executed. This method
+stops the currently running application.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>fn</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                </td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        </dl>
+    
+    
+    
+    
+    
+        <h3 class="subsection-title">Events</h3>
+        
+        <dl>
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="event:frameReceived">
+            
+            frameReceived
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="L8.js.html">L8.js</a>, <a href="L8.js.html#line229">line 229</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Event fired every time a frame is received</p>
+    </div>
+    
+
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">Object</span>
+
+
+            </li>
+        </ul>
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="event:frameSent">
+            
+            frameSent
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="L8.js.html">L8.js</a>, <a href="L8.js.html#line284">line 284</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Event fired every time a frame is sent</p>
+<p>The provied value is the raw buffer, which has been sent.</p>
+    </div>
+    
+
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">Buffer</span>
+
+
+            </li>
+        </ul>
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        </dl>
+    
+</article>
+
+</section>  
+
+
+
+
+
+        
+
+        <footer>
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.2</a> on Mon Jun 30 2014 22:11:51 GMT+0200 (MESZ)
+        </footer>
+    </div>
+</div>
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+<script src="scripts/main.js"></script>
+</body>
+</html>

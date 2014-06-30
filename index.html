@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>L8Smartlight</title>
+    
+    <meta name="description" content="A nodejs library in order to facillitate communication with an L8 Smartlight" />
+    
+    
+    
+    <meta property="og:title" content=""/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:image" content=""/>
+    
+    <meta property="og:url" content=""/>
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <script src="scripts/jquery.min.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/jaguar.css">
+    
+    
+    <script>
+    var config = {"monospaceLinks":true,"cleverLinks":true,"default":{"outputSourceFiles":true},"applicationName":"node-l8smartlight","disqus":"","googleAnalytics":"","openGraph":{"title":"","type":"website","image":"","site_name":"","url":""},"meta":{"title":"L8Smartlight","description":"A nodejs library in order to facillitate communication with an L8 Smartlight","keyword":""}};
+    </script>
+    
+
+    
+</head>
+<body>
+<div id="wrap" class="clearfix">
+    
+<div class="navigation">
+    <h3 class="applicationName"><a href="index.html">node-l8smartlight</a></h3>
+
+    <div class="search">
+        <input id="search" type="text" class="form-control input-sm" placeholder="Search Documentations">
+    </div>
+    <ul class="list">
+    
+        <li class="item" data-name="L8">
+            <span class="title">
+                <a href="L8.html">L8</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            <span class="subtitle">Members</span>
+            
+                <li data-name="L8#isConnected"><a href="L8.html#isConnected">isConnected</a></li>
+            
+                <li data-name="L8#receiveBuffer_"><a href="L8.html#receiveBuffer_">receiveBuffer_</a></li>
+            
+                <li data-name="L8#serialport_"><a href="L8.html#serialport_">serialport_</a></li>
+            
+                <li data-name="L8.MAGIC_BYTES"><a href="L8.html#MAGIC_BYTES">MAGIC_BYTES</a></li>
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="L8#buildFrame"><a href="L8.html#buildFrame">buildFrame</a></li>
+            
+                <li data-name="L8#clearLED"><a href="L8.html#clearLED">clearLED</a></li>
+            
+                <li data-name="L8#clearMatrix"><a href="L8.html#clearMatrix">clearMatrix</a></li>
+            
+                <li data-name="L8#clearScrollingText"><a href="L8.html#clearScrollingText">clearScrollingText</a></li>
+            
+                <li data-name="L8#clearSuperLED"><a href="L8.html#clearSuperLED">clearSuperLED</a></li>
+            
+                <li data-name="L8#close"><a href="L8.html#close">close</a></li>
+            
+                <li data-name="L8#encodeBGRMatrixColor"><a href="L8.html#encodeBGRMatrixColor">encodeBGRMatrixColor</a></li>
+            
+                <li data-name="L8#encodeBGRSingleColor"><a href="L8.html#encodeBGRSingleColor">encodeBGRSingleColor</a></li>
+            
+                <li data-name="L8#encodeRGBSingleColor"><a href="L8.html#encodeRGBSingleColor">encodeRGBSingleColor</a></li>
+            
+                <li data-name="L8#onResponse_"><a href="L8.html#onResponse_">onResponse_</a></li>
+            
+                <li data-name="L8#open"><a href="L8.html#open">open</a></li>
+            
+                <li data-name="L8#parseFrames_"><a href="L8.html#parseFrames_">parseFrames_</a></li>
+            
+                <li data-name="L8#ping"><a href="L8.html#ping">ping</a></li>
+            
+                <li data-name="L8#sendFrame"><a href="L8.html#sendFrame">sendFrame</a></li>
+            
+                <li data-name="L8#setLED"><a href="L8.html#setLED">setLED</a></li>
+            
+                <li data-name="L8#setMatrix"><a href="L8.html#setMatrix">setMatrix</a></li>
+            
+                <li data-name="L8#setOrientation"><a href="L8.html#setOrientation">setOrientation</a></li>
+            
+                <li data-name="L8#setScrollingText"><a href="L8.html#setScrollingText">setScrollingText</a></li>
+            
+                <li data-name="L8#setSuperLED"><a href="L8.html#setSuperLED">setSuperLED</a></li>
+            
+                <li data-name="L8#stopApplication"><a href="L8.html#stopApplication">stopApplication</a></li>
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            <span class="subtitle">Events</span>
+            
+                <li data-name="L8#event:frameReceived"><a href="L8.html#event:frameReceived">frameReceived</a></li>
+            
+                <li data-name="L8#event:frameSent"><a href="L8.html#event:frameSent">frameSent</a></li>
+            
+            </ul>
+        </li>
+    
+        <li class="item" data-name="MatrixBuilder">
+            <span class="title">
+                <a href="MatrixBuilder.html">MatrixBuilder</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            <span class="subtitle">Members</span>
+            
+                <li data-name="MatrixBuilder#initialMatrix_"><a href="MatrixBuilder.html#initialMatrix_">initialMatrix_</a></li>
+            
+                <li data-name="MatrixBuilder#operations_"><a href="MatrixBuilder.html#operations_">operations_</a></li>
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="MatrixBuilder.map"><a href="MatrixBuilder.html#map">map</a></li>
+            
+                <li data-name="MatrixBuilder#column"><a href="MatrixBuilder.html#column">column</a></li>
+            
+                <li data-name="MatrixBuilder#createArrayWithSize"><a href="MatrixBuilder.html#createArrayWithSize">createArrayWithSize</a></li>
+            
+                <li data-name="MatrixBuilder#operation"><a href="MatrixBuilder.html#operation">operation</a></li>
+            
+                <li data-name="MatrixBuilder#rectangle"><a href="MatrixBuilder.html#rectangle">rectangle</a></li>
+            
+                <li data-name="MatrixBuilder#row"><a href="MatrixBuilder.html#row">row</a></li>
+            
+                <li data-name="MatrixBuilder#toMatrix"><a href="MatrixBuilder.html#toMatrix">toMatrix</a></li>
+            
+                <li data-name="MatrixBuilder#validateColors_"><a href="MatrixBuilder.html#validateColors_">validateColors_</a></li>
+            
+                <li data-name="MatrixBuilder#validateCoordinates_"><a href="MatrixBuilder.html#validateCoordinates_">validateCoordinates_</a></li>
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
+    </ul>
+</div>
+    <div class="main">
+        <h1 class="page-title" data-filename="index.html">Index</h1>
+        
+
+
+    
+
+
+    <h3> </h3>
+
+
+
+
+
+
+
+
+    
+
+
+
+
+    <section>
+        <article class="readme"><h1>node-l8smartlight</h1>
+<p><a href="https://www.npmjs.org/package/l8smartlight"><img src="http://img.shields.io/npm/v/l8smartlight.svg?0.1.1" alt="node-l8smartlight on npm"></a></p>
+<p>A nodejs library to talk to the <a href="http://www.l8smartlight.com/">L8 Smartlight</a>.</p>
+<p>As all of the currently available SDK versions (especially the JavaScript one)
+did not work for me. I decided to quickly hack my own implementation based on
+<a href="https://github.com/voodootikigod/node-serialport">node-serialport</a>.</p>
+<h2>Status</h2>
+<p>The currently available library is a work in progress. The API is currently
+quite fluid. Don't expect it to be stable at at the moment.</p>
+<h2>Implemented Functionality</h2>
+<p>Currently mainly the Command API has been implemented, in order to be able to
+control the L8 appearance and functionality.</p>
+<p>Especially the Query API has not really been implemented yet. Therefore the
+library does currently not allow any of the sensor data to be retrieved. If you
+really want to do that at the moment you may use the raw <code>L8#sendFrame</code> and
+<code>L8#buildFrame</code> methods. In the future I plan to support those functionality as
+well.</p>
+<p>See the <a href="TODO">API-Documentation</a> of the library for details about the API. In
+order to see the library in action you may take a look at the <code>Examples</code> folder
+of the project, which houses different kinds of demonstration scripts.</p>
+<h2>Working with Promises</h2>
+<p>Every method, that needs to be called with a callback (<code>fn</code>) function, can utilize
+Promises as well. Simply omit the callback function, while invoking it. In this case
+a <a href="http://promises-aplus.github.io/promises-spec/">Promise/A+</a> compatible promise
+will be returned by the method, which will be resolved once the operation finished,
+or rejected should an error occur.</p>
+<h2>Further documentation</h2>
+<p>All methods of the L8 library are extensively documented inside the source
+code. Just take a look at the generated <a href="TODO">API-Documentation</a> or the
+corresponding source files starting with <code>Library/L8.js</code> for details about
+arguments and return values.</p>
+<h3>Generating the documentation</h3>
+<p>If you want to locally generate the documentation of the package, just run
+<code>grunt documentation</code> after installing all the dependencies utilizing
+<code>npm install</code>.</p></article>
+    </section>
+
+
+
+
+
+
+        
+
+        <footer>
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.2</a> on Mon Jun 30 2014 22:11:51 GMT+0200 (MESZ)
+        </footer>
+    </div>
+</div>
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+<script src="scripts/main.js"></script>
+</body>
+</html>

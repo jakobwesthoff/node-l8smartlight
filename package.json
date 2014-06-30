@@ -1,0 +1,30 @@
+{
+  "name": "l8smartlight",
+  "private": false,
+  "version": "0.1.1",
+  "description": "A nodejs library in order to facillitate communication with an L8 Smartlight",
+  "main": "index.js",
+  "keywords": [
+    "l8",
+    "smartlight",
+    "serialport",
+    "bluetooth",
+    "communication"
+  ],
+  "author": "Jakob Westhoff <jakob@westhoffswelt.de>",
+  "license": "MIT",
+  "dependencies": {
+    "crc": "^2.1.1",
+    "rsvp": "^3.0.9",
+    "serialport": "^1.4.0"
+  },
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-clean": "^0.5.0",
+    "grunt-contrib-jshint": "^0.10.0",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-jsdoc": "^0.5.6",
+    "jaguarjs-jsdoc": "https://github.com/davidshimjs/jaguarjs-jsdoc/archive/master.tar.gz",
+    "load-grunt-tasks": "^0.6.0"
+  }
+}
