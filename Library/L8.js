@@ -1,3 +1,6 @@
+var util = require("util");
+var EventEmitter = require("events").EventEmitter;
+
 var SerialPort = require("serialport").SerialPort;
 var CRC = require("crc");
 var SLCP = require("./SLCP");
@@ -6,9 +9,14 @@ var SLCP = require("./SLCP");
  * Main API entry point providing all the public API in order to Control
  * an L8 Smartlight
  *
+ * @fires L8#frameSent
+ * @fires L8#frameReceived
+ *
  * @constructor
  */
 var L8 = function() {
+    EventEmitter.call(this);
+
     /**
      * Indicator whether a connection is established or not.
      * @type {boolean}
@@ -23,38 +31,6 @@ var L8 = function() {
     this.serialport_ = null;
 
     /**
-     * List of functions, which are informed upon incoming data
-     *
-     * @type {Dictionary}
-     * @private
-     */
-    this.receivers_ = Object.create(null, {
-        nextId: {
-            value: 0,
-            writable: true,
-            readable: true,
-            enumerable: false,
-            configurable: false
-        }
-    });
-
-    /**
-     * List of functions, which are informed upon sent data
-     *
-     * @type {Dictionary}
-     * @private
-     */
-    this.monitors_ = Object.create(null, {
-        nextId: {
-            value: 0,
-            writable: true,
-            readable: true,
-            enumerable: false,
-            configurable: false
-        }
-    });
-
-    /**
      * Buffer for storing all received data, before it is processed.
      *
      *  @type {Object}
@@ -65,6 +41,7 @@ var L8 = function() {
         length: 0
     };
 };
+util.inherits(L8, EventEmitter);
 
 /**
  * Magic byte sequence used to identify any SLCP command or response
@@ -126,75 +103,6 @@ L8.prototype.close = function(fn) {
         this.serialport_ = null;
         fn(error, !error);
     }.bind(this));
-};
-
-/**
- * Register a new receiver called once new data has arrived
- *
- * The call returns a unique id which may be used to deregister the receiver at
- * any time.
- *
- * @param {Function} receiver
- * @returns {number}
- */
-L8.prototype.registerReceiver = function(receiver) {
-    var receiverId = this.receivers_.nextId++;
-    this.receivers_[receiverId] = receiver;
-    return receiverId;
-};
-
-/**
- * Register a receiver to be called upon the next received data.
- *
- * The receiver will only be called once and deregistered after that automatically.
- *
- * @param {Function} receiver
- * @return {Number} receiverId
- */
-L8.prototype.registerReceiverOnce = function(receiver) {
-    var receiverId = this.registerReceiver(function(response) {
-        this.removeReceiver(receiverId);
-        receiver(response);
-    }.bind(this));
-
-    return receiverId;
-};
-
-/**
- * Remove a registered receiver based on the id provided during registration.
- *
- * @param {Number} receiverId
- */
-L8.prototype.removeReceiver = function(receiverId) {
-    if (this.receivers_[receiverId] !== undefined) {
-        delete this.receivers_[receiverId];
-    }
-};
-
-/**
- * Register a new monitor called every time data is sent out
- *
- * The call returns a unique id which may be used to deregister the monitor at
- * any time.
- *
- * @param {Function} monitor
- * @returns {number}
- */
-L8.prototype.registerMonitor = function(monitor) {
-    var monitorId = this.monitors_.nextId++;
-    this.monitors_[monitorId] = monitor;
-    return monitorId;
-};
-
-/**
- * Remove a registered monitor based on the id provided during registration.
- *
- * @param {Number} montorId
- */
-L8.prototype.removeMonitor = function(monitorId) {
-    if (this.monitors_[monitorId] !== undefined) {
-        delete this.monitors_[monitorId];
-    }
 };
 
 /**
@@ -285,10 +193,14 @@ L8.prototype.onResponse_ = function(data) {
 
     // Redirect all incoming data to all methods, which wanted to be informed about it
     responses.forEach(function(response) {
-        var receiverId;
-        for (receiverId in this.receivers_) {
-            this.receivers_[receiverId](response);
-        }
+        /**
+         * Event fired every time a frame is received
+         *
+         * @event L8#frameReceived
+         * @type {Buffer} The parsed version of the received frame. See `parseFrames_`
+         * for details.
+         */
+        this.emit("frameReceived", response);
     }.bind(this));
 };
 
@@ -336,10 +248,13 @@ L8.prototype.sendFrame = function(buffer, expectedResponse, fn) {
                 return;
             }
 
-            // Inform all monitors
-            for (monitorId in this.monitors_) {
-                this.monitors_[monitorId](buffer);
-            }
+            /**
+             * Event fired every time a frame is sent
+             *
+             * @event L8#frameSent
+             * @type {Buffer} The raw buffer of the sent frame
+             */
+            this.emit("frameSent", buffer);
 
             // If a response is expected we need to introduce another indirection.
             // Otherwise we might return immediately
@@ -349,7 +264,7 @@ L8.prototype.sendFrame = function(buffer, expectedResponse, fn) {
                 return;
             }
 
-            receiverId = this.registerReceiver(function(frame) {
+            var onReceive = function(frame) {
                 /* Skip processing if it is not the awaited response */
                 if (expectedResponse === true) {
                     if (frame.command !== SLCP.CMD.OK || frame.parameters[0] !== buffer[3]) {
@@ -370,9 +285,10 @@ L8.prototype.sendFrame = function(buffer, expectedResponse, fn) {
                         return;
                     }
                 }
-                this.removeReceiver(receiverId);
+                this.removeListener("frameReceived", onReceive);
                 fn(error, frame);
-            }.bind(this)); /* registerReceiver */
+            }.bind(this); /* onReceive */
+            this.on("frameReceived", onReceive);
         }.bind(this)); /* drain */
     }.bind(this)); /* write */
 };
@@ -386,7 +302,7 @@ L8.prototype.sendFrame = function(buffer, expectedResponse, fn) {
  *
  * The Payload consists of a command as well as optional arguments
  *
- * The command is an interger, as documented here:
+ * The command is an integer, as documented here:
  * http://www.l8smartlight.com/dev/slcp/1.0/
  *
  * The parameters are documented there as well. If a command does not have a
@@ -459,7 +375,7 @@ L8.prototype.queryAccelerationSensor = function(fn) {
  * Ping the L8 in order to check if it is there.
  *
  * The response is currently not handled automatically. If you want to check if
- * a pong reply has been sent back use `registerReceiver`.
+ * a pong reply has been sent back using the `frameReceived` event.
  *
  * @param {Function} fn
  */
