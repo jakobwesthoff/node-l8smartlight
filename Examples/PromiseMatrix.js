@@ -18,11 +18,13 @@ var nextFrame = function() {
     l8.setMatrix(createMatrixLine(currentLine, colors[currentLine])).then(function(response) {
         currentLine = (currentLine + 1) % 8;
         setTimeout(nextFrame, 100);
-    })
+    });
 };
 
 l8.open(SERIAL_PORT, null).then(function(response) {
     return l8.clearMatrix();
 }).then(function(response) {
     nextFrame();
+}).catch(function(error) {
+    console.error(error.stack);
 });
