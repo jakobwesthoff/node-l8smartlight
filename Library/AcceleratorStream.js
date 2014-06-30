@@ -12,7 +12,7 @@ var util = require('util'),
 var AcceleratorStream = function(options, l8, interval) {
     options || (options = {});
     options.objectMode = true;
-    options.highWaterMark = 0;
+    options.highWaterMark = 0; // We always want to load the newest data so we disable the buffer
 
     this.interval = interval;
     this.l8 = l8;
@@ -25,10 +25,21 @@ var AcceleratorStream = function(options, l8, interval) {
 
 util.inherits(AcceleratorStream, Stream.Readable);
 
+/**
+ * Handles the data polling and delegates the callback
+ * @private
+ */
 AcceleratorStream.prototype.poll_ = function() {
     this.l8.getAcceleration(this.onResponse_.bind(this));
 };
 
+/**
+ * Handles the response and ensures it is called again if requests have been done during cooldown
+ *
+ * @param {String} error
+ * @param {Object} data
+ * @private
+ */
 AcceleratorStream.prototype.onResponse_ = function(error, data) {
     this.requested_ = false;
     this.cooldown_ = true;
@@ -47,6 +58,11 @@ AcceleratorStream.prototype.onResponse_ = function(error, data) {
     this.push(data);
 };
 
+/**
+ * Triggers read to fill the buffer
+ *
+ * @private
+ */
 AcceleratorStream.prototype._read = function() {
     if (this.cooldown_) {
         this.requested_ = true;
@@ -54,13 +70,6 @@ AcceleratorStream.prototype._read = function() {
     }
 
     this.poll_();
-};
-
-/**
- * Close stream
- */
-AcceleratorStream.prototype.end = function() {
-    console.log('end');
 };
 
 exports.AccelerometerStream = AcceleratorStream;
