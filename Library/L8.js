@@ -652,7 +652,7 @@ L8.prototype.setScrollingText = function(text, color, speed, loop, fn) {
             parametersBuffer[1] = 0;
         break;
         default:
-            throw RangeError("Invalid speed for scrolling text provided. Expected one of slow, medium or fast, got " + speed);
+            throw new RangeError("Invalid speed for scrolling text provided. Expected one of slow, medium or fast, got " + speed);
     }
 
     var colorBuffer = this.encodeRGBSingleColor(color);
