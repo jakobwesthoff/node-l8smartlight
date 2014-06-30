@@ -357,6 +357,21 @@ L8.prototype.buildFrame = function(command, parametersBuffer) {
 };
 
 /**
+ * Trigger query of the accelerometer
+ *
+ * Register a receiver to get the results.
+ * The decoding should be handled by your receiver.
+ *
+ * @param {Function} fn
+ */
+L8.prototype.queryAccelerationSensor = function(fn) {
+    this.sendFrame(
+        this.buildFrame(SLCP.CMD.L8_ACC_QUERY),
+        true, fn
+    );
+};
+
+/**
  * Ping the L8 in order to check if it is there.
  *
  * The response is currently not handled automatically. If you want to check if
@@ -697,7 +712,7 @@ L8.prototype.setOrientation = function(orientation, fn) {
         parametersBuffer[0] = 1;
         this.sendFrame(
             this.buildFrame(SLCP.CMD.L8_SET_AUTOROTATE, parametersBuffer),
-            {command: SLCP.CMD.OK, paramerts: new Buffer("6a", "hex")}, fn
+            {command: SLCP.CMD.OK, parameters: new Buffer("6a", "hex")}, fn
         );
     } else {
         // Disable autoration and set orientation manually.
