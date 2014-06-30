@@ -5,6 +5,13 @@ var SERIAL_PORT = "/dev/tty.L8-SerialPortServerPort1";
 
 var l8 = new L8();
 
+l8.on("frameReceived", function(frame) {
+    console.log("RECEIVED: ", frame.payload.toString("hex"));
+});
+l8.on("frameSent", function(frame) {
+    console.log("SENT: ", frame.toString("hex"));
+});
+
 var createRectMatrix = function(frameNumber, color) {
     var builder = new MatrixBuilder();
     return builder.rect(

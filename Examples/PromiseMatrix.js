@@ -4,6 +4,13 @@ var SERIAL_PORT = "/dev/tty.usbmodem1413411";
 
 var l8 = new L8();
 
+l8.on("frameReceived", function(frame) {
+    console.log("RECEIVED: ", frame.payload.toString("hex"));
+});
+l8.on("frameSent", function(frame) {
+    console.log("SENT: ", frame.toString("hex"));
+});
+
 var createMatrixLine = function(line, color) {
     return Array.apply(null, new Array(8*8)).map(function(value, index) {
         return (index < line * 8 || index >= (line + 1) * 8) ? {r: 0, b: 0, g: 0} : color;

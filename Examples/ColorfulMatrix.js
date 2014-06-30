@@ -3,17 +3,18 @@ var L8 = require("../index").L8;
 var SERIAL_PORT = "/dev/tty.usbmodem1413411";
 
 var l8 = new L8();
+
+l8.on("frameReceived", function(frame) {
+    console.log("RECEIVED: ", frame.payload.toString("hex"));
+});
+l8.on("frameSent", function(frame) {
+    console.log("SENT: ", frame.toString("hex"));
+});
+
 l8.open(SERIAL_PORT, null, function(error, response) {
     if (error) {
         throw error;
     }
-
-    l8.registerReceiver(function(response) {
-        console.log("Received: ", response.payload.toString("hex"));
-    });
-    l8.registerMonitor(function(query) {
-        console.log("Sent:     ", query.toString("hex"));
-    });
 
     var colors = [{r: 0, g: 15, b: 15}, {r: 15, g: 0, b: 15}, {r: 15, g: 15, b: 0}, {r: 0, g: 15, b: 0}, {r: 15, g: 0, b: 0}];
     var currentIndex = 0;
