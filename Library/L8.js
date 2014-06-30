@@ -9,6 +9,9 @@ var SLCP = require("./SLCP");
  * Main API entry point providing all the public API in order to Control
  * an L8 Smartlight
  *
+ * @fires L8#frameSent
+ * @fires L8#frameReceived
+ *
  * @constructor
  */
 var L8 = function() {
@@ -190,6 +193,13 @@ L8.prototype.onResponse_ = function(data) {
 
     // Redirect all incoming data to all methods, which wanted to be informed about it
     responses.forEach(function(response) {
+        /**
+         * Event fired every time a frame is received
+         *
+         * @event L8#frameReceived
+         * @type {Buffer} The parsed version of the received frame. See `parseFrames_`
+         * for details.
+         */
         this.emit("frameReceived", response);
     }.bind(this));
 };
@@ -238,7 +248,12 @@ L8.prototype.sendFrame = function(buffer, expectedResponse, fn) {
                 return;
             }
 
-            // Inform all monitors
+            /**
+             * Event fired every time a frame is sent
+             *
+             * @event L8#frameSent
+             * @type {Buffer} The raw buffer of the sent frame
+             */
             this.emit("frameSent", buffer);
 
             // If a response is expected we need to introduce another indirection.
