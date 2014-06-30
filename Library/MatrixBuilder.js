@@ -11,7 +11,29 @@
  * The `baseColorOrMatrix` argument is optional. If none is supplied an LED
  * off-state is chosen as default for every LED in the matrix.
  *
- * @param {{r:Number, g:Number, b:Number}|Array?} baseColorOrMatrix
+ * @example ```
+ *  var l8 = new L8();
+ *  //... Initialize L8...
+ *
+ *  var builder = new MatrixBuilder();
+ *  var matrix = builder.rectangle(
+ *      {r: 0, g: 0, b: 15},
+ *      2, 2,
+ *      5, 5,
+ *      false
+ *  )
+ *  .row({r: 15, g: 0, b: 0}, 3)
+ *  .row({r: 15, g: 0, b: 0}, 4)
+ *  .column({r: 15, g: 0, b: 0}, 3}),
+ *  .column({r: 15, g: 0, b: 0}, 4)
+ *  .toMatrix();
+ *
+ *  l8.setMatrix(matrix);
+ * ```
+ *
+ * The given examples draws a blue border with a red crosshair on the L8
+ *
+ * @param {{r:Number, g:Number, b:Number}|Array} [baseColorOrMatrix]
  * @constructor
  */
 var MatrixBuilder = function(baseColorOrMatrix) {
@@ -56,17 +78,29 @@ var MatrixBuilder = function(baseColorOrMatrix) {
 /**
  * Execute a `map` like operation on a matrix taking into account its special nature.
  *
- * The operation is mostly aquivalent to a normal `array.map` call. However special
+ * The operation is mostly equivalent to a normal `array.map` call. However special
  * considerations about the matrix will be taken into account, like lines and columns.
  *
  * The callback is executed with the following arguments:
  *
  * - color
- * - row
- * - column
+ * - column (x-coordinate)
+ * - row (y-coordinate)
  * - index
  *
- * The map will be modified in place
+ * The matrix will be modified in place
+ *
+ * The following example will remove the *red* component of any pixel inside the
+ * given matrix.
+ *
+ * @example ```
+ *  var matrix = // some matrix
+ *  MatrixBuilder.map(matrix, function(originalColor, row, column, index) {
+ *      return {r: 0, g: originalColor.g, b: originalColor.b};
+ *  });
+ *
+ *  l8.setMatrix(matrix, ...);
+ * ```
  *
  * @param {Array} matrix
  * @param {Function} fn
@@ -74,7 +108,7 @@ var MatrixBuilder = function(baseColorOrMatrix) {
  */
 MatrixBuilder.map = function(matrix, fn) {
     matrix.forEach(function(value, index) {
-        matrix[index] = fn(value, Math.floor(index / 8), index % 8, index);
+        matrix[index] = fn(value, index % 8, Math.floor(index / 8), index);
     })
 };
 
@@ -100,7 +134,11 @@ MatrixBuilder.prototype.validateCoordinates_ = function(coordinates) {
  *
  * If one of the colors is invalid an exception will be thrown.
  *
- * @param {{r: Number, g: Number, b: Number}[]} colors
+ * @param {Object[]} colors
+ * @param {Number} colors.r
+ * @param {Number} colors.g
+ * @param {Number} colors.b
+ *
  * @private
  */
 MatrixBuilder.prototype.validateColors_ = function(colors) {
@@ -163,7 +201,7 @@ MatrixBuilder.prototype.row = function(color, y, x0, x1) {
     this.validateCoordinates_([y, x0, x1]);
 
     return this.operation(function(matrix, variables){
-        MatrixBuilder.map(matrix, function(originalColor, row, column) {
+        MatrixBuilder.map(matrix, function(originalColor, column, row) {
             return (row === y && column >= x0 && column <= x1) ? color : originalColor;
         });
     });
@@ -189,14 +227,14 @@ MatrixBuilder.prototype.column = function(color, x, y0, y1) {
     this.validateCoordinates_([x, y0, y1]);
 
     return this.operation(function(matrix, variables){
-        MatrixBuilder.map(matrix, function(originalColor, row, column) {
+        MatrixBuilder.map(matrix, function(originalColor, column, row) {
             return (column === x && row >= y0 && row <= y1) ? color : originalColor;
         });
     });
 };
 
 /**
- * Draw a rect to the pixel grid
+ * Draw a rectangle to the pixel grid
  *
  * The grid is defined by specifying its upper left and lower right coordinates.
  *
@@ -208,11 +246,11 @@ MatrixBuilder.prototype.column = function(color, x, y0, y1) {
  * @param {Number} y0
  * @param {Number} x1
  * @param {Number} y1
- * @param {Boolean?} filled
+ * @param {Boolean} [filled]
  *
  * @returns {MatrixBuilder}
  */
-MatrixBuilder.prototype.rect = function(color, x0, x1, y0, y1, filled) {
+MatrixBuilder.prototype.rectangle = function(color, x0, x1, y0, y1, filled) {
     if (filled === undefined) {filled = true;}
 
     this.validateColors_([color]);
@@ -220,13 +258,13 @@ MatrixBuilder.prototype.rect = function(color, x0, x1, y0, y1, filled) {
 
     if (filled === true) {
         return this.operation(function(matrix, variables){
-            MatrixBuilder.map(matrix, function(originalColor, row, column) {
+            MatrixBuilder.map(matrix, function(originalColor, column, row) {
                 return (column >= x0 && column <= x1 && row >= y0 && row <= y1) ? color : originalColor;
             });
         });
     } else {
         return this.operation(function(matrix, variables){
-            MatrixBuilder.map(matrix, function(originalColor, row, column) {
+            MatrixBuilder.map(matrix, function(originalColor, column, row) {
                 return (
                     (column >= x0 && column <= x1 && (row === y0 || row === y1))
                     || (row >= y0 && row <= y1 && (column === x0 || column === x1))
@@ -243,7 +281,7 @@ MatrixBuilder.prototype.rect = function(color, x0, x1, y0, y1, filled) {
  * The given variables will be provided to each operation.
  * Operations will be executed in the defined order.
  *
- * @param {Object?} variables
+ * @param {Object} [variables]
  * @returns {Array}
  */
 MatrixBuilder.prototype.toMatrix = function(variables) {

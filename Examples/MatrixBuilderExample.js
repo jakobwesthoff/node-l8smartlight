@@ -14,7 +14,7 @@ l8.on("frameSent", function(frame) {
 
 var createRectMatrix = function(frameNumber, color) {
     var builder = new MatrixBuilder();
-    return builder.rect(
+    return builder.rectangle(
         color,
         frameNumber, 7 - frameNumber,
         frameNumber, 7 - frameNumber,

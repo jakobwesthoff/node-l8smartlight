@@ -1,3 +1,7 @@
+/**
+ * @module Promisify
+ */
+
 var Promise = require("rsvp").Promise;
 
 /**

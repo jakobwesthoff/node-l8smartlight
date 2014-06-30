@@ -14,6 +14,39 @@ var AccelerometerStream = require("./AcceleratorStream").AccelerometerStream;
  * @fires L8#frameReceived
  *
  * @constructor
+ *
+ * @example ```
+ *  var L8 = require("l8smartlight").L8;
+ *
+ *  var l8 = new L8();
+ *  l8.open("/dev/YOUR_L8_SERIALPORT_DEVICE", null, function(error) {
+ *      if (error) {
+ *          throw new Error("Error occurred: " + error);
+ *      }
+ *      l8.setScrollingText("Hello World!", {r: 15, g: 0, b: 0}, "fast", false, function() {
+ *          console.log("Now scrolling text ;)");
+ *      });
+ *  });
+ * ```
+ *
+ * Alternatively you may use the automatically generated Promise API. All methods,
+ * which require a callback allow you to omit the callback and retrieve a Promise
+ * instead.
+ *
+ * @example ```
+ *  var L8 = require("l8smartlight").L8;
+ *
+ *  var l8 = new L8();
+ *  l8.open("/dev/YOUR_L8_SERIALPORT_DEVICE", null).then(function() {
+ *      return l8.clearMatrix();
+ *  }).then(function(response) {
+ *      return l8.setScrollingText("Hello World!", {r: 15, g: 0, b: 0}, "fast", false);
+ *  }).then(function() {
+ *      console.log("Now scrolling text ;)");
+ *  }).catch(function(error) {
+ *      console.error(error.stack);
+ *  });
+ * ```
  */
 var L8 = function() {
     EventEmitter.call(this);
@@ -55,12 +88,12 @@ L8.MAGIC_BYTES = new Buffer("AA55", "hex");
 /**
  * Open a connection to the given port using an optionally provided baudrate
  *
- * If no baudrate is specified a default speed of 115200 will be used.
+ * If no baudrate is specified a default speed of `115200` will be used.
  *
  * After the port has been successfully opened the given callback will be fired
  *
  * The operation is asynchronous. Further communication with the L8 is only feasible
- * after the "open" callback has been fired.
+ * after the `open` callback has been fired.
  *
  * @param {String} port
  * @param {Number?} baudrate
@@ -92,7 +125,7 @@ L8.prototype.open = function(port, baudrate, fn) {
 /**
  * Close an established connection to the L8
  *
- * @param fn
+ * @param {Function} fn
  */
 L8.prototype.close = function(fn) {
    if (!this.isConnected) {
@@ -178,7 +211,7 @@ L8.prototype.parseFrames_ = function(receiveBuffer) {
 /**
  * Callback executed each time data has been received from the L8.
  *
- * @param data
+ * @param {Buffer} data
  * @private
  */
 L8.prototype.onResponse_ = function(data) {
@@ -198,8 +231,8 @@ L8.prototype.onResponse_ = function(data) {
          * Event fired every time a frame is received
          *
          * @event L8#frameReceived
-         * @type {Buffer} The parsed version of the received frame. See `parseFrames_`
-         * for details.
+         *
+         * @type {{command: Number, parameters: Buffer, checksum: String, payloadLength: Number, raw: Buffer}}
          */
         this.emit("frameReceived", response);
     }.bind(this));
@@ -249,8 +282,10 @@ L8.prototype.sendFrame = function(buffer, expectedResponse, fn) {
             /**
              * Event fired every time a frame is sent
              *
+             * The provied value is the raw buffer, which has been sent.
+             *
              * @event L8#frameSent
-             * @type {Buffer} The raw buffer of the sent frame
+             * @type {Buffer}
              */
             this.emit("frameSent", buffer);
 
@@ -295,25 +330,30 @@ L8.prototype.sendFrame = function(buffer, expectedResponse, fn) {
  * Build a frame in order to be sent to the L8
  *
  * An L8 frame has the following structure:
- *
- * `MAGIC_BYTES|PayloadLength|Payload|PayloadCRC8`
+ * ```
+ * MAGIC_BYTES|PayloadLength|Payload|PayloadCRC8
+ * ```
  *
  * The Payload consists of a command as well as optional arguments
  *
  * The command is an integer, as documented here:
  * http://www.l8smartlight.com/dev/slcp/1.0/
  *
+ * The {@link module:SLCP} does encode all the specified commands into
+ * a human readable object structure. You may want to take a look at it, if you
+ * intend to use this method for sending raw commands.
+ *
  * The parameters are documented there as well. If a command does not have a
- * parameter (eg. CMD_PING). The parametersBuffer argument to this function may
+ * parameter (eg. `CMD_PING`). The `parametersBuffer` argument to this function may
  * be omitted.
  *
  * The parameters may be provided as a hex string or a Buffer object for convenience.
  *
  * The return value of this method is a ready to be sent Buffer, which can be
- * given to `L8#sendFrame` for transmission.
+ * given to {@link L8#sendFrame} for transmission.
  *
  * @param {Number} command
- * @param {Buffer|String?} parametersBuffer
+ * @param {Buffer|String} [parametersBuffer]
  * @returns {Buffer}
  */
 L8.prototype.buildFrame = function(command, parametersBuffer) {
@@ -418,7 +458,7 @@ L8.prototype.getAcceleration = function(fn) {
  * Ping the L8 in order to check if it is there.
  *
  * The response is currently not handled automatically. If you want to check if
- * a pong reply has been sent back using the `frameReceived` event.
+ * a pong reply has been sent back using the {@link L8#event:frameReceived} event.
  *
  * @param {Function} fn
  */
@@ -458,7 +498,7 @@ L8.prototype.encodeBGRSingleColor = function(color) {
 /**
  * Encode a color object to the RGB bytesequence accepted by the L8 as a single color (3-byte)
  *
- * This color is for example used by the text scroller application^^
+ * This color is for example used by the text scroller application
  *
  * The color needs to be represented as object with `r`, `g` and `b` properties.
  *
@@ -590,7 +630,7 @@ L8.prototype.setMatrix = function(matrix, fn) {
 };
 
 /**
- * Clear the matrix by switching all its LEDs
+ * Clear the matrix by switching off all its LEDs
  *
  * It is not necessary to execute this command between different `setMatrix` calls
  * Only use it if you explicitly want to turn the matrix off.
@@ -658,10 +698,11 @@ L8.prototype.stopApplication = function(fn) {
  * Start the internal L8 application to scroll text across the device
  *
  * Once the scrolling has been started it needs to be stopped explicitly using
- * `stopApplication` or the convenience method `clearScrollingText`. Simply setting
- * other colors to the LED matrix is not enough to cancel the scrolling text.
+ * {@link L8#stopApplication} or the convenience method {@link L8#clearScrollingText}
+ * Simply setting other colors to the LED matrix is not enough to cancel the
+ * scrolling text.
  *
- * The `text` is supposed an ascii encoded string
+ * The `text` is supposed to be an ascii encoded string
  *
  * Color is specified as object with the usual `r`, `g`, `b` properties ranging
  * from 0-15.
@@ -669,7 +710,7 @@ L8.prototype.stopApplication = function(fn) {
  * `speed` defines the scrolling speed. It is supposed to be one of "slow", "medium"
  * or "fast".
  *
- * `loop` is a boolean value specifiying if the animation is supposed to be looped,
+ * `loop` is a boolean value specifying if the animation is supposed to be looped,
  * after it completed once. If it is set to `false` the scrolling application is
  * exited after the first run through the text.
  *
@@ -716,7 +757,7 @@ L8.prototype.setScrollingText = function(text, color, speed, loop, fn) {
 /**
  * Convenience method to stop scrolling text from being displayed.
  *
- * The same behaviour is archivable by calling `stopApplication` as the text
+ * The same behaviour is achievable by calling {@link L8#stopApplication} as the text
  * scroller is an internal L8 application.
  *
  * @param {Function} fn
@@ -731,15 +772,16 @@ L8.prototype.clearScrollingText = function(fn) {
  * The orientation setting determines in which way the pixel matrix is drawn.
  *
  * Valid orientations are:
- *  - up
- *  - down
- *  - left
- *  - right
- *  - auto
  *
- *  The orientation denotes, which side of the L8 is facing upwards. While the side
- *  with the power on switch is considered the Top side, while the one with the usb
- *  port is the Bottom side.
+ * - up
+ * - down
+ * - left
+ * - right
+ * - auto
+ *
+ * The orientation denotes, which side of the L8 is facing upwards. While the side
+ * with the power on switch is considered the Top side, while the one with the usb
+ * port is the Bottom side.
  *
  * This command is not acquitted by an L8 response all cases. Instead the sent
  * bytes are given to the callback in this situations.
