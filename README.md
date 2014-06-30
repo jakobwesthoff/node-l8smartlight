@@ -25,9 +25,10 @@ really want to do that at the moment you may use the raw `L8#sendFrame` and
 `L8#buildFrame` methods. In the future I plan to support those functionality as
 well.
 
-See the [API-Documentation](TODO) of the library for details about the API. In
-order to see the library in action you may take a look at the `Examples` folder
-of the project, which houses different kinds of demonstration scripts.
+See the [API-Documentation](http://jakobwesthoff.github.io/node-l8smartlight/)
+of the library for details about the API. In order to see the library in action
+you may take a look at the `Examples` folder of the project, which houses
+different kinds of demonstration scripts.
 
 ## Working with Promises
 
@@ -40,7 +41,8 @@ or rejected should an error occur.
 ## Further documentation
 
 All methods of the L8 library are extensively documented inside the source
-code. Just take a look at the generated [API-Documentation](TODO) or the
+code. Just take a look at the generated
+[API-Documentation](http://jakobwesthoff.github.io/node-l8smartlight/) or the
 corresponding source files starting with `Library/L8.js` for details about
 arguments and return values.
 
