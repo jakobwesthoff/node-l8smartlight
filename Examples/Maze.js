@@ -1,7 +1,13 @@
 var L8 = require("../index").L8,
-    mazeGen = require('simple-maze-generator'),
-    keypress = require('keypress'),
     stdin = process.openStdin();
+try {
+    var mazeGen = require('simple-maze-generator');
+    var keypress = require('keypress');
+} catch( e) {
+    process.stdout.write('This example requires the npm packages simple-maze-generator and keypress\n');
+    process.stdout.write('Install them as follows:\nnpm install simple-maze-generator\nnpm install keypress\n');
+    process.exit(255);
+}
 
 var empty = {r: 0, b: 0, g: 0},
     player = {r: 15, g: 0, b: 0},
