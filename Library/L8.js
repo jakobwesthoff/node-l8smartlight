@@ -437,7 +437,7 @@ L8.prototype.getAcceleration = function(fn) {
                         orientation = 'right';
                         break;
                     default:
-                        throw new RangeError("Invalid speed for scrolling text provided. Expected one of slow, medium or fast, got " + speed);
+                        orientation = parameters[4];
                 }
                 fn(error, {
                         'x': parameters[0],
