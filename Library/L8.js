@@ -4,6 +4,7 @@ var EventEmitter = require("events").EventEmitter;
 var SerialPort = require("serialport").SerialPort;
 var CRC = require("crc");
 var SLCP = require("./SLCP");
+var AccelerometerStream = require("./AcceleratorStream").AccelerometerStream;
 
 /**
  * Main API entry point providing all the public API in order to Control
@@ -273,9 +274,6 @@ L8.prototype.sendFrame = function(buffer, expectedResponse, fn) {
         }
 
         this.serialport_.drain(function(error, drainCount) {
-            var monitorId;
-            var receiverId;
-
             if (error) {
                 fn(error, writeCount + drainCount);
                 return;
@@ -394,6 +392,66 @@ L8.prototype.buildFrame = function(command, parametersBuffer) {
         fullPayloadBuffer,
         checksumBuffer
     ], frameLength);
+};
+
+/**
+ * Create a stream of accelerometer data. The sampling rate defines the frequency in which the L8 is asked
+ *
+ * @param {int} samplingRate milliseconds
+ * @returns {AccelerometerStream}
+ */
+L8.prototype.getAccelerationStream = function(samplingRate) {
+    return new AccelerometerStream({}, this, samplingRate);
+};
+
+/**
+ * Trigger query of the accelerometer
+ *
+ * Register a receiver to get the results.
+ * The decoding should be handled by your receiver.
+ *
+ * @param {Function} fn
+ * @returns {{x:Number, y:Number, z:Number, lying:String, orientation:String, tap:Boolean, shake:Boolean}}
+ */
+L8.prototype.getAcceleration = function(fn) {
+    this.sendFrame(
+        this.buildFrame(SLCP.CMD.L8_ACC_QUERY),
+        {command: SLCP.CMD.L8_ACC_RESPONSE},
+        (function(error, data) {
+            var orientation, parameter;
+            if (error) {
+                fn(error, false);
+            } else {
+                parameters = data.parameters;
+                switch (parameters[4]) {
+                    case 1:
+                        orientation = 'up';
+                        break;
+                    case 2:
+                        orientation = 'down';
+                        break;
+                    case 5:
+                        orientation = 'left';
+                        break;
+                    case 6:
+                        orientation = 'right';
+                        break;
+                    default:
+                        orientation = parameters[4];
+                }
+                fn(error, {
+                        'x': parameters[0],
+                        'y': parameters[1],
+                        'z': parameters[2],
+                        'lying': parameters[3] === 02 ? 'up' : 'upside_down',
+                        'orientation': orientation,
+                        'tap': (parameters[5] === 01),
+                        'shake': !(parameters[6] === 00)
+                    }
+                );
+            }
+        })
+    );
 };
 
 /**
@@ -739,7 +797,7 @@ L8.prototype.setOrientation = function(orientation, fn) {
         parametersBuffer[0] = 1;
         this.sendFrame(
             this.buildFrame(SLCP.CMD.L8_SET_AUTOROTATE, parametersBuffer),
-            {command: SLCP.CMD.OK, paramerts: new Buffer("6a", "hex")}, fn
+            {command: SLCP.CMD.OK, parameters: new Buffer("6a", "hex")}, fn
         );
     } else {
         // Disable autoration and set orientation manually.
