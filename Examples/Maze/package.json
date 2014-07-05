@@ -1,0 +1,9 @@
+{
+  "name": "l8smartlight-maze-example",
+  "private": true,
+  "version": "0.0.1",
+  "dependencies": {
+    "keypress": "^0.2.1",
+    "simple-maze-generator": "^0.1.3"
+  }
+}

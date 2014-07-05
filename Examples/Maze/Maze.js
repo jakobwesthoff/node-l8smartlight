@@ -1,11 +1,11 @@
-var L8 = require("../index").L8,
+var L8 = require("../../index").L8,
     stdin = process.openStdin();
 try {
     var mazeGen = require('simple-maze-generator');
     var keypress = require('keypress');
-} catch( e) {
-    process.stdout.write('This example requires the npm packages simple-maze-generator and keypress\n');
-    process.stdout.write('Install them as follows:\nnpm install simple-maze-generator\nnpm install keypress\n');
+} catch(e) {
+    console.error("This example requires the npm packages simple-maze-generator and keypress");
+    console.error("Switch to the 'Examples/Maze' directory and issue a 'npm install' to download them");
     process.exit(255);
 }
 
@@ -196,7 +196,7 @@ l8.open(SERIAL_PORT, null, function(error, response) {
     game.startGame();
 
     // bind acceleration controls
-    var accelStream = l8.getAccelerationStream(100);
+    var accelStream = l8.createAccelerationStream(100);
     accelStream.on('data', function(data) {
         if (data.y > 50 && data.y < 95) {
             game.up();
