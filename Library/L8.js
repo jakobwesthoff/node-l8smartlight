@@ -4,7 +4,8 @@ var EventEmitter = require("events").EventEmitter;
 var SerialPort = require("serialport").SerialPort;
 var CRC = require("crc");
 var SLCP = require("./SLCP");
-var AccelerometerStream = require("./AcceleratorStream").AccelerometerStream;
+
+var AccelerationStream = require("./AccelerationStream").AccelerationStream;
 
 /**
  * Main API entry point providing all the public API in order to Control
@@ -398,10 +399,10 @@ L8.prototype.buildFrame = function(command, parametersBuffer) {
  * Create a stream of accelerometer data. The sampling rate defines the frequency in which the L8 is asked
  *
  * @param {int} samplingRate milliseconds
- * @returns {AccelerometerStream}
+ * @returns {AccelerationStream}
  */
 L8.prototype.getAccelerationStream = function(samplingRate) {
-    return new AccelerometerStream({}, this, samplingRate);
+    return new AccelerationStream({}, this, samplingRate);
 };
 
 /**
