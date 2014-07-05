@@ -835,7 +835,8 @@ L8.prototype.setOrientation = function(orientation, fn) {
         parametersBuffer[0] = 0;
         this.sendFrame(
             this.buildFrame(SLCP.CMD.L8_SET_AUTOROTATE, parametersBuffer),
-            true, function(error, response) {
+            {command: SLCP.CMD.OK, parameters: new Buffer("6a", "hex")},
+            function(error, response) {
                 switch(orientation) {
                     case "up":
                         parametersBuffer[0] = 1;
