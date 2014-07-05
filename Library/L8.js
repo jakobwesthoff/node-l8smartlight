@@ -396,62 +396,92 @@ L8.prototype.buildFrame = function(command, parametersBuffer) {
 };
 
 /**
- * Create a stream of accelerometer data. The sampling rate defines the frequency in which the L8 is asked
+ * Create an object stream of acceleration data.
  *
- * @param {int} samplingRate milliseconds
+ * The optional `samplingRate` time which is waited between asking the L8 for
+ * data in milliseconds.
+ *
+ * See {@link AccelerationStream} for details about the created stream.
+ *
+ * @param {Number} [samplingRate]
  * @returns {AccelerationStream}
  */
-L8.prototype.getAccelerationStream = function(samplingRate) {
-    return new AccelerationStream({}, this, samplingRate);
+L8.prototype.createAccelerationStream = function(samplingRate) {
+    return new AccelerationStream(this, samplingRate);
 };
 
 /**
- * Trigger query of the accelerometer
+ * Query the L8s accelerometer for data.
  *
- * Register a receiver to get the results.
- * The decoding should be handled by your receiver.
+ * The data given to the callback is an object of the following form:
+ *
+ * ```
+ *  {
+ *      x: Number,
+ *      y: Number,
+ *      z: Number,
+ *      lying: String,
+ *      orientation: String,
+ *      tap: Boolean,
+ *      shake: Boolean
+ *  }
+ * ```
+ *
+ * The data structure corresponds to the response specified inside the
+ * [L8 SLCP documentation about the CMD_L8_ACC_RESPONSE](http://www.l8smartlight.com/dev/slcp/1.0/#_Toc380755790).
  *
  * @param {Function} fn
- * @returns {{x:Number, y:Number, z:Number, lying:String, orientation:String, tap:Boolean, shake:Boolean}}
  */
 L8.prototype.getAcceleration = function(fn) {
     this.sendFrame(
         this.buildFrame(SLCP.CMD.L8_ACC_QUERY),
         {command: SLCP.CMD.L8_ACC_RESPONSE},
-        (function(error, data) {
-            var orientation, parameter;
+        function(error, data) {
             if (error) {
                 fn(error, false);
-            } else {
-                parameters = data.parameters;
-                switch (parameters[4]) {
-                    case 1:
-                        orientation = 'up';
-                        break;
-                    case 2:
-                        orientation = 'down';
-                        break;
-                    case 5:
-                        orientation = 'left';
-                        break;
-                    case 6:
-                        orientation = 'right';
-                        break;
-                    default:
-                        orientation = parameters[4];
-                }
-                fn(error, {
-                        'x': parameters[0],
-                        'y': parameters[1],
-                        'z': parameters[2],
-                        'lying': parameters[3] === 02 ? 'up' : 'upside_down',
-                        'orientation': orientation,
-                        'tap': (parameters[5] === 01),
-                        'shake': !(parameters[6] === 00)
-                    }
-                );
+                return;
             }
-        })
+
+            var orientation;
+            var parameters;
+            var response;
+
+            /*
+             * Handle proper orientation mapping
+             */
+            parameters = data.parameters;
+            switch (parameters[4]) {
+                case 1:
+                    orientation = 'up';
+                    break;
+                case 2:
+                    orientation = 'down';
+                    break;
+                case 5:
+                    orientation = 'left';
+                    break;
+                case 6:
+                    orientation = 'right';
+                    break;
+                default:
+                    //@TODO: Passing the parameter through in case it is not recognized
+                    //       doesn't seem to be the right way. Analyse what happens here
+                    //       and provide proper output in the future.
+                    orientation = parameters[4];
+            }
+
+            response = {
+                'x': parameters[0],
+                'y': parameters[1],
+                'z': parameters[2],
+                'lying': (parameters[3] === 2) ? 'up' : 'upside_down',
+                'orientation': orientation,
+                'tap': (parameters[5] === 1), /* currently this always seems to be 1. Bug in the L8 firmware? */
+                'shake': (parameters[6] !== 0)
+            };
+
+            fn(error, response);
+        }
     );
 };
 
