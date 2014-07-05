@@ -313,7 +313,7 @@ L8.prototype.sendFrame = function(buffer, expectedResponse, fn) {
                         return;
                     }
 
-                    if (expectedResponse.parameters !== undefined && frame.parametersBuffer.toString("hex") !== expectedResponse.parameters.toString("hex")) {
+                    if (expectedResponse.parameters !== undefined && frame.parameters.toString("hex") !== expectedResponse.parameters.toString("hex")) {
                         // Not the parameters we expected.
                         // Skip it
                         return;
