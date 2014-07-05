@@ -209,7 +209,7 @@
     </ul>
 </div>
     <div class="main">
-        <h1 class="page-title" data-filename="module-Promisify.html">Module: Promisify</h1>
+        <h1 class="page-title" data-filename="AccelerationStream.html">Class: AccelerationStream</h1>
         
 
 
@@ -218,7 +218,7 @@
     
 <header>
     <h2>
-    Promisify
+    AccelerationStream
     </h2>
     
 </header>  
@@ -229,64 +229,16 @@
     
     
         
-        
-        
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-        
-        
-    
-    </div>
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-        <h3 class="subsection-title">Methods</h3>
-        
-        <dl>
-            
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="Promisify">
+        <h4 class="name" id="AccelerationStream">
             
-            <span class="type-signature ">inner</span>Promisify<span class="signature">(target)</span>
+            new AccelerationStream<span class="signature">(l8, <span class="optional">samplingRate</span>)</span>
         </h4>
     
         
         <div class="tag-source">
-            <a href="Promisify.js.html">Promisify.js</a>, <a href="Promisify.js.html#line62">line 62</a>
+            <a href="AccelerationStream.js.html">AccelerationStream.js</a>, <a href="AccelerationStream.js.html#line51">line 51</a>
         </div>
         
     </div>
@@ -297,13 +249,22 @@
     
     
     <div class="description">
-        <p>Wrapper to take an arbitrary object and turn all it's callback taking functions
-into a version which allows to omit the callback and instead receive a promise.</p>
-<p>This only works if the callback is the last argument in the list. Furthermore
-it needs to be called <code>fn</code>.</p>
-<p>Currently inheritance through the prototype chain is ignored completely</p>
-<p>Warning: This operation changes the underlying function replacing it with a
-wrapped version.</p>
+        <p>Time based stream of acceleration data from the L8.</p>
+<p>The stream is an object mode stream. It therefore does not return a buffer
+if read, but one Acceleration data struct at a time. The data structure is
+identical with the one you would get from the <a href="L8.html#getAcceleration"><code>L8#getAcceleration</code></a> method.</p>
+<p>The L8 only provides the Acceleration information if they are polled. This
+stream takes care of polling the data at a given sampling rate and providing
+it to you in an easily accessible way.</p>
+<p>The stream automatically takes care of starting and stopping the data polling
+once a <em>listener</em> is connected or disconnected. Therefore you do not need to
+take care of this nasty business yourself.</p>
+<p>The Stream needs an instance of the L8 class to attach to, as well as an optional
+<code>samplingRate_</code>. The sampling rate tells the system which timeframe (in msec) should be
+waited between two data polls. If none is given <code>100 msec</code> is assumed by default.</p>
+<p>In order to utilize the Stream simply wrap it around an L8 instance and attach to the
+corresponding <a href="http://nodejs.org/api/stream.html#stream_class_stream_readable">Stream</a>
+event handlers:</p>
     </div>
     
 
@@ -334,7 +295,488 @@ wrapped version.</p>
 	
         <tr>
             
-                <td class="name"><code>target</code></td>
+                <td class="name"><code>l8</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="L8.html">L8</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                    
+                    
+                        
+                    
+                
+                <p>Instance of the L8 to attach to.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>samplingRate</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">int</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+                        
+                    
+                
+                </td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+        <h5>Examples</h5>
+        
+
+    
+    <pre class="prettyprint"><code> var l8 = //...
+
+ var acceleration = new AccelerationStream(l8, 200);
+ acceleration.on(&quot;data&quot;, function(data) {
+     // Do something with each part of the acceleration data here.
+ });</code></pre>
+<p>Alternatively the convenience function <a href="L8.html#createAccelerationStream"><code>L8#createAccelerationStream</code></a> can
+be used to get an already connected stream directly from an L8 instance</p>
+    
+
+
+    
+    <pre class="prettyprint"><code> var l8 = //...
+ var acceleration = l8.createAccelerationStream(200);
+ acceleration.on(&quot;data&quot;, function(data) {
+     // Do something with each part of the acceleration data here.
+ });</code></pre>
+    
+
+    
+</dd>
+
+    
+    </div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+        <h3 class="subsection-title">Members</h3>
+        
+        <dl>
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="cooldown_"><span class="type-signature ">private</span>cooldown_<span class="type-signature type boolean">boolean</span> </h4>
+    </div>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>Status flag indicating whether the stream is in cooldown mode, aka. if it is
+currently waiting for the next sampling interval to occur.</p>
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="l8_"><span class="type-signature ">private</span>l8_<span class="type-signature type l8"><a href="L8.html">L8</a></span> </h4>
+    </div>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>Instance of the L8 to access for acceleration data</p>
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="requested_"><span class="type-signature ">private</span>requested_<span class="type-signature type boolean">boolean</span> </h4>
+    </div>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>Status flag indicating whether a request to read a new acceleration data package
+was issued during the current cooldown mode</p>
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="samplingRate_"><span class="type-signature ">private</span>samplingRate_<span class="type-signature type number">Number</span> </h4>
+    </div>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>Sampling rate which defines in which interval the data is polled from the L8</p>
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        </dl>
+    
+    
+    
+        <h3 class="subsection-title">Methods</h3>
+        
+        <dl>
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="_read">
+            
+            <span class="type-signature ">private</span>_read<span class="signature">()</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="AccelerationStream.js.html">AccelerationStream.js</a>, <a href="AccelerationStream.js.html#line147">line 147</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Triggered by the stream API in case the read buffer needs to be filled with information.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="onResponse_">
+            
+            <span class="type-signature ">private</span>onResponse_<span class="signature">(error, data)</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="AccelerationStream.js.html">AccelerationStream.js</a>, <a href="AccelerationStream.js.html#line123">line 123</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Callback invoked each time acceleration data has been read from the L8</p>
+<p>The information is retrieved directly from the <code>getAcceleration</code> method.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>error</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                    
+                    
+                        <span class="nullable">nullable</span>
+                    
+                        
+                    
+                
+                </td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>data</code></td>
             
             
             <td class="type">
@@ -349,6 +791,11 @@ wrapped version.</p>
             
             
             <td class="description last">
+                
+                    
+                    
+                        
+                    
                 
                 </td>
         </tr>
@@ -401,14 +848,14 @@ wrapped version.</p>
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="wrapInPromise">
+        <h4 class="name" id="poll_">
             
-            <span class="type-signature ">inner</span>wrapInPromise<span class="signature">(originalFunction)</span>
+            <span class="type-signature ">private</span>poll_<span class="signature">()</span>
         </h4>
     
         
         <div class="tag-source">
-            <a href="Promisify.js.html">Promisify.js</a>, <a href="Promisify.js.html#line19">line 19</a>
+            <a href="AccelerationStream.js.html">AccelerationStream.js</a>, <a href="AccelerationStream.js.html#line110">line 110</a>
         </div>
         
     </div>
@@ -419,12 +866,9 @@ wrapped version.</p>
     
     
     <div class="description">
-        <p>Wrap the given function into a promise based version.</p>
-<p>The promise based version is identical to the one given, it allows non promise
-calls by supplying all the arguments as usual. But if the callback function
-is omitted it returns a promise instead.</p>
-<p>This function assumes that the given function has already been checked to be
-a valid candidate for promise wrapping (last argument is a callback).</p>
+        <p>Poll the acceleration information from the L8.</p>
+<p>After the polling is complete the <a href="AccelerationStream.html#onResponse_"><code>AccelerationStream#onResponse_</code></a> method
+will be invoked as callback.</p>
     </div>
     
 
@@ -432,46 +876,6 @@ a valid candidate for promise wrapping (last argument is a callback).</p>
     
     
     
-    
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>originalFunction</code></td>
-            
-            
-            <td class="type">
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                </td>
-        </tr>
-	
-	
-	</tbody>
-</table>
     
     
     
@@ -530,7 +934,7 @@ a valid candidate for promise wrapping (last argument is a callback).</p>
         
 
         <footer>
-            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.2</a> on Sat Jul 05 2014 13:21:57 GMT+0200 (MESZ)
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.2</a> on Sat Jul 05 2014 13:21:56 GMT+0200 (MESZ)
         </footer>
     </div>
 </div>

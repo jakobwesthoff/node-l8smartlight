@@ -43,6 +43,43 @@
     </div>
     <ul class="list">
     
+        <li class="item" data-name="AccelerationStream">
+            <span class="title">
+                <a href="AccelerationStream.html">AccelerationStream</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            <span class="subtitle">Members</span>
+            
+                <li data-name="AccelerationStream#cooldown_"><a href="AccelerationStream.html#cooldown_">cooldown_</a></li>
+            
+                <li data-name="AccelerationStream#l8_"><a href="AccelerationStream.html#l8_">l8_</a></li>
+            
+                <li data-name="AccelerationStream#requested_"><a href="AccelerationStream.html#requested_">requested_</a></li>
+            
+                <li data-name="AccelerationStream#samplingRate_"><a href="AccelerationStream.html#samplingRate_">samplingRate_</a></li>
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="AccelerationStream#_read"><a href="AccelerationStream.html#_read">_read</a></li>
+            
+                <li data-name="AccelerationStream#onResponse_"><a href="AccelerationStream.html#onResponse_">onResponse_</a></li>
+            
+                <li data-name="AccelerationStream#poll_"><a href="AccelerationStream.html#poll_">poll_</a></li>
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
         <li class="item" data-name="L8">
             <span class="title">
                 <a href="L8.html">L8</a>
@@ -80,11 +117,15 @@
             
                 <li data-name="L8#close"><a href="L8.html#close">close</a></li>
             
+                <li data-name="L8#createAccelerationStream"><a href="L8.html#createAccelerationStream">createAccelerationStream</a></li>
+            
                 <li data-name="L8#encodeBGRMatrixColor"><a href="L8.html#encodeBGRMatrixColor">encodeBGRMatrixColor</a></li>
             
                 <li data-name="L8#encodeBGRSingleColor"><a href="L8.html#encodeBGRSingleColor">encodeBGRSingleColor</a></li>
             
                 <li data-name="L8#encodeRGBSingleColor"><a href="L8.html#encodeRGBSingleColor">encodeRGBSingleColor</a></li>
+            
+                <li data-name="L8#getAcceleration"><a href="L8.html#getAcceleration">getAcceleration</a></li>
             
                 <li data-name="L8#onResponse_"><a href="L8.html#onResponse_">onResponse_</a></li>
             
@@ -197,7 +238,7 @@
     
         
         <div class="tag-source">
-            <a href="L8.js.html">L8.js</a>, <a href="L8.js.html#line50">line 50</a>
+            <a href="L8.js.html">L8.js</a>, <a href="L8.js.html#line52">line 52</a>
         </div>
         
     </div>
@@ -515,7 +556,7 @@ instead.</p>
     
         
         <div class="tag-source">
-            <a href="L8.js.html">L8.js</a>, <a href="L8.js.html#line361">line 361</a>
+            <a href="L8.js.html">L8.js</a>, <a href="L8.js.html#line360">line 360</a>
         </div>
         
     </div>
@@ -688,7 +729,7 @@ given to <a href="L8.html#sendFrame"><code>L8#sendFrame</code></a> for transmiss
     
         
         <div class="tag-source">
-            <a href="L8.js.html">L8.js</a>, <a href="L8.js.html#line536">line 536</a>
+            <a href="L8.js.html">L8.js</a>, <a href="L8.js.html#line625">line 625</a>
         </div>
         
     </div>
@@ -852,7 +893,7 @@ to 0.</p>
     
         
         <div class="tag-source">
-            <a href="L8.js.html">L8.js</a>, <a href="L8.js.html#line585">line 585</a>
+            <a href="L8.js.html">L8.js</a>, <a href="L8.js.html#line674">line 674</a>
         </div>
         
     </div>
@@ -967,7 +1008,7 @@ separately.</p>
     
         
         <div class="tag-source">
-            <a href="L8.js.html">L8.js</a>, <a href="L8.js.html#line707">line 707</a>
+            <a href="L8.js.html">L8.js</a>, <a href="L8.js.html#line796">line 796</a>
         </div>
         
     </div>
@@ -1085,7 +1126,7 @@ scroller is an internal L8 application.</p>
     
         
         <div class="tag-source">
-            <a href="L8.js.html">L8.js</a>, <a href="L8.js.html#line620">line 620</a>
+            <a href="L8.js.html">L8.js</a>, <a href="L8.js.html#line709">line 709</a>
         </div>
         
     </div>
@@ -1202,7 +1243,7 @@ scroller is an internal L8 application.</p>
     
         
         <div class="tag-source">
-            <a href="L8.js.html">L8.js</a>, <a href="L8.js.html#line129">line 129</a>
+            <a href="L8.js.html">L8.js</a>, <a href="L8.js.html#line131">line 131</a>
         </div>
         
     </div>
@@ -1311,6 +1352,137 @@ scroller is an internal L8 application.</p>
             
 <dt>
     <div class="nameContainer">
+        <h4 class="name" id="createAccelerationStream">
+            
+            createAccelerationStream<span class="signature">(<span class="optional">samplingRate</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="AccelerationStream.html">AccelerationStream</a>}</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="L8.js.html">L8.js</a>, <a href="L8.js.html#line409">line 409</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Create an object stream of acceleration data.</p>
+<p>The optional <code>samplingRate</code> time which is waited between asking the L8 for
+data in milliseconds.</p>
+<p>See <a href="AccelerationStream.html"><code>AccelerationStream</code></a> for details about the created stream.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>samplingRate</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+                        
+                    
+                
+                </td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+
+
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
         <h4 class="name" id="encodeBGRMatrixColor">
             
             encodeBGRMatrixColor<span class="signature">(color)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Buffer}</span>
@@ -1318,7 +1490,7 @@ scroller is an internal L8 application.</p>
     
         
         <div class="tag-source">
-            <a href="L8.js.html">L8.js</a>, <a href="L8.js.html#line479">line 479</a>
+            <a href="L8.js.html">L8.js</a>, <a href="L8.js.html#line568">line 568</a>
         </div>
         
     </div>
@@ -1442,7 +1614,7 @@ and 15 the highest value.</p>
     
         
         <div class="tag-source">
-            <a href="L8.js.html">L8.js</a>, <a href="L8.js.html#line425">line 425</a>
+            <a href="L8.js.html">L8.js</a>, <a href="L8.js.html#line514">line 514</a>
         </div>
         
     </div>
@@ -1566,7 +1738,7 @@ and 15 the highest value.</p>
     
         
         <div class="tag-source">
-            <a href="L8.js.html">L8.js</a>, <a href="L8.js.html#line453">line 453</a>
+            <a href="L8.js.html">L8.js</a>, <a href="L8.js.html#line542">line 542</a>
         </div>
         
     </div>
@@ -1684,6 +1856,134 @@ and 15 the highest value.</p>
             
 <dt>
     <div class="nameContainer">
+        <h4 class="name" id="getAcceleration">
+            
+            getAcceleration<span class="signature">(fn)</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="L8.js.html">L8.js</a>, <a href="L8.js.html#line435">line 435</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Query the L8s accelerometer for data.</p>
+<p>The data given to the callback is an object of the following form:</p>
+<pre><code> {
+     x: Number,
+     y: Number,
+     z: Number,
+     lying: String,
+     orientation: String,
+     tap: Boolean,
+     shake: Boolean
+ }</code></pre>
+<p>The data structure corresponds to the response specified inside the
+<a href="http://www.l8smartlight.com/dev/slcp/1.0/#_Toc380755790">L8 SLCP documentation about the CMD_L8_ACC_RESPONSE</a>.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>fn</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                </td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
         <h4 class="name" id="onResponse_">
             
             <span class="type-signature ">private</span>onResponse_<span class="signature">(data)</span>
@@ -1691,7 +1991,7 @@ and 15 the highest value.</p>
     
         
         <div class="tag-source">
-            <a href="L8.js.html">L8.js</a>, <a href="L8.js.html#line216">line 216</a>
+            <a href="L8.js.html">L8.js</a>, <a href="L8.js.html#line218">line 218</a>
         </div>
         
     </div>
@@ -1807,7 +2107,7 @@ and 15 the highest value.</p>
     
         
         <div class="tag-source">
-            <a href="L8.js.html">L8.js</a>, <a href="L8.js.html#line101">line 101</a>
+            <a href="L8.js.html">L8.js</a>, <a href="L8.js.html#line103">line 103</a>
         </div>
         
     </div>
@@ -1985,7 +2285,7 @@ after the <code>open</code> callback has been fired.</p>
     
         
         <div class="tag-source">
-            <a href="L8.js.html">L8.js</a>, <a href="L8.js.html#line150">line 150</a>
+            <a href="L8.js.html">L8.js</a>, <a href="L8.js.html#line152">line 152</a>
         </div>
         
     </div>
@@ -2107,7 +2407,7 @@ after the <code>open</code> callback has been fired.</p>
     
         
         <div class="tag-source">
-            <a href="L8.js.html">L8.js</a>, <a href="L8.js.html#line407">line 407</a>
+            <a href="L8.js.html">L8.js</a>, <a href="L8.js.html#line496">line 496</a>
         </div>
         
     </div>
@@ -2225,7 +2525,7 @@ a pong reply has been sent back using the <a href="L8.html#event:frameReceived">
     
         
         <div class="tag-source">
-            <a href="L8.js.html">L8.js</a>, <a href="L8.js.html#line264">line 264</a>
+            <a href="L8.js.html">L8.js</a>, <a href="L8.js.html#line266">line 266</a>
         </div>
         
     </div>
@@ -2396,7 +2696,7 @@ accepted as soon as the command is matched.</p>
     
         
         <div class="tag-source">
-            <a href="L8.js.html">L8.js</a>, <a href="L8.js.html#line506">line 506</a>
+            <a href="L8.js.html">L8.js</a>, <a href="L8.js.html#line595">line 595</a>
         </div>
         
     </div>
@@ -2584,7 +2884,7 @@ and 15 the highest value.</p>
     
         
         <div class="tag-source">
-            <a href="L8.js.html">L8.js</a>, <a href="L8.js.html#line558">line 558</a>
+            <a href="L8.js.html">L8.js</a>, <a href="L8.js.html#line647">line 647</a>
         </div>
         
     </div>
@@ -2725,7 +3025,7 @@ ending in the lower right.</p>
     
         
         <div class="tag-source">
-            <a href="L8.js.html">L8.js</a>, <a href="L8.js.html#line734">line 734</a>
+            <a href="L8.js.html">L8.js</a>, <a href="L8.js.html#line823">line 823</a>
         </div>
         
     </div>
@@ -2878,7 +3178,7 @@ bytes are given to the callback in this situations.</p>
     
         
         <div class="tag-source">
-            <a href="L8.js.html">L8.js</a>, <a href="L8.js.html#line668">line 668</a>
+            <a href="L8.js.html">L8.js</a>, <a href="L8.js.html#line757">line 757</a>
         </div>
         
     </div>
@@ -3100,7 +3400,7 @@ the callback</p>
     
         
         <div class="tag-source">
-            <a href="L8.js.html">L8.js</a>, <a href="L8.js.html#line606">line 606</a>
+            <a href="L8.js.html">L8.js</a>, <a href="L8.js.html#line695">line 695</a>
         </div>
         
     </div>
@@ -3242,7 +3542,7 @@ and 15 the highest value.</p>
     
         
         <div class="tag-source">
-            <a href="L8.js.html">L8.js</a>, <a href="L8.js.html#line632">line 632</a>
+            <a href="L8.js.html">L8.js</a>, <a href="L8.js.html#line721">line 721</a>
         </div>
         
     </div>
@@ -3368,7 +3668,7 @@ stops the currently running application.</p>
     
         
         <div class="tag-source">
-            <a href="L8.js.html">L8.js</a>, <a href="L8.js.html#line229">line 229</a>
+            <a href="L8.js.html">L8.js</a>, <a href="L8.js.html#line231">line 231</a>
         </div>
         
     </div>
@@ -3449,7 +3749,7 @@ stops the currently running application.</p>
     
         
         <div class="tag-source">
-            <a href="L8.js.html">L8.js</a>, <a href="L8.js.html#line284">line 284</a>
+            <a href="L8.js.html">L8.js</a>, <a href="L8.js.html#line283">line 283</a>
         </div>
         
     </div>
@@ -3533,7 +3833,7 @@ stops the currently running application.</p>
         
 
         <footer>
-            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.2</a> on Mon Jun 30 2014 23:03:52 GMT+0200 (MESZ)
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.2</a> on Sat Jul 05 2014 13:21:56 GMT+0200 (MESZ)
         </footer>
     </div>
 </div>
