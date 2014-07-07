@@ -250,7 +250,7 @@ MatrixBuilder.prototype.column = function(color, x, y0, y1) {
  *
  * @returns {MatrixBuilder}
  */
-MatrixBuilder.prototype.rectangle = function(color, x0, x1, y0, y1, filled) {
+MatrixBuilder.prototype.rectangle = function(color, x0, y0, x1, y1, filled) {
     if (filled === undefined) {filled = true;}
 
     this.validateColors_([color]);
