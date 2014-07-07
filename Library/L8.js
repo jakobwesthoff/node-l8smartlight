@@ -3,8 +3,9 @@ var EventEmitter = require("events").EventEmitter;
 
 var SerialPort = require("serialport").SerialPort;
 var CRC = require("crc");
-var SLCP = require("./SLCP");
+var async = require("async");
 
+var SLCP = require("./SLCP");
 var AccelerationStream = require("./AccelerationStream").AccelerationStream;
 
 /**
@@ -861,6 +862,142 @@ L8.prototype.setOrientation = function(orientation, fn) {
             }.bind(this)
         );
     }
+};
+
+/**
+ * Store a single frame of an animation inside the L8
+ *
+ * On success the id of the stored frame will be returned to the given callback.
+ *
+ * @param {Array} matrix
+ * @param {Function} fn
+ * @private
+ */
+L8.prototype.storeAnimationFrame = function(matrix, fn) {
+    var parameters = new Buffer(128);
+
+    matrix.forEach(function(color, index) {
+        var encodedColor = this.encodeBGRMatrixColor(color);
+        encodedColor.copy(parameters, index*2);
+    }.bind(this));
+
+    this.sendFrame(
+        this.buildFrame(SLCP.CMD.L8_STORE_FRAME, parameters),
+        {command: SLCP.CMD.L8_STORE_FRAME_RESPONSE}, fn
+    );
+};
+
+/**
+ * Create a new animation consisting of the given stored frames and duration
+ * information
+ *
+ * The frames are specified by frame ids, which need to have already been stored
+ * on the device.
+ * The duration is specified in millisecond values. As the L8 does only provide
+ * a timer resolution of tenth of seconds. Therefore the given frame durations
+ * will be rounded to this scale.
+ *
+ * @param {Array} frames
+ * @param {Array} durations
+ * @param {Function} fn
+ */
+L8.prototype.storeAnimation = function(frames, durations, fn) {
+    if (frames.length !== durations.length) {
+        throw new RangeError("Frames and durations array need to be of the same length. Each frame needs a duration");
+    }
+
+    var tenthOfASecondDurations = durations.map(function(duration) {
+        return Math.round(duration / 100);
+    });
+
+    var parameters = new Buffer(1 /*NUMBER_OF_FRAMES*/ + frames.length + durations.length);
+    parameters[0] = frames.length;
+    frames.forEach(function(frame, index) {
+        var duration = tenthOfASecondDurations[index];
+        parameters[index*2+1] = frame;
+        parameters[index*2+2] = duration;
+    });
+
+    this.sendFrame(
+        this.buildFrame(SLCP.CMD.L8_STORE_ANIM, parameters),
+        {command: SLCP.CMD.L8_STORE_ANIM_RESPONSE}, fn
+    );
+};
+
+/**
+ * Store an animation sequence on the L8 and prepare it for execution.
+ *
+ * Animation sequences are defined as an array of matrices, which represent the
+ * animation frames, as well as an array of duration values in milliseconds of
+ * corresponding length, which represent the duration each of the frames is
+ * displayed.
+ *
+ * The L8 does only provide a timer resolution of tenth of seconds. Therefore
+ * the given frame durations will be rounded to this scale.
+ *
+ * @param {Array} matrices
+ * @param {Array} durations
+ * @param {Function} fn
+ */
+L8.prototype.prepareAnimation = function(matrices, durations, fn) {
+    if (matrices.length !== durations.length) {
+        throw new RangeError("Matrices and durations array need to be of the same length. Each frame needs a duration");
+    }
+
+    async.mapSeries(matrices, function(matrix, next) {
+        this.storeAnimationFrame(matrix, next);
+    }.bind(this), function(error, responses) {
+        var frameIndices = responses.map(function(response) {
+            return response.parameters[0];
+        });
+        this.storeAnimation(frameIndices, durations, fn);
+    }.bind(this));
+};
+
+/**
+ * Delete all contents of the User Memory inside the L8.
+ *
+ * The User Memory portion of the L8 contains all stored L8Ys as well as all
+ * defined animations and corresponding frames.
+ *
+ * The User Memory is quite limited. Therefore sometimes you need to clear it in
+ * order to store new information. As an alternative you to clearing the whole
+ * User Memory, you may delete specific animations, frames and l8ys as well.
+ *
+ * @param {Function} fn
+ */
+L8.prototype.clearUserMemory = function(fn) {
+    return this.sendFrame(
+        this.buildFrame(SLCP.CMD.L8_DELETE_USER_MEMORY),
+        true, fn
+    );
+};
+
+/**
+ * Play an animation stored on the L8.
+ *
+ * Use the {@link L8#prepareAnimation} or a combination of
+ * {@link L8#storeAnimationFrame} and {@link L8#storeAnimation} to transmit an
+ * animation to the L8.
+ *
+ * The `animationId` is the numeric id provided by the afore mentioned methods
+ * to create animations on the device.
+ *
+ * `loop` specifies whether the animation is looped or not.
+ *
+ * @param {Number} animationId
+ * @param {Boolean} loop
+ * @param {Function} fn
+ */
+L8.prototype.playAnimation = function(animationId, loop, fn) {
+    var parameters = new Buffer(2);
+    parameters[0] = animationId;
+    parameters[1] = (loop === true) ? 1 : 0;
+
+    this.sendFrame(
+        this.buildFrame(SLCP.CMD.L8_PLAY_ANIM, parameters),
+        false, fn
+    );
 };
 
 exports.L8 = L8;
