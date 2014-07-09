@@ -11,7 +11,7 @@ l8.open(SERIAL_PORT, null).then(function() {
 }).then(function() {
     l8.setScrollingText('Move me!', {r: 0, g: 15, b: 0}, "fast", true);
 }).then(function() {
-    var acceleration = l8.createAccelerationStream(500);
+    var acceleration = l8.createAccelerationStream(100);
 
     acceleration.on('data', function(data) {
         console.log(data);

@@ -6,6 +6,7 @@ var CRC = require("crc");
 var async = require("async");
 
 var SLCP = require("./SLCP");
+var L8Error = require("./Errors").L8Error;
 var AccelerationStream = require("./AccelerationStream").AccelerationStream;
 
 /**
@@ -260,6 +261,11 @@ L8.prototype.onResponse_ = function(data) {
  *
  * Most commands will want to wait for the response.
  *
+ * Most commands answer with an error response
+ *
+ * If the command is answered with an error it will be given to the callback as
+ * L8Error object.
+ *
  * @param {Buffer} buffer
  * @param {Boolean|{command: Number, parameters: Buffer?}} expectedResponse
  * @param fn
@@ -300,8 +306,13 @@ L8.prototype.sendFrame = function(buffer, expectedResponse, fn) {
             }
 
             var onReceive = function(frame) {
-                /* Skip processing if it is not the awaited response */
-                if (expectedResponse === true) {
+                var error = false;
+                /* Always check for possible error states */
+                if (frame.command === SLCP.CMD.ERR && frame.parameters[0] === buffer[3]) {
+                    // An error occured. Set error and abort further processing.
+                    error = new L8Error("L8 Error received during command execution", frame);
+                } else if (expectedResponse === true) {
+                    /* Skip processing if it is not the awaited response */
                     if (frame.command !== SLCP.CMD.OK || frame.parameters[0] !== buffer[3]) {
                         // It is not the OK response for the issued command. Skip it.
                         return;

@@ -1,5 +1,6 @@
 var util = require('util');
 var Stream = require('stream');
+var L8Error = require("./Errors").L8Error;
 
 /**
  * Time based stream of acceleration data from the L8.
@@ -125,7 +126,13 @@ AccelerationStream.prototype.onResponse_ = function(error, data) {
     this.cooldown_ = true;
 
     if(error) {
-        throw new Error('An error occured while reading the acceleration information: ' + error);
+        if (error instanceof L8Error) {
+            // An error occured. This happens some times. Just read the data again
+            console.error("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            this.poll_();
+        } else {
+            throw new Error('An error occured while reading the acceleration information: ' + error);
+        }
     }
 
     setTimeout(function() {
