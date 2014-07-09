@@ -16,6 +16,8 @@ var L8Error = function(message, response) {
      * @type {{command: Number, parameters: Buffer, checksum: String, payloadLength: Number, raw: Buffer}}
      */
     this.response = response;
+
+    this.stack = (new Error()).stack;
 };
 
 util.inherits(L8Error, Error);

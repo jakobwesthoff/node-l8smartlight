@@ -261,16 +261,26 @@ L8.prototype.onResponse_ = function(data) {
  *
  * Most commands will want to wait for the response.
  *
- * Most commands answer with an error response
+ * Most commands answer with an error response if something went wrong
+ * If you want this error to be passed to the callback as an error set `handleError`
+ * to `true`. If you set the argument to `false` the error will not be given to the
+ * callback. Be aware, that in this case no proper answer is available as well.
+ * In most situations you want to pass the error along.
  *
- * If the command is answered with an error it will be given to the callback as
- * L8Error object.
+ * In cases where the error is not an CMD_ERR followed by the given command as parameter
+ * you may specify an object of the following form to specify it explicitely:
+ *
+ * `{command: Number, parameters: Buffer?}`
+ *
+ * The callback is given the error once it has been handled in the form of an
+ * {@link L8Error} object.
  *
  * @param {Buffer} buffer
  * @param {Boolean|{command: Number, parameters: Buffer?}} expectedResponse
+ * @param {Boolean|{command: Number, parameters: Buffer?}} handleError
  * @param fn
  */
-L8.prototype.sendFrame = function(buffer, expectedResponse, fn) {
+L8.prototype.sendFrame = function(buffer, expectedResponse, handleError, fn) {
     if (!this.isConnected) {
         throw new Error("L8 is not connected. Can't send data to it.");
     }
@@ -308,7 +318,14 @@ L8.prototype.sendFrame = function(buffer, expectedResponse, fn) {
             var onReceive = function(frame) {
                 var error = false;
                 /* Always check for possible error states */
-                if (frame.command === SLCP.CMD.ERR && frame.parameters[0] === buffer[3]) {
+                if (
+                    (handleError === true &&
+                        frame.command === SLCP.CMD.ERR && frame.parameters[0] === buffer[3])
+                    || (handleError !== true && (
+                        (handleError.parameters !== undefined && frame.command === handleError.command && frame.parameters.toString("hex") === handleError.parameters.toString("hex"))
+                        || (handleError.parameters === undefined && frame.command === handleError.command)
+                    ))
+                ) {
                     // An error occured. Set error and abort further processing.
                     error = new L8Error("L8 Error received during command execution", frame);
                 } else if (expectedResponse === true) {
@@ -448,6 +465,7 @@ L8.prototype.getAcceleration = function(fn) {
     this.sendFrame(
         this.buildFrame(SLCP.CMD.L8_ACC_QUERY),
         {command: SLCP.CMD.L8_ACC_RESPONSE},
+        true,
         function(error, data) {
             if (error) {
                 fn(error, false);
@@ -508,7 +526,7 @@ L8.prototype.getAcceleration = function(fn) {
 L8.prototype.ping = function(fn) {
     this.sendFrame(
         this.buildFrame(SLCP.CMD.PING, null),
-        true, fn
+        true, true, fn
     );
 };
 
@@ -620,7 +638,7 @@ L8.prototype.setLED = function(x, y, color, fn) {
 
     this.sendFrame(
         this.buildFrame(SLCP.CMD.L8_LED_SET, parametersBuffer),
-        true, fn
+        true, true, fn
     );
 };
 
@@ -668,7 +686,7 @@ L8.prototype.setMatrix = function(matrix, fn) {
 
     this.sendFrame(
         this.buildFrame(SLCP.CMD.L8_MATRIX_SET, parametersBuffer),
-        true, fn
+        true, true, fn
     );
 };
 
@@ -689,7 +707,7 @@ L8.prototype.clearMatrix = function(fn) {
        as parameter in order for the command to be accepted */
     this.sendFrame(
         this.buildFrame(SLCP.CMD.L8_MATRIX_OFF, "00"),
-        true, fn
+        true, true, fn
     );
 };
 
@@ -707,7 +725,7 @@ L8.prototype.clearMatrix = function(fn) {
 L8.prototype.setSuperLED = function(color, fn) {
     this.sendFrame(
         this.buildFrame(SLCP.CMD.L8_SUPERLED_SET, this.encodeBGRSingleColor(color)),
-        true, fn
+        true, true, fn
     );
 };
 
@@ -733,7 +751,7 @@ L8.prototype.clearSuperLED = function(fn) {
 L8.prototype.stopApplication = function(fn) {
     this.sendFrame(
         this.buildFrame(SLCP.CMD.L8_APP_STOP, null),
-        true, fn
+        true, true, fn
     );
 };
 
@@ -793,7 +811,7 @@ L8.prototype.setScrollingText = function(text, color, speed, loop, fn) {
 
     this.sendFrame(
         this.buildFrame(SLCP.CMD.L8_SET_TEXT, parametersBuffer),
-        false, fn
+        false, true, fn
     );
 };
 
@@ -840,14 +858,14 @@ L8.prototype.setOrientation = function(orientation, fn) {
         parametersBuffer[0] = 1;
         this.sendFrame(
             this.buildFrame(SLCP.CMD.L8_SET_AUTOROTATE, parametersBuffer),
-            {command: SLCP.CMD.OK, parameters: new Buffer("6a", "hex")}, fn
+            {command: SLCP.CMD.OK, parameters: new Buffer("6a", "hex")}, true, fn
         );
     } else {
         // Disable autoration and set orientation manually.
         parametersBuffer[0] = 0;
         this.sendFrame(
             this.buildFrame(SLCP.CMD.L8_SET_AUTOROTATE, parametersBuffer),
-            {command: SLCP.CMD.OK, parameters: new Buffer("6a", "hex")},
+            {command: SLCP.CMD.OK, parameters: new Buffer("6a", "hex")}, true,
             function(error, response) {
                 switch(orientation) {
                     case "up":
@@ -868,7 +886,7 @@ L8.prototype.setOrientation = function(orientation, fn) {
 
                 this.sendFrame(
                     this.buildFrame(SLCP.CMD.L8_SET_ORIENTATION, parametersBuffer),
-                    false, fn
+                    false, true, fn
                 );
             }.bind(this)
         );
@@ -894,7 +912,7 @@ L8.prototype.storeAnimationFrame = function(matrix, fn) {
 
     this.sendFrame(
         this.buildFrame(SLCP.CMD.L8_STORE_FRAME, parameters),
-        {command: SLCP.CMD.L8_STORE_FRAME_RESPONSE}, fn
+        {command: SLCP.CMD.L8_STORE_FRAME_RESPONSE}, {command: SLCP.CMD.ERR, parameters: new Buffer("6a", "hex")}, fn
     );
 };
 
@@ -931,7 +949,7 @@ L8.prototype.storeAnimation = function(frames, durations, fn) {
 
     this.sendFrame(
         this.buildFrame(SLCP.CMD.L8_STORE_ANIM, parameters),
-        {command: SLCP.CMD.L8_STORE_ANIM_RESPONSE}, fn
+        {command: SLCP.CMD.L8_STORE_ANIM_RESPONSE}, true, fn
     );
 };
 
@@ -958,6 +976,10 @@ L8.prototype.prepareAnimation = function(matrices, durations, fn) {
     async.mapSeries(matrices, function(matrix, next) {
         this.storeAnimationFrame(matrix, next);
     }.bind(this), function(error, responses) {
+        if (error) {
+            return fn(error, false);
+        }
+
         var frameIndices = responses.map(function(response) {
             return response.parameters[0];
         });
@@ -980,7 +1002,7 @@ L8.prototype.prepareAnimation = function(matrices, durations, fn) {
 L8.prototype.clearUserMemory = function(fn) {
     return this.sendFrame(
         this.buildFrame(SLCP.CMD.L8_DELETE_USER_MEMORY),
-        true, fn
+        true, true, fn
     );
 };
 
@@ -1007,7 +1029,7 @@ L8.prototype.playAnimation = function(animationId, loop, fn) {
 
     this.sendFrame(
         this.buildFrame(SLCP.CMD.L8_PLAY_ANIM, parameters),
-        false, fn
+        false, true, fn
     );
 };
 
