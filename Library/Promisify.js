@@ -61,6 +61,8 @@ var wrapInPromise = function(originalFunction) {
  */
 var Promisify = function(target) {
     var property;
+
+    target.__promisify = {};
     for(property in target) {
         if (!target.hasOwnProperty(property)) {
             continue;
@@ -77,6 +79,7 @@ var Promisify = function(target) {
             continue;
         }
 
+        target.__promisify[property] = target[property];
         target[property] = wrapInPromise(target[property]);
     }
 };
