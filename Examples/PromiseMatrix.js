@@ -2,7 +2,7 @@ var L8 = require("../index").L8;
 
 var SERIAL_PORT = "/dev/tty.usbmodem1413411";
 
-var l8 = new L8();
+var l8 = new L8(SERIAL_PORT);
 
 l8.on("frameReceived", function(frame) {
     console.log("RECEIVED: ", frame.payload.toString("hex"));
@@ -28,7 +28,7 @@ var nextFrame = function() {
     });
 };
 
-l8.open(SERIAL_PORT, null).then(function(response) {
+l8.open().then(function(response) {
     return l8.clearMatrix();
 }).then(function(response) {
     nextFrame();

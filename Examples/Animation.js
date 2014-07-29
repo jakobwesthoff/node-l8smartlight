@@ -3,7 +3,7 @@ var MatrixBuilder = require("../index").MatrixBuilder;
 
 var SERIAL_PORT = "/dev/tty.usbmodem1413411";
 
-var l8 = new L8();
+var l8 = new L8(SERIAL_PORT);
 l8.on("frameReceived", function(frame) {
     console.log("RECEIVED: ", frame.payload.toString("hex"));
 });
@@ -11,7 +11,7 @@ l8.on("frameSent", function(frame) {
     console.log("SENT: ", frame.toString("hex"));
 });
 
-l8.open(SERIAL_PORT, null).then(function(response) {
+l8.open().then(function(response) {
     return l8.clearUserMemory();
 }).then(function(response) {
     var animation = [];

@@ -13,6 +13,11 @@ var AccelerationStream = require("./AccelerationStream").AccelerationStream;
  * Main API entry point providing all the public API in order to Control
  * an L8 Smartlight
  *
+ * If no baudrate is specified a default speed of `115200` will be used.
+ *
+ * @param {String} port
+ * @param {Number} [baudrate]
+ *
  * @fires L8#frameSent
  * @fires L8#frameReceived
  *
@@ -21,8 +26,8 @@ var AccelerationStream = require("./AccelerationStream").AccelerationStream;
  * @example ```
  *  var L8 = require("l8smartlight").L8;
  *
- *  var l8 = new L8();
- *  l8.open("/dev/YOUR_L8_SERIALPORT_DEVICE", null, function(error) {
+ *  var l8 = new L8("/dev/YOUR_L8_SERIALPORT_DEVICE", null);
+ *  l8.open(function(error) {
  *      if (error) {
  *          throw new Error("Error occurred: " + error);
  *      }
@@ -39,8 +44,8 @@ var AccelerationStream = require("./AccelerationStream").AccelerationStream;
  * @example ```
  *  var L8 = require("l8smartlight").L8;
  *
- *  var l8 = new L8();
- *  l8.open("/dev/YOUR_L8_SERIALPORT_DEVICE", null).then(function() {
+ *  var l8 = new L8("/dev/YOUR_L8_SERIALPORT_DEVICE", null);
+ *  l8.open().then(function() {
  *      return l8.clearMatrix();
  *  }).then(function(response) {
  *      return l8.setScrollingText("Hello World!", {r: 15, g: 0, b: 0}, "fast", false);
@@ -51,8 +56,29 @@ var AccelerationStream = require("./AccelerationStream").AccelerationStream;
  *  });
  * ```
  */
-var L8 = function() {
+var L8 = function(port, baudrate) {
     EventEmitter.call(this);
+
+    // Default value for speed argument
+    if (baudrate === null || baudrate === undefined) {
+        baudrate = 115200;
+    }
+
+    /**
+     * Baudrate to be used while connecting to the L8
+     *
+     * @type {Number}
+     * @private
+     */
+    this.baudrate_ = baudrate;
+
+    /**
+     * Serial port, which is used to connect to this L8.
+     *
+     * @type {String}
+     * @private
+     */
+    this.port_ = port;
 
     /**
      * Indicator whether a connection is established or not.
@@ -89,11 +115,7 @@ util.inherits(L8, EventEmitter);
 L8.MAGIC_BYTES = new Buffer("AA55", "hex");
 
 /**
- * Open a connection to the given port using an optionally provided baudrate
- *
- * If no baudrate is specified a default speed of `115200` will be used.
- *
- * After the port has been successfully opened the given callback will be fired
+ * Open a connection to the L8
  *
  * The operation is asynchronous. Further communication with the L8 is only feasible
  * after the `open` callback has been fired.
@@ -102,16 +124,11 @@ L8.MAGIC_BYTES = new Buffer("AA55", "hex");
  * @param {Number?} baudrate
  * @param fn
  */
-L8.prototype.open = function(port, baudrate, fn) {
-    // Default value for speed argument
-    if (baudrate === null || baudrate === undefined) {
-        baudrate = 115200;
-    }
-
+L8.prototype.open = function(fn) {
     this.receiveBuffer_.length = 0;
 
-    this.serialport_ = new SerialPort(port, {
-        baudrate: baudrate,
+    this.serialport_ = new SerialPort(this.port_, {
+        baudrate: this.baudrate_,
         databits: 8,
         stopbits: 1,
         parity: "none"

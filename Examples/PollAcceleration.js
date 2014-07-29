@@ -2,9 +2,9 @@ var L8 = require("../index").L8;
 
 var SERIAL_PORT = "/dev/tty.L8-SerialPortServerPort1";
 
-var l8 = new L8();
+var l8 = new L8(SERIAL_PORT);
 
-l8.open(SERIAL_PORT, null).then(function() {
+l8.open().then(function() {
     return l8.setOrientation('up');
 }).then(function() {
     l8.clearMatrix();
