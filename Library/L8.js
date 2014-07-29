@@ -628,8 +628,8 @@ L8.prototype.setLED = function(x, y, color, fn) {
     }
 
     var coordinateBuffer = new Buffer(2);
-    coordinateBuffer[0] = x;
-    coordinateBuffer[1] = y;
+    coordinateBuffer[0] = y;
+    coordinateBuffer[1] = x;
 
     var parametersBuffer = Buffer.concat([
         coordinateBuffer,
