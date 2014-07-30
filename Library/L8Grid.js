@@ -1,6 +1,7 @@
 var RSVP = require("rsvp");
 
 var Collection = require("./Collection");
+var MatrixBuilder = require("./MatrixBuilder").MatrixBuilder;
 var L8 = require("./L8").L8;
 
 /**
@@ -9,8 +10,8 @@ var L8 = require("./L8").L8;
  *
  * @constructor
  */
-var L8Grid = function(grid) {
-    this.grid_ = grid;
+var L8Grid = function(description) {
+    this.grid_ = description.toGrid();
 };
 
 L8Grid.prototype.$promisify = [
@@ -18,13 +19,18 @@ L8Grid.prototype.$promisify = [
 ];
 
 L8Grid.prototype.mapCoordinates_ = function(x, y) {
-    var segment = this.grid_.filter(function(segment) {
-        return (
-            x >= segment.position.x &&
+    var segmentIndex = null;
+    var segment = this.grid_.filter(function(segment, index) {
+
+        if (x >= segment.position.x &&
             x <= segment.position.x + 7 &&
             y >= segment.position.y &&
             y <= segment.position.y + 7
-        );
+        ) {
+            segmentIndex = index;
+            return true;
+        }
+        return false;
     }).pop();
 
     if (segment === undefined) {
@@ -32,10 +38,27 @@ L8Grid.prototype.mapCoordinates_ = function(x, y) {
     }
 
     return {
+        gridIndex: segmentIndex,
         l8: segment.l8,
         x: x - segment.position.x,
         y: y - segment.position.y
     };
+};
+
+L8Grid.prototype.mapMatrix_ = function(matrix) {
+    var mappings = this.grid_.map(function(segment) {
+        return {
+            matrix: MatrixBuilder.createArrayWithSize(8*8),
+            l8: segment.l8
+        };
+    });
+
+    MatrixBuilder.forEach(matrix, function(value, x, y, index) {
+        var pixelMapping = this.mapCoordinates_(x, y);
+        mappings[pixelMapping.gridIndex].matrix[pixelMapping.x + (pixelMapping.y * 8)] = value;
+    }.bind(this), 32);
+
+    return mappings;
 };
 
 var mappingBlacklist = {
@@ -81,7 +104,20 @@ Collection.forEach(L8.prototype.__promisify, function(method, name) {
             break;
         case matrixFunctionRegExp.test(method.toString()):
             L8Grid.prototype[name] = function(/* variable arguments */) {
+                var args = Array.prototype.slice.apply(arguments);
+                var matrix, matrixPos;
+                args.forEach(function(argument, index) {
+                    if (functionArguments[index] === "matrix") {
+                        matrixPos = index;
+                        matrix = argument;
+                    }
+                });
 
+                var mappings = this.mapMatrix_(matrix);
+                mappings.forEach(function(mapping) {
+                    args[matrixPos] = mapping.matrix;
+                    mapping.l8[name].apply(mapping.l8, args);
+                });
             };
             L8Grid.prototype.$promisify.push(name);
             break;

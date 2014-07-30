@@ -1,6 +1,7 @@
 var RSVP = require("rsvp");
 
 var L8 = require("../index").L8;
+var MatrixBuilder = require("../index").MatrixBuilder;
 var GridDescription = require("../Library/GridDescription").GridDescription;
 var L8Grid = require("../Library/L8Grid").L8Grid;
 
@@ -31,30 +32,26 @@ var l8grid = new L8Grid(
      .right(l8s[3])
 );
 
+var builder;
+var x = 0, y = 0;
+var back = false;
+var next = function() {
+    builder = new MatrixBuilder(32, 8);
+    builder.column({r: 15, g: 0, b: 0}, x);
+    //builder.row({r: 5, g: 0, b: 0}, y);
+    l8grid.setMatrix(builder.toMatrix(), function() {});
+
+/*     if (back) { --y; } else { ++y; }
+     if (y <= 0 || y >= 7) { back = !back; }
+*/
+    if (back) { --x; } else { ++x; }
+    if (x <= 0 || x >= 31) { back = !back; }
+
+    setTimeout(next, 20);
+};
+
 l8grid.open(function(error) {
     l8grid.clearMatrix(function() {
-        var x, y;
-        var timeout = 0;
-        var colors = [
-            {r: 3, g: 3, b: 0},
-            {r: 15, g: 0, b: 0},
-            {r: 0, g: 0, b: 3},
-            {r: 0, g: 15, b: 0},
-            {r: 0, g: 0, b: 0}
-        ];
-        var colorIndex = 0;
-
-        for(colorIndex = 0; colorIndex < colors.length; colorIndex++) {
-            for(x=0; x<32; x++) {
-                for(y=0; y<8; y++) {
-                    (function(x, y, timeout, colorIndex) {
-                        setTimeout(function() {
-                            l8grid.setLED(x, y, colors[colorIndex], function() {});
-                        }, timeout);
-                    }(x, y, timeout, colorIndex));
-                    timeout += 3;
-                }
-            }
-        }
+        next();
     });
 });
