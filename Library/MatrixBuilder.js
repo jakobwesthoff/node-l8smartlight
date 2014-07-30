@@ -33,10 +33,32 @@
  *
  * The given examples draws a blue border with a red crosshair on the L8
  *
+ * @param {Number} [columns]
+ * @param {Number} [rows]
  * @param {{r:Number, g:Number, b:Number}|Array} [baseColorOrMatrix]
  * @constructor
  */
-var MatrixBuilder = function(baseColorOrMatrix) {
+var MatrixBuilder = function(columns, rows, baseColorOrMatrix) {
+    /**
+     * Columns used for this Matrix.
+     *
+     * The default is the L8s size of 8 pixels
+     *
+     * @type {Number}
+     * @private
+     */
+    this.columns_ = columns || 8;
+
+    /**
+     * Rows used for this Matrix.
+     *
+     * The default is the L8s size of 8 pixels
+     *
+     * @type {Number}
+     * @private
+     */
+    this.rows_ = rows || 8;
+
     /**
      * List of all transformation operations to be applied to the initial
      * matrix upon calls to `toMatrix`.
@@ -63,16 +85,42 @@ var MatrixBuilder = function(baseColorOrMatrix) {
     if (baseColorOrMatrix.constructor !== [].constructor) {
         // Assuming it is a base color
         this.validateColors_([baseColorOrMatrix]);
-        this.initialMatrix_ = this.createArrayWithSize(8*8).map(function() {
+        this.initialMatrix_ = MatrixBuilder.createArrayWithSize(this.columns_ * this.rows_).map(function() {
             return baseColorOrMatrix;
         });
     } else {
         // A matrix has been provided. We copy it as we don't want to unintentionally change
         // it during the building process.
-        this.initialMatrix_ = this.createArrayWithSize(8*8).map(function(value, index) {
+        this.initialMatrix_ = MatrixBuilder.createArrayWithSize(this.rows_ * this.columns_).map(function(value, index) {
             return baseColorOrMatrix[index];
         });
     }
+};
+
+/**
+ * Execute a `forEach` like operation on a matrix taking into account its special nature.
+ *
+ * The operation is mostly equivalent to a normal `array.foreach` call. However special
+ * considerations about the matrix will be taken into account, like lines and columns.
+ *
+ * The callback is executed with the following arguments:
+ *
+ * - color
+ * - column (x-coordinate)
+ * - row (y-coordinate)
+ * - index
+ *
+ * @param {Array} matrix
+ * @param {Function} fn
+ * @param {Number} [columns]
+ * @static
+ */
+MatrixBuilder.forEach = function(matrix, fn, columns) {
+    columns = columns || 8;
+
+    matrix.forEach(function(value, index) {
+        fn(value, index % columns, Math.floor(index / columns), index);
+    });
 };
 
 /**
@@ -104,12 +152,26 @@ var MatrixBuilder = function(baseColorOrMatrix) {
  *
  * @param {Array} matrix
  * @param {Function} fn
+ * @param {Number} [columns]
  * @static
  */
-MatrixBuilder.map = function(matrix, fn) {
-    matrix.forEach(function(value, index) {
-        matrix[index] = fn(value, index % 8, Math.floor(index / 8), index);
-    })
+MatrixBuilder.map = function(matrix, fn, columns) {
+    MatrixBuilder.forEach(matrix, function(value, column, row, index) {
+        matrix[index] = fn(value, column, row, index);
+    }, columns);
+};
+
+/**
+ * Create an Array with a given size and values at every index position.
+ *
+ * This array may easily be used to execute map/reduce operations to fill/create
+ * a new array structure.
+ *
+ * @param {Number} size
+ * @returns {Array}
+ */
+MatrixBuilder.createArrayWithSize = function(size) {
+    return Array.apply(null, new Array(size));
 };
 
 
@@ -118,15 +180,20 @@ MatrixBuilder.map = function(matrix, fn) {
  *
  * If one of the coordinates is invalid an exception will be thrown.
  *
- * @param {Number[]} coordinates
+ * @param {Number[2]} coordinates
  * @private
  */
 MatrixBuilder.prototype.validateCoordinates_ = function(coordinates) {
-    coordinates.forEach(function(coordinate) {
-        if (typeof coordinate !== "number" || coordinate < 0 || coordinate > 7) {
-            throw new RangeError("Valid LED coordinate (0-7) expected, got " + coordinate);
-        }
-    });
+    var x = coordinates[0];
+    var y = coordinates[1];
+
+    if (x !== undefined && (typeof x !== "number" || x < 0 || x > this.columns_)) {
+        throw new RangeError("Valid X LED coordinate (0-" + (this.columns_ - 1) +  ") expected, got " + x);
+    }
+
+    if (y !== undefined && (typeof y !== "number" || y < 0 || y > this.rows_)) {
+        throw new RangeError("Valid Y LED coordinate (0-" + (this.rows_ - 1) +  ") expected, got " + y);
+    }
 };
 
 /**
@@ -147,19 +214,6 @@ MatrixBuilder.prototype.validateColors_ = function(colors) {
             throw new RangeError("Color object with r,g and b properties expected, got: " + JSON.stringify(baseColorOrMatrix));
         }
     });
-};
-
-/**
- * Create an Array with a given size and values at every index position.
- *
- * This array may easily be used to execute map/reduce operations to fill/create
- * a new array structure.
- *
- * @param {Number} size
- * @returns {Array}
- */
-MatrixBuilder.prototype.createArrayWithSize = function(size) {
-    return Array.apply(null, new Array(size));
 };
 
 /**
@@ -195,16 +249,17 @@ MatrixBuilder.prototype.operation = function(fn) {
  */
 MatrixBuilder.prototype.row = function(color, y, x0, x1) {
     x0 = x0 || 0;
-    x1 = x1 || 7;
+    x1 = x1 || this.columns_ - 1;
 
     this.validateColors_([color]);
-    this.validateCoordinates_([y, x0, x1]);
+    this.validateCoordinates_([x0, y]);
+    this.validateCoordinates_([x1]);
 
     return this.operation(function(matrix, variables){
         MatrixBuilder.map(matrix, function(originalColor, column, row) {
             return (row === y && column >= x0 && column <= x1) ? color : originalColor;
-        });
-    });
+        }, this.columns_);
+    }.bind(this));
 };
 
 /**
@@ -221,16 +276,17 @@ MatrixBuilder.prototype.row = function(color, y, x0, x1) {
  */
 MatrixBuilder.prototype.column = function(color, x, y0, y1) {
     y0 = y0 || 0;
-    y1 = y1 || 7;
+    y1 = y1 || this.rows_ - 1;
 
     this.validateColors_([color]);
-    this.validateCoordinates_([x, y0, y1]);
+    this.validateCoordinates_([x, y0]);
+    this.validateCoordinates_([undefined, y1]);
 
     return this.operation(function(matrix, variables){
-        MatrixBuilder.map(matrix, function(originalColor, column, row) {
+        MatrixBuilder.map(matrix, function(originalColor, column, row, index) {
             return (column === x && row >= y0 && row <= y1) ? color : originalColor;
-        });
-    });
+        }, this.columns_);
+    }.bind(this));
 };
 
 /**
@@ -254,13 +310,14 @@ MatrixBuilder.prototype.rectangle = function(color, x0, y0, x1, y1, filled) {
     if (filled === undefined) {filled = true;}
 
     this.validateColors_([color]);
-    this.validateCoordinates_([x0, x1, y0, y1]);
+    this.validateCoordinates_([x0, y0]);
+    this.validateCoordinates_([x1, y1]);
 
     if (filled === true) {
         return this.operation(function(matrix, variables){
             MatrixBuilder.map(matrix, function(originalColor, column, row) {
                 return (column >= x0 && column <= x1 && row >= y0 && row <= y1) ? color : originalColor;
-            });
+            }, this.columns_);
         });
     } else {
         return this.operation(function(matrix, variables){
@@ -270,8 +327,8 @@ MatrixBuilder.prototype.rectangle = function(color, x0, y0, x1, y1, filled) {
                     || (row >= y0 && row <= y1 && (column === x0 || column === x1))
                         ? color : originalColor
                 );
-            });
-        });
+            }, this.columns_);
+        }.bind(this));
     }
 };
 
@@ -288,7 +345,7 @@ MatrixBuilder.prototype.toMatrix = function(variables) {
     variables = variables || {};
 
     // Start with a copy of the original matrix
-    var currentMatrix = this.createArrayWithSize(8*8).map(function(value, index) {
+    var currentMatrix = MatrixBuilder.createArrayWithSize(this.columns_ * this.rows_).map(function(value, index) {
         return this.initialMatrix_[index];
     }.bind(this));
 
